@@ -1,9 +1,9 @@
 -- user login, check peer state, logout
 -- by Qige
--- 2016.04.05/2017.01.03
+-- 2016.04.05/2017.01.03/2017.01.16
 
-require 'wui.base.cgi'
-require 'wui.base.user'
+require 'grid.base.cgi'
+require 'grid.base.user'
 
 AppAuth = {}
 

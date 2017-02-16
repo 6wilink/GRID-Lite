@@ -12,7 +12,9 @@ uhttpd + fast cgi + lua + html + css + javascript
 
 GITHUB
 ------
-https://github.com/6wilink/gws_web.git
+https://github.com/6wilink/grid-lite.git
+https://github.com/zhaoqige/6w-grid-lite.git
+(Old https://github.com/zhaoqige/wui.git)
 
 DEPENDENCIES
 ------------

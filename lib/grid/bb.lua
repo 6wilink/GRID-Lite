@@ -1,9 +1,9 @@
 -- system strings
 -- by Qige
--- 2017.01.06/2017.01.09
+-- 2017.01.06/2017.01.09/2017.01.16
 
 require 'iwinfo'
-require 'wui.base.fmt'
+require 'grid.base.fmt'
 
 
 bb = {}

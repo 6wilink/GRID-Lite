@@ -1,5 +1,5 @@
 #!/usr/bin/lua
 
-require "web.App"
+require "grid.App"
 App.Run()
 

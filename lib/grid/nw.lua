@@ -1,9 +1,9 @@
 -- system strings
 -- by Qige
--- 2017.01.06/2017.01.09
+-- 2017.01.06/2017.01.09/2017.01.16
 
-require 'wui.base.cmd'
-require 'wui.base.seed'
+require 'grid.base.cmd'
+require 'grid.base.seed'
 
 
 nw = {}
