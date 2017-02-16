@@ -9,10 +9,10 @@
 
 include $(TOPDIR)/rules.mk
 
-APP_NAME:=gws_web
-PKG_NAME:=gws_web
-PKG_VERSION:=3.1
-PKG_RELEASE:=20
+APP_NAME:=grid-lite
+PKG_NAME:=grid-lite
+PKG_VERSION:=1.0
+PKG_RELEASE:=1
 
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)
 
@@ -21,13 +21,13 @@ include $(INCLUDE_DIR)/package.mk
 define Package/$(PKG_NAME)
   SECTION:=utils
   CATEGORY:=Utilities
-  TITLE:=WebUI for GWS Products
+  TITLE:=GRID Lite for GWS Products
   DEPENDS:=+uhttpd +lua +liblua +libuci-lua +libiwinfo-lua
   MAINTAINER:=Qige Zhao <zhaoqige@163.com>
 endef
 
 define Package/$(PKG_NAME)/description
-  WebUI for GWS Products Monitor & Control.
+  GRID Lite for GWS Products Monitor & Control.
   Analog Baseband, GWS Radio, System, Network.
 endef
 
