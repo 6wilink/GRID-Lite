@@ -20,6 +20,6 @@ $(document).ready(function(){
 	$('#qz-owner').click(function() {
 		$('#username').val('admin');
 		$('#password').val('admin');
-		$('.qz-submit').trigger('click');
+		$('#qz-form-login').trigger('submit');
 	});
 });

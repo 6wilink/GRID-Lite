@@ -13,7 +13,7 @@
 		<div class="container">
 		<div class="nav-wrapper">
 			<a href="http://www.6harmonics.com/" class="brand-logo valign-wrapper" target="_blank">
-				<img src="res/logo_64.jpg" class="circle" />
+				<img alt="6Harmonics" src="res/6Harmonics-Logo-Large.png" class="qz-img-logo circle" />
 			</a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 			<li><a href="mailto:qige@6harmonics.com">Question ?</a></li>
@@ -23,27 +23,30 @@
 </header>
 <main class="section blue-grey lighten-5 valign-wrapper">
 	<div class="row container valign">
-		<form id="qz-form-login" class="col s6 offset-s3" action="/cgi-bin/">
+		<form id="qz-form-login" class="col s8 offset-s2" action="/cgi-bin/auth" method="POST">
       		<div class="row blue-grey lighten-5">
 				<h4 class="light center">Signin Now</h4>
 				<div class="progress qz-doing">
 					<div class="indeterminate"></div>
 				</div>
 	        	<div class="input-field col s12">
-	          		<input id="username" type="text" placeholder="Click here to input your username">
+	          		<input id="username" name="username" type="text" placeholder="Click here to input your username">
 	          		<label for="username">Your Username</label>
 	        	</div>
 	        	<div class="input-field col s12">
-	          		<input id="password" type="password"placeholder="Click here to input your password">
+	          		<input id="password" name="password" type="password"placeholder="Click here to input your password">
 	          		<label for="password">Your Password</label>
 	        	</div>
 				<div class="input-field col s12 center">
-					<button class="waves-effect waves-light btn qz-submit">Submit</button>
-					<a class="modal-trigger waves-effect waves-light btn blue-grey lighten-3" href="#modal_leagal">First-time</a>
+					<a class="modal-trigger waves-effect waves-light btn blue-grey lighten-3" href="#modal_leagal">New Device</a>
+					<a href="app.html?k=demo" class="waves-effect waves-light btn blue-grey lighten-3">Try DEMO</a>
+					<button class="waves-effect waves-light btn blue-grey qz-submit">Submit</button>
 				</div>
 	        	<div class="input-field col s12 center">
 	      			<input type="checkbox" class="filled-in" id="filled-in-box" disabled="disabled" />
 	      			<label for="filled-in-box">Remeber Me</label>
+				</div>
+				<div class="input-field col s12 center">
 				</div>
 			</div>
     	</form>
@@ -58,7 +61,7 @@
 			</div>
 			<div class="modal-footer">
 			<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">LEAVE</a>
-			<a id="qz-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">I am the OWNER</a>
+			<a id="qz-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
 		</div>
 	</div>
 </main>

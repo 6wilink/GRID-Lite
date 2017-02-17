@@ -8,3 +8,8 @@ body {
 main {
 	flex: 1 0 auto;
 }
+
+.qz-img-logo {
+	height: 64px;
+	width:64px;
+}

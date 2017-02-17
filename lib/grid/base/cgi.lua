@@ -2,8 +2,8 @@
 -- by Qige
 -- 2016.04.05/2017.01.03/2017.01.06
 
-require 'web.base.conf'
-require 'web.base.html'
+require 'grid.base.conf'
+require 'grid.base.html'
 
 cgi = {}
 
@@ -70,7 +70,7 @@ function cgi.out.Goto(text, url, delay)
 end
 
 function cgi.out.Yell(msg)
-  cgi.Reply(string.format('500: server internal error (%s)', msg or '*unknown*'))
+  cgi.out.Reply(string.format('500: server internal error (%s)', msg or '*unknown*'))
 end
 
 

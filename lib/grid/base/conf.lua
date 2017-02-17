@@ -9,7 +9,7 @@ conf = {}
 
 conf.default = {}
 conf.default.user = {}
-conf.default.user.session = '/tmp/.web'
+conf.default.user.session = '/tmp/.grid-lite'
 conf.default.user.username = 'root'
 conf.default.user.password = '6Harmonics'
 --conf.default.user.remote = '192.168.1.1'

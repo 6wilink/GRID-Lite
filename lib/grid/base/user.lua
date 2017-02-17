@@ -2,16 +2,18 @@
 -- by Qige
 -- 2016.04.05/2017.01.03/2017.01.04/2017.01.06
 
-require 'web.base.conf'
-require 'web.base.file'
-require 'web.base.cmd'
-require 'web.base.cgi'
+require 'grid.base.conf'
+require 'grid.base.file'
+require 'grid.base.cmd'
+require 'grid.base.cgi'
 
 user = {}
 
 user.conf = {}
+user.conf.file = 'grid-lite'
+
 function user.conf.session()
-  local f = conf.uci.get('gws_web', 'v3', 'id')
+  local f = conf.uci.get(user.conf.file, 'v1', 'id')
   if (f and f ~= '') then
     return f
   end
@@ -19,7 +21,7 @@ function user.conf.session()
 end
 
 function user.conf.root()
-	local ip = conf.uci.get('gws_web', 'v3', 'root')
+	local ip = conf.uci.get(user.conf.file, 'v1', 'root')
   if (ip and ip ~= '') then
     return ip
   end
@@ -27,7 +29,7 @@ function user.conf.root()
 end
 
 function user.conf.user()
-	local _user = conf.uci.get('gws_web', 'v3', 'user')
+	local _user = conf.uci.get(user.conf.file, 'v1', 'user')
   if (_user and _user ~= '') then
     return _user
   end
@@ -35,7 +37,7 @@ function user.conf.user()
 end
 
 function user.conf.passwd()
-	local _passwd = conf.uci.get('gws_web', 'v3', 'pass')
+	local _passwd = conf.uci.get(user.conf.file, 'v1', 'pass')
   if (_passwd and _passwd ~= '') then
     return _passwd
   end
@@ -58,8 +60,8 @@ function user.verify.remote()
 	if (_ip and remote) then
 		return (remote == _ip)
 	end
-  return true -- DEBUG USE ONLY
-	--return false
+  --return true -- DEBUG USE ONLY
+	return false
 end
 
 function user.verify.login(_user, _passwd)
