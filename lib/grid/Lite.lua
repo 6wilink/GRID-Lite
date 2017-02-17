@@ -7,9 +7,11 @@
 -- by Qige
 -- 2017.01.03
 -- 2017.01.09 
--- > re-write App.job.Redirect(), App.job.Reply()
--- > App.job, App.error, App.user, App.nobody
+-- > re-write Lite.job.Redirect(), Lite.job.Reply()
+-- > Lite.job, Lite.error, Lite.user, Lite.nobody
+
 -- 2017.01.16
+-- > replace "App" with "Lite"
 
 require 'grid.AppAuth'
 require 'grid.AppData'
@@ -18,14 +20,14 @@ require 'grid.base.fmt'
 require 'grid.base.json'
 
 
-App = {}
+Lite = {}
 
 
 -- Reply()/Redirect()
-App.job = {}
+Lite.job = {}
 
 -- handle "ajax"
-function App.job.Reply(_data)
+function Lite.job.Reply(_data)
   _response = json.encode(_data)
   if (_response) then
     cgi.out.Reply(_response)
@@ -33,62 +35,62 @@ function App.job.Reply(_data)
 end
 
 -- handle "redirect"
-function App.job.Redirect(msg, target, delay)
+function Lite.job.Redirect(msg, target, delay)
   cgi.out.Goto(msg, target, delay);
 end
 
 
 -- error: need login, unknown method
-App.error = {}
+Lite.error = {}
 
-function App.error.Nobody()
+function Lite.error.Nobody()
 	local _data = {["error"] = "identify yourself"}
-  App.job.Reply(_data)
+  Lite.job.Reply(_data)
 end
 
-function App.error.Unknown()
+function Lite.error.Unknown()
   local _data = {["error"] = "unknown method" }
-  App.job.Reply(_data)
+  Lite.job.Reply(_data)
 end
 
 
-App.user = {}
+Lite.user = {}
 -- all authorized data response
-function App.user.KPI()
+function Lite.user.KPI()
   local _data = AppData.sync.kpi()
-  App.job.Reply(_data)
+  Lite.job.Reply(_data)
 end
-function App.user.Basic()
+function Lite.user.Basic()
   local _data = AppData.sync.basic()
-  App.job.Reply(_data)
+  Lite.job.Reply(_data)
 end
-function App.user.ExecCmd()
+function Lite.user.ExecCmd()
   local _post = cgi.data._post
   local _cmd = fmt.http.find('cmd', _post)
   cgi.out.Reply(AppData.user.cmd(_cmd))
 end
 
-function App.user.Fixup()
+function Lite.user.Fixup()
   AppData.job.fixup()
-  App.job.Redirect('Repairing ... (Please wait)', '/wui/', 3)
+  Lite.job.Redirect('Repairing ... (Please wait)', '/wui/', 3)
 end
-function App.user.Reboot()
+function Lite.user.Reboot()
   AppData.user.reboot()
-  App.job.Redirect('Rebooting ... (Please wait)', '/wui/', 45)
+  Lite.job.Redirect('Rebooting ... (Please wait)', '/wui/', 45)
 end
 
-function App.user.Logout()
+function Lite.user.Logout()
   AppAuth.user.logout()
-  App.job.Redirect('Logout Successfully (realtime)', '/wui/', 3)
+  Lite.job.Redirect('Logout Successfully (realtime)', '/wui/', 3)
 end
 
 -- all un-authorized response
-App.nobody = {}
-function App.nobody.Login()
-  App.job.Redirect(AppAuth.nobody.login())
+Lite.nobody = {}
+function Lite.nobody.Login()
+  Lite.job.Redirect(AppAuth.nobody.login())
 end
-function App.nobody.Logout()
-  App.job.Redirect('Logout Successfully (nobody)', '/wui/', 3)
+function Lite.nobody.Logout()
+  Lite.job.Redirect('Logout Successfully (nobody)', '/wui/', 3)
 end
 
 
@@ -96,7 +98,7 @@ end
 -- analyze request
 -- login/logout
 -- basic/kpi/cmd/fixup/reboot/logout
-function App.Run(_dbgKey)
+function Lite.Run(_dbgKey)
   -- operation result data
   local _data = nil
 
@@ -124,33 +126,33 @@ function App.Run(_dbgKey)
     -- * do logout
     if (AppAuth.verify.remote()) then
       if (_k == 'kpi') then
-        App.user.KPI()
+        Lite.user.KPI()
       elseif (_k == 'basic') then
-        App.user.Basic()
+        Lite.user.Basic()
       elseif (_k == 'cmd') then
-        App.user.ExecCmd()
+        Lite.user.ExecCmd()
       elseif (_k == 'fixup') then
-        App.user.Fixup()
+        Lite.user.Fixup()
       elseif (_k == 'reboot') then
-        App.user.Reboot()
+        Lite.user.Reboot()
       elseif (_k == 'logout' or _k == 'login') then
-        App.user.Logout() -- verified @ 2017.01.0-
+        Lite.user.Logout() -- verified @ 2017.01.0-
       else
-        App.error.Unknown()
+        Lite.error.Unknown()
       end
     
     -- if unknow user
     -- * logout (demo)
     -- * login
     elseif (_k == 'logout') then
-      App.nobody.Logout()
+      Lite.nobody.Logout()
     elseif (_k == 'login') then
-      App.nobody.Login() -- verified @ 2017.01.0-
+      Lite.nobody.Login() -- verified @ 2017.01.0-
     else
-      App.error.Nobody()
+      Lite.error.Nobody()
     end    
 	else
-		App.error.Unknown()
+		Lite.error.Unknown()
 	end
 end
 
@@ -158,25 +160,25 @@ end
 
 -- DEBUG USE ONLY
 -- will not verify user/remote
-function App.Debug()
-  --App.Run('')
-  --App.Run('not-the-right-param')
+function Lite.Debug()
+  --Lite.Run('')
+  --Lite.Run('not-the-right-param')
   
-  --App.Run('login')
-  --App.Run('logout')
+  --Lite.Run('login')
+  --Lite.Run('logout')
   
   -- Ops below, need to change "user.verifyRemote()"
   -- let it always return true
   -- 'cause cli don't have any cgi params
   
-  --App.Run('basic')
-  App.Run('kpi')
+  --Lite.Run('basic')
+  Lite.Run('kpi')
   
-  --App.Run('fixup')
-  --App.Run('reboot')
+  --Lite.Run('fixup')
+  --Lite.Run('reboot')
 
-  --App.Run('cmd')
+  --Lite.Run('cmd')
 end
 
-return App
+return Lite
 
