@@ -9,6 +9,7 @@ conf = {}
 
 conf.default = {}
 conf.default.user = {}
+conf.default.file = 'grid-lite'
 conf.default.user.session = '/tmp/.grid-lite'
 conf.default.user.username = 'root'
 conf.default.user.password = '6Harmonics'

@@ -13,3 +13,36 @@ main {
 	height: 64px;
 	width:64px;
 }
+
+.qz-space {
+	padding: 20px 20px 0 20px;
+}
+
+.qz-space-lr {
+	padding: 0 1rem;
+}
+
+.qz-no-margin {
+	margin: 0 !important;
+}
+
+.qz-chart-holder {
+	width: 100%;
+	height: 200px;
+}
+
+.card .card-content {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+/* to fix Flot + Materialize */
+.legend * {
+	margin:0;padding:0;
+}
+.legend table {
+	width: auto;
+}
+.legendColorBox,.legendLabel {
+	padding: 4px;
+}

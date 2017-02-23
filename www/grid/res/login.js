@@ -15,6 +15,7 @@ $(document).ready(function(){
 			Materialize.toast($toastContent, 3000);
 			return false;
 		}
+		$('.qz-doing').hide();
 	});
 
 	$('#qz-owner').click(function() {

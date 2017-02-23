@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="res/google/icon.css" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="res/materialize/css/materialize.min.css"  media="screen,projection" />
+	<link type="text/css" rel="stylesheet" href="res/app.css" media="screen,projection" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>GRID lite from 6Harmonics</title>
+</head>
+<body class="blue-grey lighten-5">
+<nav class="nav-extended blue-grey">
+	<div class="nav-content">
+		<ul class="tabs tabs-transparent">
+			<li class="tab"><a class="active" href="#tab1">Status</a></li>
+			<li class="tab"><a href="#tab2">Settings</a></li>
+			<li class="tab"><a href="#tab3">Spectrum</a></li>
+			<li class="tab"><a href="#tab4">Tools!</a></li>
+			<li class="tab right"><a href="#tab5">Security</a></li>
+		</ul>
+	</div>
+</nav>
+<div id="tab1" class="col s12">
+	<div class="container">
+		<div class="section">
+			<h5>Local Node</h5>
+			<div class="row">
+				<div class="col s12">
+					<div class="card">
+						<div class="card-image waves-effect waves-block waves-light">
+      						<div class="qz-space">
+      							<div id="qz-chart-local" class="qz-chart-holder lighten-5"></div>
+      						</div>
+    					</div>
+    					<div class="card-content center">
+    						<p class="card-title activator grey-text text-darken-4">10.10.1.2 / 192.168.1.103</p>
+							<p>00:5E:AC:00:5E:B0 | CAR (router) | "gws2016" | Not encrypted | QoS</p>
+						</div>
+    					<div class="card-reveal">
+    						<span class="card-title grey-text text-darken-4">GWS / UHF<i class="material-icons right">...</i></span>
+      						<ul class="collection">
+								<li class="collection-item"><span class="badge">R1 - CH 43</span>Region - Channel</li>
+								<li class="collection-item"><span class="badge">650 MHz - 8 MHz</span>Frequency - Bandwidth</li>
+								<li class="collection-item"><span class="badge">33 dBm - TPC ON</span>Tx Power</li>
+								<li class="collection-item"><span class="badge">12 db - AGC ON</span>Rx Gain</li>
+							</ul>
+      					</div>
+      					<div class="card-action">
+              				<a href="#modal_local_settings">Settings</a>
+              				<a href="#" id="qz-local-reset">Reset</a>
+            			</div>
+  					</div>
+				</div>
+			</div>
+			<h5>Connected Node(s)</h5>
+			<div class="row">
+				<div class="col s12 section">( Not connected )</div>
+				<!--<div class="col s6">
+					<div class="card">
+						<div class="card-image waves-effect waves-block waves-light">
+      						<div class="qz-space">
+      							<div class="qz-chart-holder qz-chart-peer lighten-5"></div>
+							</div>
+    					</div>
+    					<div class="card-content center">
+    						<p class="card-title activator grey-text text-darken-4">192.168.1.100 / 192.168.66.1</p>
+							<p>00:5E:AC:00:5E:AE | EAR (router)</p>
+						</div>
+    					<div class="card-reveal">
+    						<span class="card-title grey-text text-darken-4">GWS Params<i class="material-icons right">.</i></span>
+      						<ul class="collection">
+								<li class="collection-item"><span class="badge">33 dBm</span>Tx Power</li>
+								<li class="collection-item"><span class="badge">12 db</span>Rx Gain</li>
+								<li class="collection-item"><span class="badge">ON</span>AGC</li>
+								<li class="collection-item"><span class="badge blue">OFF</span>TPC</li>
+								<li class="collection-item"><span class="badge grey">OFF</span>ATF</li>
+								<li class="collection-item"><span class="badge grey">OFF</span>TDMA</li>
+							</ul>
+      					</div>
+      					<div class="card-action">
+              				<a href="#modal_local_settings">Monitor</a>
+              				<a href="#">Reset</a>
+            			</div>
+  					</div>
+				</div>
+				<div class="col s6">
+					<div class="card">
+						<div class="card-image waves-effect waves-block waves-light">
+      						<div class="qz-space">
+      							<div class="qz-chart-holder qz-chart-peer lighten-5"></div>
+							</div>
+    					</div>
+    					<div class="card-content center">
+    						<p class="card-title activator grey-text text-darken-4">192.168.1.101</p>
+							<p>00:5E:AC:00:5E:AD | EAR (bridged) | QoS</p>
+						</div>
+    					<div class="card-reveal">
+    						<span class="card-title grey-text text-darken-4">GWS Params<i class="material-icons right">:</i></span>
+      						<ul class="collection">
+								<li class="collection-item"><span class="badge">33 dBm</span>Tx Power</li>
+								<li class="collection-item"><span class="badge new red">12 db</span>Rx Gain</li>
+								<li class="collection-item"><span class="badge">ON</span>AGC</li>
+								<li class="collection-item"><span class="badge blue">OFF</span>TPC</li>
+								<li class="collection-item"><span class="badge grey">OFF</span>ATF</li>
+								<li class="collection-item"><span class="badge grey">OFF</span>TDMA</li>
+							</ul>
+      					</div>
+      					<div class="card-action">
+              				<a href="#modal_peer_monitor">Monitor</a>
+              				<a href="#">Reset</a>
+            			</div>
+  					</div>
+				</div>
+				-->
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal Structure -->
+	<div id="modal_local_settings" class="modal">
+		<div class="modal-content">
+			<h4>Adjust</h4>
+			<p>If you are the owner of this device, or with propper authentication(s), then go ahead.</p>
+			<p>If not, this means you are breaking into others' property, in the meanwhile, breaking a "Federal Law". Please click "LEAVE" button and close this page.</p>
+			<p>Thank you</p>
+		</div>
+		<div class="modal-footer">
+			<a id="qz-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+			<button href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</button>
+		</div>
+	</div>
+
+	<!-- Modal Structure -->
+	<div id="modal_peer_monitor" class="modal">
+		<div class="modal-content">
+			<h4>Leagal Statements</h4>
+			<p>If you are the owner of this device, or with propper authentication(s), then go ahead.</p>
+			<p>If not, this means you are breaking into others' property, in the meanwhile, breaking a "Federal Law". Please click "LEAVE" button and close this page.</p>
+			<p>Thank you</p>
+		</div>
+		<div class="modal-footer">
+			<a id="qz-peer-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+			<a href="app.html?k=proxy&c=blue" target="_blank" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+		</div>
+	</div>
+</div>
+<div id="tab2" class="col s12">
+	<div class="container">
+		<div class="section">
+			<ul class="collapsible" data-collapsible="accordion">
+				<li>
+					<div class="collapsible-header blue-grey lighten-5">Analog Baseband</div>
+					<div class="collapsible-body">
+						<form class="row">
+							<div class="col s5">
+								<div class="row">
+				    				<div class="input-field col s12">
+				    					<select class="browser-default">
+											<option value="2" selected>Core Adaptive Radio (CAR, WDS)</option>
+											<option value="1">Edge Adaptive Radio (EAR, WDS)</option>
+											<option value="0">Mesh Node (Mesh, WDS)</option>
+										</select>
+				    				</div>
+				    			</div>
+				    		</div>
+				    		<div class="col s6 offset-s1">
+				    			<div class="row">
+									<div class="input-field col s12">
+										<input id="abb-ssid" placeholder="Default is gws2016" class="validate" type="text" value="gws2016" />
+										<label for="abb-ssid">SSID</label>
+									</div>
+									<div class="input-field col s12">
+										<input id="abb-passwd" placeholder="6Harmonics or 12345678" class="validate" type="password" value="" />
+										<label for="abb-passwd">Password</label>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header active blue-grey lighten-4">GWS / UHF</div>
+					<div class="collapsible-body">
+						<form class="row">
+							<div class="col s5">
+								<div class="row">
+									<h6>Tx Chain</h6>
+									<div class="input-field col s5">
+										<input id="gws-tx-tpc" type="checkbox" class="filled-in" checked="checked" />
+	      								<label for="gws-tx-tpc">Tx TPC</label>
+									</div>
+									<div class="input-field col s7">
+										<input id="gws-tx-pwr" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<label for="gws-tx-pwr">Tx Power</label>
+									</div>
+									<div class="input-field col s12">
+										<input id="gws-tx-ch" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<label for="gws-tx-ch">Channel</label>
+									</div>
+									<div class="input-field col s12">
+										<select id="gws-tx-rgn" class="browser-default">
+											<option value="0">Region 0</option>
+											<option value="1" selected>Region 1</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col s6 offset-s1">
+								<div class="row">
+									<h6>Rx Chain</h6>
+									<div class="input-field col s5">
+										<input id="gws-rx-agc" type="checkbox" class="filled-in" checked="checked" />
+	      								<label for="gws-rx-agc">Rx AGC</label>
+									</div>
+									<div class="input-field col s7">
+										<input id="gws-rx-gain" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<label for="gws-rx-gain">Rx Gain</label>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header blue-grey lighten-3">Network</div>
+					<div class="collapsible-body">
+						<form class="row">
+							<div class="col s5">
+								<div class="row">
+				    				<div class="input-field col s12">
+				    					<select id="nw-br" class="browser-default">
+											<option value="l2" selected>Run as Access Point ( Layer 2 )</option>
+											<option value="l3">Run as Router ( Layer 3 )</option>
+										</select>
+				    				</div>
+									<div class="input-field col s12">
+										<input id="nw-serv-dhcp" type="checkbox" class="filled-in" />
+	      								<label for="nw-serv-dhcp">Enable DHCP Service on LAN</label>
+									</div>
+									<div class="input-field col s12">
+										<input id="nw-serv-fw" type="checkbox" class="filled-in" disabled />
+	      								<label for="nw-serv-fw">Firewall</label>
+									</div>
+									<div class="input-field col s12">
+										<input id="nw-serv-qos" type="checkbox" class="filled-in" disabled />
+	      								<label for="nw-tx-tpc">QoS</label>
+									</div>
+				    			</div>
+				    		</div>
+				    		<div class="col s6 offset-s1">
+				    			<div class="row">
+									<div class="input-field col s12">
+										<input id="nw-wan-ip" placeholder="Default is 10.10.1.1" class="validate" type="text" value="-" />
+										<label for="nw-wan-ip">WAN Address</label>
+									</div>
+									<div class="input-field col s12">
+										<input id="nw-lan-ip" placeholder="Default is 192.168.66.1" class="validate" type="text" value="192.168.66.1" />
+										<label for="nw-lan-ip">LAN Address</label>
+									</div>
+								</div>
+							</div>
+				    	</form>
+				    </div>
+				</li>
+				<li>
+					<div class="collapsible-header blue-grey lighten-2">System</div>
+					<div class="collapsible-body">
+						<form class="row">
+							<div class="col s6">
+								<div class="row">
+									<h6>Date time</h6>
+									<div class="input-field col s12">
+										<input id="sys-serv-ntpd" type="checkbox" class="filled-in" disabled />
+	      								<label for="sys-serv-ntpd">NTP daemon</label>
+									</div>
+								</div>
+							</div>
+							<div class="col s6">
+								<div class="row">
+									<h6>FCC Regulation</h6>
+									<div class="input-field col s12">
+										<input id="sys-serv-paws" type="checkbox" class="filled-in" disabled />
+	      								<label for="sys-serv-paws">PAWS Database</label>
+									</div>
+									<div class="input-field col s12">
+										<select id="sys-serv-paws-vendor" class="browser-default">
+											<option value="0">Google in UK</option>
+											<option value="1" selected>Microsoft in US</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header blue-grey lighten-1">Advanced</div>
+					<div class="collapsible-body">
+						<form class="row">
+							<div class="col s6">
+								<div class="row">
+									<h6>Tx / Downlink</h6>
+									<div class="input-field col s12">
+										<input id="adv-serv-atf" type="checkbox" class="filled-in" disabled />
+	      								<label for="adv-serv-atf">ATF</label>
+									</div>
+								</div>
+							</div>
+							<div class="col s6">
+								<div class="row">
+									<h6>Rx / Uplink</h6>
+									<div class="input-field col s12">
+										<input id="adv-serv-tdma" type="checkbox" class="filled-in" disabled />
+	      								<label for="adv-serv-tdma">TDMA</label>
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class="row">
+							<div class="col s12">
+								I don't want to provide FIRMWARE UPGRADE function. Maybe in next release.
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- Modal Structure -->
+	<div id="modal_change_confirm" class="modal">
+		<div class="modal-content">
+			<h4>Are you sure?</h4>
+			<p>If you want to change these item below, click "Confirm"</p>
+			<p>If not, click "Cancel"</p>
+			<p>Thank you</p>
+		</div>
+		<div class="modal-footer">
+			<a id="qz-peer-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+			<button class="modal-action modal-close waves-effect waves-green btn-flat">Confirm</button>
+		</div>
+	</div>
+</div>
+<div id="tab3" class="col s12">
+	<div class="container">
+		<div class="section">
+			<h5>Spectrum Scan</h5>
+			<form class="row">
+				<div class="input-field col s6">
+					<button class="btn-flat blue-grey">Start</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div id="tab4" class="col s12">
+	<div class="container">
+		<div class="section">
+			<h5>ICMP / Ping</h5>
+			<form class="row">
+				<div class="input-field col s6">
+					<input placeholder="Copy target ip address or MAC from STATUS" class="validate" type="text" value="192.168.1.2" />
+					<label>Target Address or MAC</label>
+				</div>
+				<div class="input-field col s6">
+					<button class="btn-flat blue-grey">Start</button>
+				</div>
+				<div class="input-field col s12">
+					<textarea id="tool-icmp-result" class="materialize-textarea"></textarea>
+      				<label for="tool-icmp-result">ICMP / Ping Result</label>
+      			</div>
+			</div>
+		</form>
+	</div>
+	<div class="container">
+		<div class="section">
+			<h5>UDP Flooding Tool</h5>
+			<form class="row">
+				<div class="input-field col s6">
+					<input id="tool-udp-counter" placeholder="Unit: Second" type="text" class="validate" value="300" />
+					<label>Seconds of Flooding</label>
+				</div>
+				<div class="input-field col s6">
+					<input id="tool-udp-target" placeholder="Your Target Address / MAC" type="text" class="validate" value="192.168.1.2" />
+					<label>Target</label>
+				</div>
+				<div class="input-field col s6">
+					<input id="adv-serv-atf" type="checkbox" class="filled-in" checked="checked" />
+					<label>Auto Start when Timeout</label>
+				</div>
+				<div class="input-field col s6">
+					<button class="btn-flat blue-grey">Start UDP Flooding</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="tab5" class="col s6 offset-s3">
+	<div class="container">
+		<div class="section">
+			<h5 class="center">Change Your Password</h5>
+			<div class="row">
+	    		<form class="col s8 offset-s2">
+	    			<div class="row">
+	    				<div class="input-field col s12">
+	    					<input id="adm-passwd-old" placeholder="Your Current Password" type="password" class="validate">
+	    					<label for="adm-passwd-old">Current Password</label>
+	    				</div>
+	        			<div class="input-field col s12">
+	          				<input id="adm-passwd-new" placeholder="Your New Password" type="password" class="validate">
+	          				<label for="adm-passwd-new">New Password</label>
+	        			</div>
+	        			<div class="input-field col s12">
+	         				<input id="adm-passwd-cfm" placeholder="Re-type Your New Password" type="password" class="validate">
+	          				<label for="adm-passwd-cfm">Confirm Password</label>
+	        			</div>
+	        			<div class="input-field col s6">
+	        				<button class="btn blue-grey">Change</button>
+	        			</div>
+	      			</div>
+				</form>
+			</div>
+		</div>
+		<div class="section center">
+			<h5>You want to Sign Out?</h5>
+			<a href="/cgi-bin/bye" class="btn lime darken-4">Click to Logout</a>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="res/jquery.min.js"></script>
+<script type="text/javascript" src="res/materialize/js/materialize.min.js"></script>
+<script type="text/javascript" src="res/flot/jquery.flot.min.js"></script>
+<script type="text/javascript" src="res/flot/jquery.flot.resize.min.js"></script>
+<script type="text/javascript" src="res/flot/jquery.flot.stack.min.js"></script>
+<script type="text/javascript" src="res/app.com.js"></script>
+<script type="text/javascript" src="res/app.js"></script>
+<!-- Design & Powered by Qige from 6Harmonics/6WiLink -->
+</body>
+</html>

@@ -10,7 +10,7 @@ require 'grid.base.cgi'
 user = {}
 
 user.conf = {}
-user.conf.file = 'grid-lite'
+user.conf.file = conf.default.file
 
 function user.conf.session()
   local f = conf.uci.get(user.conf.file, 'v1', 'id')
