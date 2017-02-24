@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link href="res/google/icon.css" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="res/materialize/css/materialize.min.css"  media="screen,projection" />
 	<link type="text/css" rel="stylesheet" href="res/app.css" media="screen,projection" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>GRID lite from 6Harmonics</title>
+	<title>GRID lite from 6Harmonics (v1.0-1-220217 prototype)</title>
 </head>
 <body class="blue-grey lighten-5">
 <nav class="nav-extended blue-grey">
@@ -14,8 +14,8 @@
 			<li class="tab"><a class="active" href="#tab1">Status</a></li>
 			<li class="tab"><a href="#tab2">Settings</a></li>
 			<li class="tab"><a href="#tab3">Spectrum</a></li>
-			<li class="tab"><a href="#tab4">Tools!</a></li>
-			<li class="tab right"><a href="#tab5">Security</a></li>
+			<li class="tab"><a href="#tab4">Tools !</a></li>
+			<li class="tab"><a href="#tab5">Security</a></li>
 		</ul>
 	</div>
 </nav>
@@ -32,29 +32,30 @@
       						</div>
     					</div>
     					<div class="card-content center">
-    						<p class="card-title activator grey-text text-darken-4">10.10.1.2 / 192.168.1.103</p>
-							<p>00:5E:AC:00:5E:B0 | CAR (router) | "gws2016" | Not encrypted | QoS</p>
+    						<!--<p id="qz-local-nw" class="card-title activator grey-text text-darken-4">10.10.1.2 / 192.168.1.103</p>
+    						<p id="qz-local-sts">00:5E:AC:00:5E:B0 | CAR (router) | "gws2016" | Not encrypted | QoS</p>-->
+    						<p id="qz-local-nw" class="card-title activator grey-text text-darken-4">-</p>
+							<p id="qz-local-sts">-</p>
 						</div>
     					<div class="card-reveal">
     						<span class="card-title grey-text text-darken-4">GWS / UHF<i class="material-icons right">...</i></span>
       						<ul class="collection">
-								<li class="collection-item"><span class="badge">R1 - CH 43</span>Region - Channel</li>
-								<li class="collection-item"><span class="badge">650 MHz - 8 MHz</span>Frequency - Bandwidth</li>
-								<li class="collection-item"><span class="badge">33 dBm - TPC ON</span>Tx Power</li>
-								<li class="collection-item"><span class="badge">12 db - AGC ON</span>Rx Gain</li>
+								<li class="collection-item"><span class="badge" id="qz-local-rgn-ch">R1 - CH 43</span>Region - Channel</li>
+								<li class="collection-item"><span class="badge" id="qz-local-freq-chbw">650 MHz - 8 MHz</span>Frequency - Bandwidth</li>
+								<li class="collection-item"><span class="badge" id="qz-local-txpwr-tpc">33 dBm - TPC ON</span>Tx Power</li>
+								<li class="collection-item"><span class="badge" id="qz-local-rxg-rxagc">12 db - AGC ON</span>Rx Gain</li>
 							</ul>
       					</div>
       					<div class="card-action">
-              				<a href="#modal_local_settings">Settings</a>
-              				<a href="#" id="qz-local-reset">Reset</a>
+              				<a href="#" id="qz-btn-local-reset">Reset</a>
             			</div>
   					</div>
 				</div>
 			</div>
 			<h5>Connected Node(s)</h5>
 			<div class="row">
-				<div class="col s12 section">( Not connected )</div>
-				<!--<div class="col s6">
+				<div id="qz-peers-none" class="col s12 section">( Not connected )</div>
+				<div id="qz-peers" class="col s12">
 					<div class="card">
 						<div class="card-image waves-effect waves-block waves-light">
       						<div class="qz-space">
@@ -62,27 +63,27 @@
 							</div>
     					</div>
     					<div class="card-content center">
-    						<p class="card-title activator grey-text text-darken-4">192.168.1.100 / 192.168.66.1</p>
-							<p>00:5E:AC:00:5E:AE | EAR (router)</p>
+    						<p class="card-title activator grey-text text-darken-4 qz-peer-nw">192.168.1.100 / 192.168.66.1</p>
+							<p class="qz-peer-sts">00:5E:AC:00:5E:AE | EAR (router)</p>
 						</div>
     					<div class="card-reveal">
     						<span class="card-title grey-text text-darken-4">GWS Params<i class="material-icons right">.</i></span>
       						<ul class="collection">
-								<li class="collection-item"><span class="badge">33 dBm</span>Tx Power</li>
-								<li class="collection-item"><span class="badge">12 db</span>Rx Gain</li>
-								<li class="collection-item"><span class="badge">ON</span>AGC</li>
-								<li class="collection-item"><span class="badge blue">OFF</span>TPC</li>
-								<li class="collection-item"><span class="badge grey">OFF</span>ATF</li>
-								<li class="collection-item"><span class="badge grey">OFF</span>TDMA</li>
+								<li class="collection-item"><span class="badge qz-peer-txpwr">33 dBm</span>Tx Power</li>
+								<li class="collection-item"><span class="badge qz-peer-rxg">12 db</span>Rx Gain</li>
+								<li class="collection-item"><span class="badge qz-peer-rxagc">ON</span>AGC</li>
+								<li class="collection-item"><span class="badge blue qz-peer-tpc">OFF</span>TPC</li>
+								<li class="collection-item"><span class="badge grey qz-peer-atf">OFF</span>ATF</li>
+								<li class="collection-item"><span class="badge grey qz-peer-tdma">OFF</span>TDMA</li>
 							</ul>
       					</div>
       					<div class="card-action">
-              				<a href="#modal_local_settings">Monitor</a>
-              				<a href="#">Reset</a>
+              				<a href="#model_proxy_leagal">Monitor</a>
+              				<a href="#" class="qz-peer-reset">Reset</a>
             			</div>
   					</div>
 				</div>
-				<div class="col s6">
+				<div class="col s12">
 					<div class="card">
 						<div class="card-image waves-effect waves-block waves-light">
       						<div class="qz-space">
@@ -105,41 +106,27 @@
 							</ul>
       					</div>
       					<div class="card-action">
-              				<a href="#modal_peer_monitor">Monitor</a>
+              				<a href="#model_proxy_leagal">Monitor</a>
               				<a href="#">Reset</a>
             			</div>
   					</div>
 				</div>
-				-->
+				
 			</div>
 		</div>
 	</div>
 
 	<!-- Modal Structure -->
-	<div id="modal_local_settings" class="modal">
+	<div id="model_proxy_leagal" class="modal">
 		<div class="modal-content">
-			<h4>Adjust</h4>
+			<h4>Leagal Statement</h4>
 			<p>If you are the owner of this device, or with propper authentication(s), then go ahead.</p>
 			<p>If not, this means you are breaking into others' property, in the meanwhile, breaking a "Federal Law". Please click "LEAVE" button and close this page.</p>
 			<p>Thank you</p>
 		</div>
 		<div class="modal-footer">
-			<a id="qz-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-			<button href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</button>
-		</div>
-	</div>
-
-	<!-- Modal Structure -->
-	<div id="modal_peer_monitor" class="modal">
-		<div class="modal-content">
-			<h4>Leagal Statements</h4>
-			<p>If you are the owner of this device, or with propper authentication(s), then go ahead.</p>
-			<p>If not, this means you are breaking into others' property, in the meanwhile, breaking a "Federal Law". Please click "LEAVE" button and close this page.</p>
-			<p>Thank you</p>
-		</div>
-		<div class="modal-footer">
-			<a id="qz-peer-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-			<a href="app.html?k=proxy&c=blue" target="_blank" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+			<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+			<a href="app.html?k=proxy&c=blue" target="_blank" class="modal-action modal-close waves-effect waves-green btn-flat qz-btn-proxy-agree">Agree</a>
 		</div>
 	</div>
 </div>
@@ -154,23 +141,28 @@
 							<div class="col s5">
 								<div class="row">
 				    				<div class="input-field col s12">
-				    					<select class="browser-default">
+				    					<select alt="abb" name="mode" id="qz-set-abb-mode" class="browser-default">
 											<option value="2" selected>Core Adaptive Radio (CAR, WDS)</option>
 											<option value="1">Edge Adaptive Radio (EAR, WDS)</option>
 											<option value="0">Mesh Node (Mesh, WDS)</option>
 										</select>
 				    				</div>
 				    			</div>
+				    			<div class="row">
+									<div class="input-field col s12">
+										<a href="#modal_change_confirm" id="qz-btn-abb-reset" class="btn blue-grey">Reset ABB</a>
+									</div>
+								</div>
 				    		</div>
 				    		<div class="col s6 offset-s1">
 				    			<div class="row">
 									<div class="input-field col s12">
-										<input id="abb-ssid" placeholder="Default is gws2016" class="validate" type="text" value="gws2016" />
-										<label for="abb-ssid">SSID</label>
+										<input alt="abb" name="ssid" id="qz-set-abb-ssid" placeholder="Default is gws2016" class="validate" type="text" value="gws2016" />
+										<label for="qz-set-abb-ssid">SSID</label>
 									</div>
 									<div class="input-field col s12">
-										<input id="abb-passwd" placeholder="6Harmonics or 12345678" class="validate" type="password" value="" />
-										<label for="abb-passwd">Password</label>
+										<input alt="abb" name="passwd" id="qz-set-abb-passwd" placeholder="6Harmonics or 12345678" class="validate" type="text" value="" />
+										<label for="qz-set-abb-passwd">Password</label>
 									</div>
 								</div>
 							</div>
@@ -185,22 +177,27 @@
 								<div class="row">
 									<h6>Tx Chain</h6>
 									<div class="input-field col s5">
-										<input id="gws-tx-tpc" type="checkbox" class="filled-in" checked="checked" />
-	      								<label for="gws-tx-tpc">Tx TPC</label>
+										<input alt="gws" name="tpc" id="qz-set-gws-tpc" type="checkbox" class="filled-in" checked />
+	      								<label for="qz-set-gws-tpc">Tx TPC</label>
 									</div>
 									<div class="input-field col s7">
-										<input id="gws-tx-pwr" placeholder="Unit: dBm" class="validate" type="text" value="33" />
-										<label for="gws-tx-pwr">Tx Power</label>
+										<input alt="gws" name="txpwr" id="qz-set-gws-txpwr" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<label for="qz-set-gws-txpwr">Tx Power</label>
 									</div>
 									<div class="input-field col s12">
-										<input id="gws-tx-ch" placeholder="Unit: dBm" class="validate" type="text" value="33" />
-										<label for="gws-tx-ch">Channel</label>
+										<input alt="gws" name="ch" id="qz-set-gws-ch" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<label for="qz-set-gws-ch">Channel</label>
 									</div>
 									<div class="input-field col s12">
-										<select id="gws-tx-rgn" class="browser-default">
+										<select alt="gws" name="rgn" id="qz-set-gws-rgn" class="browser-default">
 											<option value="0">Region 0</option>
 											<option value="1" selected>Region 1</option>
 										</select>
+									</div>
+								</div>
+				    			<div class="row">
+									<div class="input-field col s12">
+										<a href="#modal_change_confirm" id="qz-btn-gws-reset" class="btn blue-grey">Reset Radio</a>
 									</div>
 								</div>
 							</div>
@@ -208,12 +205,12 @@
 								<div class="row">
 									<h6>Rx Chain</h6>
 									<div class="input-field col s5">
-										<input id="gws-rx-agc" type="checkbox" class="filled-in" checked="checked" />
-	      								<label for="gws-rx-agc">Rx AGC</label>
+										<input alt="gws" name="rxagc" id="qz-set-gws-rxagc" type="checkbox" class="filled-in" checked="checked" />
+	      								<label for="qz-set-gws-rxagc">Rx AGC</label>
 									</div>
 									<div class="input-field col s7">
-										<input id="gws-rx-gain" placeholder="Unit: dBm" class="validate" type="text" value="33" />
-										<label for="gws-rx-gain">Rx Gain</label>
+										<input alt="gws" name="rxg" id="qz-set-gws-rxg" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<label for="qz-set-gws-rxg">Rx Gain</label>
 									</div>
 								</div>
 							</div>
@@ -227,38 +224,43 @@
 							<div class="col s5">
 								<div class="row">
 				    				<div class="input-field col s12">
-				    					<select id="nw-br" class="browser-default">
-											<option value="l2" selected>Run as Access Point ( Layer 2 )</option>
-											<option value="l3">Run as Router ( Layer 3 )</option>
+				    					<select alt="nw" name="br" id="qz-set-nw-type" class="browser-default">
+											<option value="1" selected>Run as Access Point ( Layer 2 )</option>
+											<option value="0">Run as Router ( Layer 3 )</option>
 										</select>
 				    				</div>
 									<div class="input-field col s12">
-										<input id="nw-serv-dhcp" type="checkbox" class="filled-in" />
-	      								<label for="nw-serv-dhcp">Enable DHCP Service on LAN</label>
+										<input alt="serv" name="dhcp" id="qz-set-serv-dhcp" type="checkbox" class="filled-in" />
+	      								<label for="qz-set-serv-dhcp">Enable DHCP Service on LAN</label>
 									</div>
 									<div class="input-field col s12">
-										<input id="nw-serv-fw" type="checkbox" class="filled-in" disabled />
-	      								<label for="nw-serv-fw">Firewall</label>
+										<input alt="serv" name="firewall" id="qz-set-serv-firewall" type="checkbox" class="filled-in" disabled />
+	      								<label for="qz-set-serv-firewall">Firewall</label>
 									</div>
 									<div class="input-field col s12">
-										<input id="nw-serv-qos" type="checkbox" class="filled-in" disabled />
-	      								<label for="nw-tx-tpc">QoS</label>
+										<input alt="serv" name="qos" id="qz-set-serv-qos" type="checkbox" class="filled-in" disabled />
+	      								<label for="qz-set-serv-qos">QoS</label>
 									</div>
 				    			</div>
 				    		</div>
 				    		<div class="col s6 offset-s1">
 				    			<div class="row">
 									<div class="input-field col s12">
-										<input id="nw-wan-ip" placeholder="Default is 10.10.1.1" class="validate" type="text" value="-" />
-										<label for="nw-wan-ip">WAN Address</label>
+										<input alt="nw" name="wanip" id="qz-set-wan-ip" placeholder="Default is 10.10.1.1" class="validate" type="text" value="-" />
+										<label for="qz-set-wan-ip">WAN Address</label>
 									</div>
 									<div class="input-field col s12">
-										<input id="nw-lan-ip" placeholder="Default is 192.168.66.1" class="validate" type="text" value="192.168.66.1" />
-										<label for="nw-lan-ip">LAN Address</label>
+										<input alt="nw" name="lanip" id="qz-set-lan-ip" placeholder="Default is 192.168.66.1" class="validate" type="text" value="192.168.66.1" />
+										<label for="qz-set-lan-ip">LAN Address</label>
 									</div>
 								</div>
 							</div>
 				    	</form>
+		    			<div class="row">
+							<div class="input-field col s12">
+								<a href="#modal_change_confirm" id="qz-btn-nw-reset" class="btn blue-grey">Reset Network</a>
+							</div>
+						</div>
 				    </div>
 				</li>
 				<li>
@@ -269,8 +271,8 @@
 								<div class="row">
 									<h6>Date time</h6>
 									<div class="input-field col s12">
-										<input id="sys-serv-ntpd" type="checkbox" class="filled-in" disabled />
-	      								<label for="sys-serv-ntpd">NTP daemon</label>
+										<input alt="serv" name="ntpd" id="qz-set-serv-ntpd" type="checkbox" class="filled-in" disabled />
+	      								<label for="qz-set-serv-ntpd">NTP daemon</label>
 									</div>
 								</div>
 							</div>
@@ -278,30 +280,40 @@
 								<div class="row">
 									<h6>FCC Regulation</h6>
 									<div class="input-field col s12">
-										<input id="sys-serv-paws" type="checkbox" class="filled-in" disabled />
-	      								<label for="sys-serv-paws">PAWS Database</label>
+										<input alt="serv" name="paws" id="qz-set-serv-paws" type="checkbox" class="filled-in" disabled />
+	      								<label for="qz-set-serv-paws">PAWS Database</label>
 									</div>
 									<div class="input-field col s12">
-										<select id="sys-serv-paws-vendor" class="browser-default">
-											<option value="0">Google in UK</option>
-											<option value="1" selected>Microsoft in US</option>
+										<select alt="serv" name="paws" id="qz-set-serv-paws-vendor" class="browser-default">
+											<option value="uk_google">Google in UK</option>
+											<option value="us_microsoft" selected>Microsoft in US</option>
 										</select>
 									</div>
 								</div>
 							</div>
 						</form>
+		    			<div class="row">
+							<div class="input-field col s12">
+								<a href="#modal_change_confirm" id="qz-btn-sys-reset" class="btn blue-grey">Reboot !</a>
+							</div>
+						</div>
 					</div>
 				</li>
 				<li>
 					<div class="collapsible-header blue-grey lighten-1">Advanced</div>
 					<div class="collapsible-body">
+		    			<div class="row">
+							<div class="input-field col s12">
+								<a href="#modal_change_confirm" id="qz-btn-fw-factory" class="btn blue-grey" disabled>Restore to Factory !</a>
+							</div>
+						</div>
 						<form class="row">
 							<div class="col s6">
 								<div class="row">
 									<h6>Tx / Downlink</h6>
 									<div class="input-field col s12">
-										<input id="adv-serv-atf" type="checkbox" class="filled-in" disabled />
-	      								<label for="adv-serv-atf">ATF</label>
+										<input id="qz-set-serv-atf" type="checkbox" class="filled-in" disabled />
+	      								<label for="qz-set-serv-atf">ATF</label>
 									</div>
 								</div>
 							</div>
@@ -309,8 +321,8 @@
 								<div class="row">
 									<h6>Rx / Uplink</h6>
 									<div class="input-field col s12">
-										<input id="adv-serv-tdma" type="checkbox" class="filled-in" disabled />
-	      								<label for="adv-serv-tdma">TDMA</label>
+										<input id="qz-set-serv-tdma" type="checkbox" class="filled-in" disabled />
+	      								<label for="qz-set-serv-tdma">TDMA</label>
 									</div>
 								</div>
 							</div>
@@ -329,14 +341,16 @@
 	<!-- Modal Structure -->
 	<div id="modal_change_confirm" class="modal">
 		<div class="modal-content">
-			<h4>Are you sure?</h4>
+			<h4>Operation Confirm</h4>
+			<p id="qz-modal-chcfm-items">(Nothing yet)</p>
+			<p id="qz-modal-chcfm-affected">(Nothing affected)</p>
 			<p>If you want to change these item below, click "Confirm"</p>
 			<p>If not, click "Cancel"</p>
 			<p>Thank you</p>
 		</div>
 		<div class="modal-footer">
-			<a id="qz-peer-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-			<button class="modal-action modal-close waves-effect waves-green btn-flat">Confirm</button>
+			<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+			<button id="qz-btn-confirm-change" class="modal-action modal-close waves-effect waves-green btn-flat">Confirm</button>
 		</div>
 	</div>
 </div>
@@ -346,7 +360,8 @@
 			<h5>Spectrum Scan</h5>
 			<form class="row">
 				<div class="input-field col s6">
-					<button class="btn-flat blue-grey">Start</button>
+					<button id="qz-btn-chscan-start" class="btn blue-grey" disabled>Start !</button>
+					<button id="qz-btn-chscan-stop" class="btn blue-grey" disabled>Stop !</button>
 				</div>
 			</div>
 		</form>
@@ -358,15 +373,15 @@
 			<h5>ICMP / Ping</h5>
 			<form class="row">
 				<div class="input-field col s6">
-					<input placeholder="Copy target ip address or MAC from STATUS" class="validate" type="text" value="192.168.1.2" />
+					<input id="qz-tool-target" placeholder="Copy target ip address or MAC from STATUS" class="validate" type="text" value="192.168.1.2" />
 					<label>Target Address or MAC</label>
 				</div>
 				<div class="input-field col s6">
-					<button class="btn-flat blue-grey">Start</button>
+					<button id="qz-btn-icmp-start" class="btn blue-grey" disabled>Start</button>
 				</div>
 				<div class="input-field col s12">
-					<textarea id="tool-icmp-result" class="materialize-textarea"></textarea>
-      				<label for="tool-icmp-result">ICMP / Ping Result</label>
+					<textarea id="qz-tool-icmp-result" class="materialize-textarea"></textarea>
+      				<label for="qz-tool-icmp-result">ICMP / Ping Result</label>
       			</div>
 			</div>
 		</form>
@@ -376,19 +391,19 @@
 			<h5>UDP Flooding Tool</h5>
 			<form class="row">
 				<div class="input-field col s6">
-					<input id="tool-udp-counter" placeholder="Unit: Second" type="text" class="validate" value="300" />
-					<label>Seconds of Flooding</label>
+					<input id="qz-tool-udp-times" placeholder="Unit: Second" type="text" class="validate" value="300" />
+					<label for="qz-tool-udp-times">Seconds of Flooding</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="tool-udp-target" placeholder="Your Target Address / MAC" type="text" class="validate" value="192.168.1.2" />
-					<label>Target</label>
+					<input id="qz-tool-udp-target" placeholder="Your Target Address / MAC" type="text" class="validate" value="192.168.1.2" />
+					<label for="qz-tool-udp-target">Target</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="adv-serv-atf" type="checkbox" class="filled-in" checked="checked" />
-					<label>Auto Start when Timeout</label>
+					<input id="qz-tool-udp-continue" type="checkbox" class="filled-in" checked="checked" disabled />
+					<label for="qz-tool-udp-continue">Auto Start/Continue when Time-up</label>
 				</div>
 				<div class="input-field col s6">
-					<button class="btn-flat blue-grey">Start UDP Flooding</button>
+					<button id="qz-btn-udp-start" class="btn blue-grey" disabled>Start UDP Flooding</button>
 				</div>
 			</form>
 		</div>
@@ -402,19 +417,19 @@
 	    		<form class="col s8 offset-s2">
 	    			<div class="row">
 	    				<div class="input-field col s12">
-	    					<input id="adm-passwd-old" placeholder="Your Current Password" type="password" class="validate">
-	    					<label for="adm-passwd-old">Current Password</label>
+	    					<input id="qz-adm-passwd-old" placeholder="Your Current Password" type="password" class="validate">
+	    					<label for="qz-adm-passwd-old">Current Password</label>
 	    				</div>
 	        			<div class="input-field col s12">
-	          				<input id="adm-passwd-new" placeholder="Your New Password" type="password" class="validate">
-	          				<label for="adm-passwd-new">New Password</label>
+	          				<input id="qz-adm-passwd-new" placeholder="Your New Password" type="password" class="validate">
+	          				<label for="qz-adm-passwd-new">New Password</label>
 	        			</div>
 	        			<div class="input-field col s12">
-	         				<input id="adm-passwd-cfm" placeholder="Re-type Your New Password" type="password" class="validate">
-	          				<label for="adm-passwd-cfm">Confirm Password</label>
+	         				<input id="qz-adm-passwd-confirm" placeholder="Re-type Your New Password" type="password" class="validate">
+	          				<label for="qz-adm-passwd-confirm">Confirm Password</label>
 	        			</div>
 	        			<div class="input-field col s6">
-	        				<button class="btn blue-grey">Change</button>
+	        				<button id="qz-btn-passwd-change" class="btn blue-grey" disabled>Change</button>
 	        			</div>
 	      			</div>
 				</form>

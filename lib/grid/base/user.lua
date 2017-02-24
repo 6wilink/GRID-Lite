@@ -60,7 +60,7 @@ function user.verify.remote()
 	if (_ip and remote) then
 		return (remote == _ip)
 	end
-  --return true -- DEBUG USE ONLY
+  --return true -- TODO: DEBUG USE ONLY
 	return false
 end
 

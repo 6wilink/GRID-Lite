@@ -37,7 +37,14 @@ var store = {
 	},
 
 	// history data
-	history: null
+	history: {
+		local: {
+			snr: [],
+			thrpt: [],
+			txmcs: [],
+			rxmcs: []			
+		}
+	}
 }; // store
 
 // window.location.href
@@ -80,6 +87,12 @@ var store = {
 	$.materialize = {
 		init: function() {
 			$('.modal').modal();
+		},
+		toast: function(msg, timeout) {
+			if (msg) {			
+				var $toastContent = $('<span>'+msg+'</span>');
+				Materialize.toast($toastContent, timeout || 3000);
+			}
 		}
 	}
 }) (jQuery); //$.materialize
@@ -108,21 +121,47 @@ var store = {
 		// init & create a flot chart, return handler
 		chart: {
 			new: function(idx, item) {
-				var flot = $.plot(item, [{ label: 'Thrpt', data: [] }, { label: 'SNR', data: [] }], {
+				var data = [{
+					label: 'Tx MCS', data: [], yaxis: 2
+				},{
+					label: 'Rx MCS', data: [], yaxis: 2
+				},{
+					label: 'Thrpt - Mbps', data: []
+				},{
+					label: 'SNR - db', data: []
+				}];
+				var flot = $.plot(item, data, {
 					series: {
 						//stack: true, // stack lines
-						//lines: { show: true },
 						//points: { show: true },
+						lines: {
+							//show: true,
+							//fill: true,
+							//steps: true,
+						},
 						shadowSize: 0 // remove shadow to draw faster
 					},
 					grid: {
 						//hoverable: true,
 						//clickable: true
 					},
-					xaxis: { show: true, tickDecimals: 0, min: 0, max: 59 },
-					yaxis: { show: true, min: 0, max: 30 },
+					xaxis: {
+						show: true, tickDecimals: 0, min: 0, max: 59
+					},
+					yaxes: [{
+						show: true, min: 0, max: 56,
+						steps: true
+					},{
+						show: true, tickDecimals: 0, min: 0, max: 8,
+						//alignTicksWithAxis: 1, 
+						steps: true,
+						position: 'right'
+					}],
 					// TODO: fix legend size
-					legend: { show: true }
+					legend: {
+						//position: 'sw',
+						show: true
+					}
 				});
 				return flot;
 			},
@@ -133,17 +172,17 @@ var store = {
 			}
 		},
 		// save value to object with max length
-		one: function(data_obj, val, qty_max) {
+		one: function(array, val, qty_max) {
 			var max = qty_max || store.defaultRecordQty;
-			if (data_obj) {
-				if (data_obj.length >= max) {
-					data_obj.shift();
+			if (array) {
+				if (array.length >= max) {
+					array.shift();
 				}
 			} else {
-				data_obj = [];
+				array = [];
 			}
-			data_obj.push(val);
-			return data_obj;
+			array.push(val);
+			return array;
 		},
 		// get color string from color table
 		color: function(idx) {
@@ -156,28 +195,44 @@ var store = {
 		redraw: {
 			local: function() {
 				var i, j;
-				var flot_charts = store.flot.chart;
 
-				var local_chart = flot_charts[0];
+				var fcharts = store.flot.chart;
+				var chart = fcharts[0];
+
 				var snr = store.history.local.snr;
 				var thrpt = store.history.local.thrpt;
-				var flot_d1 = [], flot_d2 = [];
+				var txmcs = store.history.local.txmcs;
+				var rxmcs = store.history.local.rxmcs;
+
+				var fd1 = [], fd2 = [], fd3 = [], fd4 = [];
 
 				for(i = 0, j = snr.length; i < snr.length; i ++) {
-					flot_d1.push([j - i - 1, snr[i]]);
+					fd1.push([j-i-1, snr[i]]);
 				}
 
 				for(i = 0, j = thrpt.length; i < thrpt.length; i ++) {
-					flot_d2.push([j - i - 1, thrpt[i]]);
+					fd2.push([j-i-1, thrpt[i]]);
 				}
 
-				var chart1_combo = [{
-					label: 'Thrpt', data: flot_d1,
+				for(i = 0, j = txmcs.length; i < txmcs.length; i ++) {
+					fd3.push([j-i-1, txmcs[i]]);
+				}
+
+				for(i = 0, j = rxmcs.length; i < rxmcs.length; i ++) {
+					fd4.push([j-i-1, rxmcs[i]]);
+				}
+
+				var cd = [{
+					label: 'Tx MCS', data: fd3, yaxis: 2
 				},{
-					label: 'SNR', data: flot_d2, //yaxis: 2
+					label: 'Rx MCS', data: fd4, yaxis: 2
+				},{
+					label: 'Thrpt', data: fd1,
+				},{
+					label: 'SNR', data: fd2, 
 				}];
 
-				$.flot.chart.update(local_chart, chart1_combo);
+				$.flot.chart.update(chart, cd);
 			},
 			peers: function() {
 

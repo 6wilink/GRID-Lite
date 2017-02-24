@@ -12,6 +12,11 @@
 				return Math.round(Math.random() * (range | 10));
 			}
 		},
+		stop: function() {
+			store.flot.intl.each(function() {
+				if ($(this)) clearInterval($(this));
+			});
+		},
 		// clear chart data when click "CLEAR" button
 		clear: {
 			local: function() {
@@ -71,11 +76,11 @@
 		sync: {
 			local: function() {
 				// TODO: call & handle ajax fails 
-				$.get('/cgi-bin/cache', function(resp) {
-					//
+				$.get('/cgi-bin/get', { k: 'sync' }, function(resp) {
+					console.log('get?k=sync'); console.dir(resp);
 				}, 'json')
 				.fail(function() {
-					console.log("error> local sync failed");
+					console.log('get?k=sync', "error> local sync failed");
 				});
 			},
 			// proxy query
@@ -117,10 +122,12 @@
 						local = history.local;
 					}
 
-					var thrpt, snr;
+					var thrpt, snr, txmcs, rxmcs;
 					//history.push(Math.random()*1024);
 					thrpt = $.flot.one(local.thrpt, Math.round(Math.random() * 26), 60);
-					snr = $.flot.one(local.snr, 20 + Math.round(Math.random() * 5), 60);
+					snr = $.flot.one(local.snr, 35 + Math.round(Math.random() * 5), 60);
+					txmcs = $.flot.one(local.txmcs, 3+Math.round(Math.random()*2), 60);
+					rxmcs = $.flot.one(local.rxmcs, 2+Math.round(Math.random()*2), 60);
 					//var local = store.query.cache.local;
 					//var local_last = store.query.cache_last.local;
 
@@ -133,7 +140,9 @@
 					store.history = {
 						local: {
 							snr: snr,
-							thrpt: thrpt
+							thrpt: thrpt,
+							txmcs: txmcs,
+							rxmcs: rxmcs
 						}
 					}
 				}
@@ -149,7 +158,7 @@
 		// "realtime" update
 		update: function() {
 			// main data sync sequences
-			//$.cache.sync.local();
+			$.cache.sync.local();
 			//$.cache.parse.local();
 			//$.cache.sync.peers();
 			//$.cache.parse.peers();
@@ -194,7 +203,166 @@
 		init: function() {
 			$('#qz-local-reset').click(function() {
 				$.cache.clear.local();
+			});
+			$('#qz-btn-sys-reset').click(function() {
+				$('#qz-modal-chcfm-items').text('Reset Network');
+				$('#qz-modal-chcfm-affected').text('This Operation Will REBOOT This Device');
+				$('#qz-btn-confirm-change').attr('ops', 'reset').attr('val', 'sys');
+			});
+
+			$('#qz-btn-abb-reset').click(function() {
+				$('#qz-modal-chcfm-items').text('Reset Analog Baseband');
+				$('#qz-modal-chcfm-affected').text('This Operation Will Interrupt Your Current Wireless Communication');
+				$('#qz-btn-confirm-change').attr('ops', 'reset').attr('val', 'abb');
+			});
+
+			$('#qz-btn-gws-reset').click(function() {
+				$('#qz-modal-chcfm-items').text('Reset GWS');
+				$('#qz-modal-chcfm-affected').text('This Operation Will Interrupt Your Current Wireless Communication');
+				$('#qz-btn-confirm-change').attr('ops', 'reset').attr('val', 'gws');
+			});
+
+			$('#qz-btn-nw-reset').click(function() {
+				$('#qz-modal-chcfm-items').text('Reset Network');
+				$('#qz-modal-chcfm-affected').text('This Operation Will Interrupt Your Current Network Communication, including Wireless Communication');
+				$('#qz-btn-confirm-change').attr('ops', 'reset').attr('val', 'nw');
+			});
+
+			$('#qz-btn-fw-factory').click(function() {
+				$('#qz-modal-chcfm-items').text('Reset to FACTORY SETTINGS');
+				$('#qz-modal-chcfm-affected').text('This Operation Will RESET This Device to FACTORY SETTINGS !');
+				$('#qz-btn-confirm-change').attr('ops', 'init').attr('val', 'new');
 			})
+
+			$('#qz-btn-confirm-change').click(function() {
+				var ops = $(this).attr('ops');
+				var val = $(this).attr('val');
+				console.log('ops>', ops, val);
+
+				var url = '/cgi-bin/' + ops;
+				if (val) {
+					url += ('?k=' + val);
+				}
+
+				$.ops.ajax(val, url, null);
+			});
+
+			$(':text').keydown(function(e) {
+				if (e.keyCode == 13) {
+					var obj = $(this);
+					obj.qz = {
+						_com: obj.attr('alt'),
+						_item: obj.attr('name'),
+						_val: obj.val()
+					};
+					$.ops.change(obj);
+				}
+			});
+			$(':checkbox').click(function() {
+				var obj = $(this);
+				var current = (obj.attr('checked') == 'checked') || false;
+				if (current) {
+					obj.removeAttr('checked');
+				} else {
+					obj.attr('checked', true);
+				}
+
+				obj.qz = {
+					_com: obj.attr('alt'),
+					_item: obj.attr('name'),
+					_val: (obj.attr('checked') == 'checked') ? 'on' : 'off'
+				};
+
+				if (obj.qz._com != 'undefined' && obj.qz._item != 'undefined') {
+					$.ops.change(obj);
+				}
+			});
+			$('select').change(function() {
+				var obj = $(this);
+				obj.qz = {
+					_com: obj.attr('alt'),
+					_item: obj.attr('name'),
+					_val: obj.val()
+				};
+				$.ops.change(obj);
+			})
+		},
+		change: function(obj) {
+			if (obj.qz._val != '' && obj.qz._val != '-') {
+				console.log('enter >', obj.qz._com, obj.qz._item, obj.qz._val);
+				
+				// prevent multi-submit
+				obj.attr('disabled', true);
+
+				$.ops.ajax('Save', '/cgi-bin/set', {
+					com: obj.qz._com, item: obj.qz._item, val: obj.qz._val
+				});
+
+				obj.attr('disabled', false);
+			}
+		},
+		ajax: function(ops, url, params) {
+			var prompt = '';
+			$.get(url, params, function(resp) {
+				switch(ops) {
+				case 'abb':
+					prompt = 'ABB has been RESET';
+					break;
+				case 'gws':
+					prompt = 'GWS has been RESET';
+					break;
+				case 'nw':
+					prompt = 'Network has been RESET';
+					break;
+				case 'sys':
+					prompt = 'Device is REBOOTING';
+					break;
+				default:
+					prompt = 'Operation completed';
+					break;
+				}
+				console.log(prompt);
+
+				$.materialize.toast(prompt);
+
+				// reset nw: reload
+				// reset sys: close
+				$.ops.ajax_done(ops);
+			})
+			.fail(function(resp) {
+				switch(ops) {
+				case 'nw':
+					prompt = 'Network has been RESET';
+					break;
+				case 'sys':
+					prompt = 'Device is REBOOTING';
+					break;
+				default:
+					prompt = 'Operation failed > ' + ops;
+					break;
+				}
+				console.log(prompt);
+				
+				$.materialize.toast(prompt);
+
+				// reset nw: reload
+				// reset sys: close
+				$.ops.ajax_done(ops);
+			});
+		},
+		ajax_done: function(ops) {
+			switch(ops) {
+			case 'nw':
+				$.materialize.toast('Reload this page due to Device Network is RESET');
+				setTimeout("$.url.reload()", 3000);
+				break;
+			case 'sys':
+				$.materialize.toast('Closing this page due to Device is REBOOTING', 5000);
+				setTimeout("$.url.goto('/', 'Reboot')", 5000);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }) (jQuery); // $.ops
@@ -233,7 +401,7 @@
 			default:
 				console.log("App Running in DEMO mode.");
 				$.app.DEMO();
-				store.flot.intl.DEMO = setInterval("$.app.DEMO()", 2000);
+				store.flot.intl.DEMO = setInterval("$.app.DEMO()", 800);
 				break;
 			}
 		}
