@@ -1,9 +1,9 @@
 
 
-sys = {}
+SYS = {}
 
-sys.ops = {}
-function sys.ops.Update()
+SYS.ops = {}
+function SYS.ops.Update()
 	local _sys = {}
 
 	_sys.atf = -1
@@ -15,4 +15,4 @@ function sys.ops.Update()
 	return _sys
 end
 
-return sys
+return SYS

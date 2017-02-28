@@ -13,6 +13,7 @@ var store = {
 
 	// flot related data
 	flot: {
+		fields: 'all',
 		// setInterval handlers
 		intl: {
 			local: null,
@@ -31,18 +32,16 @@ var store = {
 	},
 
 	// every ajax query result
-	query: {
-		cache: null,
-		cache_last: null
-	},
+	query: null,
+	query_last: null,
 
 	// history data
 	history: {
 		local: {
 			snr: [],
-			thrpt: [],
-			txmcs: [],
-			rxmcs: []			
+			ul_thrpt: [],
+			dl_thrpt: [],
+			br: []
 		}
 	}
 }; // store
@@ -122,24 +121,27 @@ var store = {
 		chart: {
 			new: function(idx, item) {
 				var data = [{
-					label: 'Tx MCS', data: [], yaxis: 2
-				},{
-					label: 'Rx MCS', data: [], yaxis: 2
-				},{
-					label: 'Thrpt - Mbps', data: []
+					label: 'Bitrate - Mbit/s', data: []
 				},{
 					label: 'SNR - db', data: []
+				},{
+					label: 'DL - Mbps', data: []
+				},{
+					label: 'UL - Mbps', data: []
 				}];
 				var flot = $.plot(item, data, {
 					series: {
 						//stack: true, // stack lines
 						//points: { show: true },
 						lines: {
-							//show: true,
+							show: true,
 							//fill: true,
 							//steps: true,
 						},
 						shadowSize: 0 // remove shadow to draw faster
+					},
+					crosshair: {
+						mode: 'xy'
 					},
 					grid: {
 						//hoverable: true,
@@ -149,14 +151,14 @@ var store = {
 						show: true, tickDecimals: 0, min: 0, max: 59
 					},
 					yaxes: [{
-						show: true, min: 0, max: 56,
+						show: true, min: 0, max: 32,
 						steps: true
-					},{
+					},/*{
 						show: true, tickDecimals: 0, min: 0, max: 8,
 						//alignTicksWithAxis: 1, 
 						steps: true,
 						position: 'right'
-					}],
+					}*/],
 					// TODO: fix legend size
 					legend: {
 						//position: 'sw',
@@ -200,37 +202,68 @@ var store = {
 				var chart = fcharts[0];
 
 				var snr = store.history.local.snr;
-				var thrpt = store.history.local.thrpt;
-				var txmcs = store.history.local.txmcs;
-				var rxmcs = store.history.local.rxmcs;
+				var dl_thrpt = store.history.local.dl_thrpt;
+				var ul_thrpt = store.history.local.ul_thrpt;
+				var br = store.history.local.br;
 
-				var fd1 = [], fd2 = [], fd3 = [], fd4 = [];
+				var fd_snr = [], fd_dl_thrpt = [], fd_ul_thrpt = [], fd_br = [];
 
-				for(i = 0, j = snr.length; i < snr.length; i ++) {
-					fd1.push([j-i-1, snr[i]]);
+				if (snr && snr.length > 0) {
+					for(i = 0, j = snr.length; i < snr.length; i ++) {
+						var val = snr[i];
+						if (val >= 0) {
+							fd_snr.push([j-i-1, val]);
+						} else {
+							fd_snr.push(null);
+						}
+					}
 				}
 
-				for(i = 0, j = thrpt.length; i < thrpt.length; i ++) {
-					fd2.push([j-i-1, thrpt[i]]);
+				if (dl_thrpt && dl_thrpt.length > 0) {
+					for(i = 0, j = dl_thrpt.length; i < dl_thrpt.length; i ++) {
+						fd_dl_thrpt.push([j-i-1, dl_thrpt[i]]);
+					}
 				}
 
-				for(i = 0, j = txmcs.length; i < txmcs.length; i ++) {
-					fd3.push([j-i-1, txmcs[i]]);
+				if (ul_thrpt && ul_thrpt.length > 0) {
+					for(i = 0, j = ul_thrpt.length; i < ul_thrpt.length; i ++) {
+						fd_ul_thrpt.push([j-i-1, ul_thrpt[i]]);
+					}
 				}
 
-				for(i = 0, j = rxmcs.length; i < rxmcs.length; i ++) {
-					fd4.push([j-i-1, rxmcs[i]]);
+				if (br && br.length > 0) {
+					for(i = 0, j = br.length; i < br.length; i ++) {
+						var val = br[i];
+						if (val >= 0) {
+							fd_br.push([j-i-1, val]);
+						} else {
+							fd_br.push(null);
+						}
+					}
 				}
 
-				var cd = [{
-					label: 'Tx MCS', data: fd3, yaxis: 2
-				},{
-					label: 'Rx MCS', data: fd4, yaxis: 2
-				},{
-					label: 'Thrpt', data: fd1,
-				},{
-					label: 'SNR', data: fd2, 
-				}];
+				// custom chart lines
+				var cd;
+				var _fields = store.flot.fields;
+				if (_fields == 'nw') {
+					cd = [{ label: 'Bitrate', data: null },
+						{ label: 'SNR', data: null },
+						{ label: 'DL Thrpt', data: fd_dl_thrpt },
+						{ label: 'UL Thrpt', data: fd_ul_thrpt }
+					];
+				} else if (_fields == 'abb') {
+					cd = [{ label: 'Bitrate', data: fd_br },
+						{ label: 'SNR', data: fd_snr },
+						{ label: 'DL Thrpt', data: null },
+						{ label: 'UL Thrpt', data: null }
+					];
+				} else {
+					cd = [{ label: 'Bitrate', data: fd_br },
+						{ label: 'SNR', data: fd_snr },
+						{ label: 'DL Thrpt', data: fd_dl_thrpt },
+						{ label: 'UL Thrpt', data: fd_ul_thrpt }
+					];
+				}
 
 				$.flot.chart.update(chart, cd);
 			},
@@ -238,10 +271,9 @@ var store = {
 
 			}
 		},
-		// parse "store.query.cache", save to "store.history"
+		// parse store.history"
 		// redraw flot charts when done
 		sync: function() {
-			console.log("$.Flot.sync()");
 			$.flot.redraw.local();
 			$.flot.redraw.peers();
 		}

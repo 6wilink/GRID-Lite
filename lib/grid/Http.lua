@@ -1,3 +1,6 @@
+-- Handler HTTP response
+-- by Qige @ 2017.02.23
+
 
 Http = {}
 

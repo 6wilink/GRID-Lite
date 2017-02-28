@@ -6,10 +6,10 @@ require 'grid.base.user'
 require 'grid.base.fmt'
 require 'grid.Http'
 
-require 'grid.abb'
-require 'grid.gws'
-require 'grid.nw'
-require 'grid.sys'
+require 'grid.ABB'
+require 'grid.GWS'
+require 'grid.NW'
+require 'grid.SYS'
 
 
 Get = {}
@@ -18,7 +18,7 @@ function Get.Run()
 	cgi.save.init()
 
 	local _result = ''
-	if (user.verify.remote()) then
+	--if (user.verify.remote()) then
 		local _get = cgi.data._get
 		local _k = fmt.http.find('k', _get)
 		_k = 'sync'
@@ -31,9 +31,9 @@ function Get.Run()
 			_result = string.format('unknown (%s)', _k)
 		end
 		Http.job.Reply(_result)
-	else
-		Http.data.Error('nobody');
-	end
+	--else
+		--Http.data.Error('nobody');
+	--end
 end
 
 
@@ -68,7 +68,7 @@ Get.ops = {}
 -- nw.bridge, nw.wan_ip, nw.wan_txb, nw.wan_rxb, nw.lan_ip, nw.lan_txb, nw.lan_rxb
 -- sys.atf, sys.tdma, sys.dhcp, sys.firewall, sys.qos
 function Get.ops.all()
-	local _fmt = '{"abb": [%s], "gws": [%s], "nw": [%s], "sys": [%s], "ts": %d}'
+	local _fmt = '{ "abb": %s, "gws": %s, "nw": %s, "sys": %s, "ts": %d }'
 
 	local _abb = Get.ops.abb()
 	local _gws = Get.ops.gws()
@@ -83,29 +83,29 @@ end
 
 
 function Get.ops.abb()
-	local _fmt = '{"bssid": "%s", "ssid": "%s", "mode": "%s", "key": "%s", "snr": %d, "noise": %d, "txmcs": %d, "rxmcs": %d }'
-	local _abb = abb.ops.Update()
-	_result = string.format(_fmt, _abb.bssid, _abb.ssid, _abb.mode, _abb.key, _abb.snr, _abb.noise, _abb.txmcs, _abb.rxmcs)
+	local _fmt = '{"bssid": "%s", "ssid": "%s", "mode": "%s", "encrypt": "%s", "signal": %d, "noise": %d, "br": %.1f, "peers": %s }'
+	local _abb = ABB.ops.Update()
+	_result = string.format(_fmt, _abb.bssid, _abb.ssid, _abb.mode, _abb.encrypt, _abb.signal, _abb.noise, _abb.br, _abb.peers)
 	return _result
 end
 
 function Get.ops.gws()
 	local _fmt = '{"rgn": %d, "ch": %d, "rxg": %d, "txpwr": %d, "tpc": 0, "agc": 1 }'
-	local _gws = gws.ops.Update()
+	local _gws = GWS.ops.Update()
 	_result = string.format(_fmt, _gws.rgn, _gws.ch, _gws.rxg, _gws.txpwr, _gws.tpc, _gws.agc)
 	return _result
 end
 
 function Get.ops.nw()
 	local _fmt = '{"bridge": %d, "wan_ip": "%s", "wan_txb": %d, "wan_rxb": %d, "lan_ip": "%s", "lan_txb": %d, "lan_rxb": %d }'
-	local _nw = nw.ops.Update()
+	local _nw = NW.ops.Update()
 	_result = string.format(_fmt, _nw.bridge, _nw.wan_ip, _nw.wan_rxb, _nw.wan_txb, _nw.lan_ip, _nw.lan_rxb, _nw.lan_txb)
 	return _result
 end
 
 function Get.ops.sys()
 	local _fmt = '{"atf": %d, "tdma": %d, "dhcp": %d, "firewall": %d, "qos": %d }'
-	local _sys = sys.ops.Update()
+	local _sys = SYS.ops.Update()
 	_result = string.format(_fmt, _sys.atf, _sys.tdma, _sys.dhcp, _sys.firewall, _sys.qos)
 	return _result
 end

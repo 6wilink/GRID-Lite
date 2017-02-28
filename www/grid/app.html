@@ -32,22 +32,23 @@
       						</div>
     					</div>
     					<div class="card-content center">
-    						<!--<p id="qz-local-nw" class="card-title activator grey-text text-darken-4">10.10.1.2 / 192.168.1.103</p>
-    						<p id="qz-local-sts">00:5E:AC:00:5E:B0 | CAR (router) | "gws2016" | Not encrypted | QoS</p>-->
-    						<p id="qz-local-nw" class="card-title activator grey-text text-darken-4">-</p>
-							<p id="qz-local-sts">-</p>
+    						<p id="qz-local-nw" class="card-title activator grey-text text-darken-4">...</p>
+							<p id="qz-local-sts">...</p>
 						</div>
     					<div class="card-reveal">
     						<span class="card-title grey-text text-darken-4">GWS / UHF<i class="material-icons right">...</i></span>
       						<ul class="collection">
-								<li class="collection-item"><span class="badge" id="qz-local-rgn-ch">R1 - CH 43</span>Region - Channel</li>
-								<li class="collection-item"><span class="badge" id="qz-local-freq-chbw">650 MHz - 8 MHz</span>Frequency - Bandwidth</li>
-								<li class="collection-item"><span class="badge" id="qz-local-txpwr-tpc">33 dBm - TPC ON</span>Tx Power</li>
-								<li class="collection-item"><span class="badge" id="qz-local-rxg-rxagc">12 db - AGC ON</span>Rx Gain</li>
+								<li class="collection-item"><span class="badge" id="qz-local-rgn-ch">...</span>Region - Channel</li>
+								<li class="collection-item"><span class="badge" id="qz-local-freq-chbw">...</span>Frequency - Bandwidth</li>
+								<li class="collection-item"><span class="badge" id="qz-local-txpwr-tpc">...</span>Tx Power</li>
+								<li class="collection-item"><span class="badge" id="qz-local-rxg-rxagc">...</span>Rx Gain</li>
 							</ul>
       					</div>
       					<div class="card-action">
-              				<a href="#" id="qz-btn-local-reset">Reset</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="all">All</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="nw">Network</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="abb">ABB</a>
+              				<a href="/cgi-bin/bye" id="qz-btn-logout" class="right">Log Out</a>
             			</div>
   					</div>
 				</div>
@@ -55,7 +56,7 @@
 			<h5>Connected Node(s)</h5>
 			<div class="row">
 				<div id="qz-peers-none" class="col s12 section">( Not connected )</div>
-				<div id="qz-peers" class="col s12">
+				<!--<div id="qz-peers" class="col s12">
 					<div class="card">
 						<div class="card-image waves-effect waves-block waves-light">
       						<div class="qz-space">
@@ -110,7 +111,7 @@
               				<a href="#">Reset</a>
             			</div>
   					</div>
-				</div>
+				</div>-->
 				
 			</div>
 		</div>
@@ -447,6 +448,7 @@
 <script type="text/javascript" src="res/flot/jquery.flot.min.js"></script>
 <script type="text/javascript" src="res/flot/jquery.flot.resize.min.js"></script>
 <script type="text/javascript" src="res/flot/jquery.flot.stack.min.js"></script>
+<script type="text/javascript" src="res/flot/jquery.flot.crosshair.min.js"></script>
 <script type="text/javascript" src="res/app.com.js"></script>
 <script type="text/javascript" src="res/app.js"></script>
 <!-- Design & Powered by Qige from 6Harmonics/6WiLink -->
