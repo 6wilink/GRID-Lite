@@ -31,7 +31,10 @@
 						signal: -199,
 						noise: -198,
 						br: -1,
-						chbw: -1
+						chbw: -1,
+						mode: '(unknown)',
+						ssid: '(unknown)',
+						encrypt: '(unknown)'
 					}
 				};
 				return data;
