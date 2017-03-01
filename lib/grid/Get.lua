@@ -1,5 +1,5 @@
--- Data Collector
--- by Qige @ 2017.02.23
+-- 6Harmonics Qige @ K2E 7S4
+-- 2017.03.01
 
 require 'grid.base.cgi'
 require 'grid.base.user'
@@ -39,24 +39,6 @@ end
 
 -- #define
 Get.conf = {}
-Get.conf.path_ok = '/grid/app.html?k=realtime'
-Get.conf.path_error = '/grid/'
-Get.conf.path_exit = '/grid/'
-
-Get.cmd = {}
-Get.cmd.fmt_reply = '{"result":"%s", "cmd":"%s"}'
-Get.cmd.abb = {}
-Get.cmd.abb.reGet = 'wifi'
-Get.cmd.abb.ssid = 'uci Get wireless.@wifi-iface[0].ssid="%s"; uci commit wireless; wifi'
-
-Get.cmd.nw = '/etc/init.d/network restart'
-Get.cmd.sys = 'reboot'
-
-Get.cmd.gws = {}
-Get.cmd.gws.reGet = '/etc/init.d/gws_radio restart'
-Get.cmd.gws.rgn = 'uci Get gws_radio.v1.region=%s; uci commit gws_radio'
-Get.cmd.gws.rxg = 'uci Get gws_radio.v1.rxgain=%s; uci commit gws_radio'
-Get.cmd.gws.ch = 'uci Get gws_radio.v1.channel=%s; uci commit gws_radio'
 
 
 Get.ops = {}
@@ -78,35 +60,29 @@ function Get.ops.all()
 
 	local _result = string.format(_fmt, _abb, _gws, _nw, _sys, _ts)
 
+	--io.write('Get.ops.all() ' .. _result .. '\n')
 	return _result
 end
 
 
 function Get.ops.abb()
-	local _fmt = '{"bssid": "%s", "ssid": "%s", "mode": "%s", "encrypt": "%s", "signal": %d, "noise": %d, "br": %.1f, "peers": %s }'
-	local _abb = ABB.ops.Update()
-	_result = string.format(_fmt, _abb.bssid, _abb.ssid, _abb.mode, _abb.encrypt, _abb.signal, _abb.noise, _abb.br, _abb.peers)
+	local _result = ABB.ops.Update()
 	return _result
 end
 
 function Get.ops.gws()
-	local _fmt = '{"rgn": %d, "ch": %d, "rxg": %d, "txpwr": %d, "tpc": 0, "agc": 1 }'
-	local _gws = GWS.ops.Update()
-	_result = string.format(_fmt, _gws.rgn, _gws.ch, _gws.rxg, _gws.txpwr, _gws.tpc, _gws.agc)
+	local _result = GWS.ops.Update()
 	return _result
 end
 
 function Get.ops.nw()
-	local _fmt = '{"bridge": %d, "wan_ip": "%s", "wan_txb": %d, "wan_rxb": %d, "lan_ip": "%s", "lan_txb": %d, "lan_rxb": %d }'
-	local _nw = NW.ops.Update()
-	_result = string.format(_fmt, _nw.bridge, _nw.wan_ip, _nw.wan_rxb, _nw.wan_txb, _nw.lan_ip, _nw.lan_rxb, _nw.lan_txb)
+	local _result = NW.ops.Update()
+	--io.write('Get.ops.nw() ' .. _result .. '\n')
 	return _result
 end
 
 function Get.ops.sys()
-	local _fmt = '{"atf": %d, "tdma": %d, "dhcp": %d, "firewall": %d, "qos": %d }'
-	local _sys = SYS.ops.Update()
-	_result = string.format(_fmt, _sys.atf, _sys.tdma, _sys.dhcp, _sys.firewall, _sys.qos)
+	local _result = SYS.ops.Update()
 	return _result
 end
 

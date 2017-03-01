@@ -17,16 +17,19 @@ function fmt.http.find(key, data)
   return nil
 end
 
+fmt.cli = {}
+-- @from http://zhaiku.blog.51cto.com/2489043/1163077
+function fmt.cli.parse(s, p)
+  local rt= {}
+    string.gsub(s, '[^'..p..']+', function(w) table.insert(rt, w) end )
+  return rt
+end
+
 -- string split()
 -- @return table/nil
 fmt.str = {}
 function fmt.str.split(delim, str)
-  local _result = nil
-  if (delim and str) then
-    _result = {}
-    -- todo: split string with delim
-  end
-  return _result
+  return nil
 end
 
 

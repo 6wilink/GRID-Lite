@@ -13,6 +13,14 @@ ABB.cache.iw = nil
 ABB.cache._abb = nil
 ABB.cache._ts = nil
 
+function ABB.cache.mode()
+	if (ABB.cache._abb) then
+		return ABB.cache._abb.mode
+	else
+		return nil
+	end
+end
+
 
 -- TODO: add chanbw, dev, api to .conf file
 ABB.conf = {}
@@ -40,17 +48,24 @@ end
 -- return ABB base information
 function ABB.ops.Update()
 	ABB.ops.init()
-	local _abb
+
+	local _result
+	local _data
 
 	local ts_gap_bar = ABB.conf.intl or 2
 	local ts = os.time()
 	local _ts = ABB.cache._ts or 0
 	if (ts - _ts > ts_gap_bar) then
-		_abb = ABB.ops.read()
+		_data = ABB.ops.read()
 	else
-		_abb = ABB.cache._abb
+		_data = ABB.cache._abb
 	end
-	return _abb
+
+
+	local _fmt = '{"bssid": "%s", "ssid": "%s", "mode": "%s", "encrypt": "%s", "signal": %d, "noise": %d, "br": %.1f, "peers": %s }'
+	_result = string.format(_fmt, _data.bssid, _data.ssid, _data.mode, _data.encrypt, _data.signal, _data.noise, _data.br, _data.peers)
+
+	return _result
 end
 
 
@@ -72,14 +87,14 @@ function ABB.ops.read()
 
 	-- get & save
 	_abb.bssid = bssid or '(unknown)'
-	_abb.signal = signal or noise
+	_abb.signal = signal or noise or -101
 	_abb.noise = noise or -101
 	_abb.br = br or 0
 	_abb.chbw = _bw
 	_abb.mode =  ABB.ops.mode(mode)
 	_abb.ssid = ssid or '(unknown)'
 	_abb.encrypt = enc and enc.description or ''
-	_abb.peers = 'null'
+	_abb.peers = '{}'
 
 	ABB.cache._abb = _abb
 	ABB.cache._ts = os.time()

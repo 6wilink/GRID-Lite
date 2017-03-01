@@ -3,6 +3,24 @@
 // data controller
 (function($) {
 	$.cache = {
+		fmt: {
+			float: function(num) {
+				return Math.floor(num * 10) / 10;
+			}
+		},
+		calc: {
+			rxbtxb: function(bytes, bytes_last) {
+				var thrpt = 0;
+				if (bytes > bytes_last) {
+					var ts_gap = 1; // TODO: calc ts gap
+					var bits = (bytes - bytes_last);
+					var mbits = bits * 8 / 1024 / 1024;
+					thrpt = mbits / ts_gap;
+				}
+				thrpt = $.cache.fmt.float(thrpt);
+				return thrpt;
+			}
+		},
 		// ...
 		init: function() {
 		},
@@ -44,9 +62,9 @@
 				var data = {
 					abb: {
 						bssid: '01:35:11:05:35:56',
-						signal: -107 + 15 + $.cache.RANDOM.int(10),
-						noise: -107 + $.cache.RANDOM.int(10),
-						br: $.cache.RANDOM.int(26),
+						signal: -107 + 40 + $.cache.RANDOM.int(5),
+						noise: -107 + $.cache.RANDOM.int(2),
+						br: 22 + $.cache.RANDOM.int(2),
 						chbw: 8,
 						mode: 'CAR',
 						ssid: 'gws2017',
@@ -56,11 +74,11 @@
 						bridge: 1,
 						wmac: '13:51:10:53:55:6'+idx,					
 						wan_ip: '',
-						wan_txb: $.cache.RANDOM.int(26*1024*1024),
-						wan_rxb: $.cache.RANDOM.int(26*1024*1024),
 						lan_ip: '192.168.1.21'+idx,
-						lan_txb: $.cache.RANDOM.int(26*1024*1024),
-						lan_rxb: $.cache.RANDOM.int(26*1024*1024)
+						eth_txb: $.cache.RANDOM.int(2*1024*1024),
+						eth_rxb: $.cache.RANDOM.int(2*1024*1024),
+						wls_txb: $.cache.RANDOM.int(1*1024*1024),
+						wls_rxb: $.cache.RANDOM.int(1*1024*1024)
 					},
 					gws: {
 						rgn: 1,
@@ -123,7 +141,7 @@
 			// TODO: parse data with DEMO
 			local: { // 2017.02.28
 				status: function() { // 2017.02.28
-					console.log("$.cache.parse.local()", store.query);
+					//console.log("$.cache.parse.local()", store.query);
 					var query = (store && "query" in store) ? store.query_last : null;
 					var local = (query && "local" in query) ? query.local : null;
 
@@ -151,8 +169,8 @@
 					}
 					if (nw) {
 						var text = '';
-						if (nw.lan_ip)		text += nw.lan_ip;
-						if (nw.wan_ip) 		text += ' / '+nw.wan_ip;
+						if (nw.lan_ip && nw.lan_ip != '-') text += nw.lan_ip;
+						if (nw.wan_ip && nw.wan_ip != '-') text += ' / '+nw.wan_ip;
 						$('#qz-local-nw').text(text);
 
 						text = abb_text;
@@ -163,15 +181,15 @@
 						}
 
 						if (sys) {						
-							if (sys.qos)		text += ' | QoS';
-							if (sys.firewall)	text += ' | Firweall'
-							if (sys.tdma)		text += ' | TDMA';
-							if (sys.atf)		text += ' | ATF';
+							if (sys.qos > 0)		text += ' | QoS';
+							if (sys.firewall > 0)	text += ' | Firweall'
+							if (sys.tdma > 0)		text += ' | TDMA';
+							if (sys.atf > 0)		text += ' | ATF';
 						}
 						$('#qz-local-sts').text(text);
 					}
 				},
-				chart: function() { // 2017.02.28
+				chart: function() { // 2017.03.01
 					// set store.history = history;
 					var _local_history;
 
@@ -194,63 +212,78 @@
 						// save txmcs, rxmcs
 						var _snr = [], _br = [];
 						// calc & save snr, bitrate
-						var _ul_thrpt = [], _dl_thrpt = [];
+						var _eth_thrpt = [], _wls_thrpt = [];
 
 						// calc & save snr
 						if ("abb" in local) {						
-							var _ = 0;
+							var snr = 0, signal = -199, noise = -198;
 							if ("signal" in local.abb && "noise" in local.abb) {
-								_ = local.abb.signal - local.abb.noise;
+								signal = local.abb.signal;
+								noise = local.abb.noise;
+								snr = signal - noise;
 							} else {
-								_ = 0;
+								snr = 0;
 							}
 
 							// push
 							if ("snr" in local_history) {
-								_snr = $.flot.one(local_history.snr, _, 60);
+								_snr = $.flot.one(local_history.snr, snr, 60);
 							} else {
-								_snr.push(_);
+								_snr.push(snr);
 							}
 
 							// save txmcs
-							_ = 0;
+							var br = 0;
 							if ("br" in local.abb) {
-								_ = local.abb.br;
+								br = local.abb.br;
 							}
 							if ("br" in local_history) {
-								_br = $.flot.one(local_history.br, _, 60);
+								_br = $.flot.one(local_history.br, br, 60);
 							} else {
-								_br.push(_);
+								_br.push(br);
 							}
+
+							console.log('realtime> Signal/noise/SNR/Bitrate:', 
+								signal, noise, snr, br);
 						}
 
 						// save uplink
-						if ("nw" in local) {						
-							var ul_thprt = 0, dl_thrpt = 0, last_lan_txb = 0, last_lan_rxb = 0;
-							if (("lan_txb" in local.nw) && local_last && ("nw" in local_last)) {
-								if ("lan_txb" in local_last.nw) {
-									ul_thprt = local.nw.lan_txb - local_last.nw.lan_txb;
-									ul_thprt = Math.round(ul_thprt / (1024*1024));
-									if (ul_thprt < 0)	ul_thprt = 0;
+						if ("nw" in local) {
+							var eth_thrpt = 0, wls_thrpt = 0;
+							if (("eth_txb" in local.nw) && local_last && ("nw" in local_last)) {
+								if ("eth_txb" in local_last.nw) {
+									//console.log('dbg> 0. local/last eth_txb:', local.nw.eth_txb, local_last.nw.eth_txb);
+									eth_thrpt = $.cache.calc.rxbtxb(local.nw.eth_txb, local_last.nw.eth_txb);
 								}
-
+								//console.log('dbg> 1. eth Thrpt:', eth_thrpt);
 								// save downlink
-								if ("lan_rxb" in local_last.nw) {
-									dl_thrpt = local.nw.lan_txb - local_last.nw.lan_rxb;
-									dl_thrpt = Math.round(dl_thrpt / (1024*1024));
-									if (dl_thrpt < 0)	dl_thrpt = 0;
+								if ("eth_rxb" in local_last.nw) {
+									eth_thrpt += $.cache.calc.rxbtxb(local.nw.eth_rxb, local_last.nw.eth_rxb);
+								}
+								//console.log('dbg> 2. eth Thrpt:', eth_thrpt);
+							}
+							if (("wls_txb" in local.nw) && local_last && ("nw" in local_last)) {
+								if ("wls_txb" in local_last.nw) {
+									wls_thrpt = $.cache.calc.rxbtxb(local.nw.wls_txb, local_last.nw.wls_txb);
+								}
+								// save downlink
+								if ("wls_rxb" in local_last.nw) {
+									wls_thrpt += $.cache.calc.rxbtxb(local.nw.wls_rxb, local_last.nw.wls_rxb);
 								}
 							}
 
-							if ("ul_thrpt" in local_history) {
-								_ul_thrpt = $.flot.one(local_history.ul_thrpt, ul_thprt, 60);
+							eth_thrpt = $.cache.fmt.float(eth_thrpt); 
+							wls_thrpt = $.cache.fmt.float(wls_thrpt); 
+							console.log('realtime> eth/wls Thrpt:', eth_thrpt, wls_thrpt);
+							if ("eth_thrpt" in local_history) {
+								_eth_thrpt = $.flot.one(local_history.eth_thrpt, eth_thrpt, 60);
 							} else {
-								_ul_thrpt.push(ul_thprt);
+								_eth_thrpt.push(eth_thrpt);
 							}
-							if ("dl_thrpt" in local_history) {
-								_dl_thrpt = $.flot.one(local_history.dl_thrpt, dl_thrpt, 60);
+							if ("wls_thrpt" in local_history) {
+								_wls_thrpt = $.flot.one(local_history.wls_thrpt, wls_thrpt, 60);
 							} else {
-								_dl_thrpt.push(dl_thrpt);
+								_wls_thrpt.push(wls_thrpt);
 							}
 						}
 
@@ -259,16 +292,16 @@
 						_local_history = {
 							snr: _snr,
 							br: _br,
-							ul_thrpt: _ul_thrpt,
-							dl_thrpt: _dl_thrpt,
+							eth_thrpt: _eth_thrpt,
+							wls_thrpt: _wls_thrpt,
 						};
 
 					} else {
 						_local_history = {
 							snr: null,
 							br: null,
-							ul_thprt: null,
-							dl_thrpt: null
+							eth_thprt: null,
+							wls_thrpt: null
 						}
 					}
 
@@ -524,7 +557,7 @@
 
 				// release submit
 				if (obj) $.ui.obj.enable(obj);
-				console.log(' disable:', obj.attr('disabled'));
+				//console.log(' disable:', obj.attr('disabled'));
 			});
 		},
 		ajax_done: function(ops) { // 2017.02.28
