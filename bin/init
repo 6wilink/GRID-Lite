@@ -1,0 +1,5 @@
+#!/usr/bin/lua
+
+require "grid.Reset"
+Reset.InitFactory()
+

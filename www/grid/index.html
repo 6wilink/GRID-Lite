@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="res/google/icon.css" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="res/materialize/css/materialize.min.css"  media="screen,projection" />
+	<link type="text/css" rel="stylesheet" href="res/app.css" media="screen,projection" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>GRID lite from 6Harmonics</title>
+</head>
+<body class="blue-grey">
+<header>
+	<nav class="blue-grey">
+		<div class="container">
+		<div class="nav-wrapper">
+			<a href="http://www.6harmonics.com/" class="brand-logo valign-wrapper" target="_blank">
+				<img alt="6Harmonics" src="res/6Harmonics-Logo-Large.png" class="qz-img-logo circle" />
+			</a>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+			<li><a href="mailto:qige@6harmonics.com?subject=Login%20GRID%20Lite">Question ?</a></li>
+		</ul>
+		</div></div>
+	</nav>
+</header>
+<main class="section blue-grey lighten-5 valign-wrapper">
+	<div class="row container valign">
+		<form id="qz-form-login" class="col s8 offset-s2" action="/cgi-bin/auth" method="POST">
+      		<div class="row blue-grey lighten-5">
+				<h4 class="light center">Login Now</h4>
+				<div class="progress qz-doing">
+					<div class="indeterminate"></div>
+				</div>
+	        	<div class="input-field col s12">
+	          		<input id="username" name="username" type="text" placeholder="Click here to input your username">
+	          		<label for="username">Your Username</label>
+	        	</div>
+	        	<div class="input-field col s12">
+	          		<input id="password" name="password" type="password"placeholder="Click here to input your password">
+	          		<label for="password">Your Password</label>
+	        	</div>
+				<div class="input-field col s12 center">
+					<a class="modal-trigger waves-effect waves-light btn blue-grey lighten-3" href="#modal_leagal">New Device</a>
+					<a href="app.html?k=demo" class="waves-effect waves-light btn blue-grey lighten-3">Try DEMO</a>
+					<button class="waves-effect waves-light btn blue-grey qz-submit">Submit</button>
+				</div>
+	        	<div class="input-field col s12 center">
+	      			<input type="checkbox" class="filled-in" id="filled-in-box" disabled="disabled" />
+	      			<label for="filled-in-box">Remeber Me</label>
+				</div>
+				<div class="input-field col s12 center">
+				</div>
+			</div>
+    	</form>
+	</div>
+	<!-- Modal Structure -->
+	<div id="modal_leagal" class="modal">
+		<div class="modal-content">
+			<h4>Leagal Statement</h4>
+				<p>If you are the owner of this device, or with propper authentication(s), then go ahead.</p>
+				<p>If not, this means you are breaking into others' property, in the meanwhile, breaking a "Federal Law". Please click "LEAVE" button and close this page.</p>
+				<p>Thank you</p>
+			</div>
+			<div class="modal-footer">
+			<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">LEAVE</a>
+			<a id="qz-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+		</div>
+	</div>
+</main>
+<footer class="page-footer blue-grey">
+	<div class="container">
+        <div class="row">
+          	<div class="col l6 s12">
+            	<h5 class="white-text">GRID lite</h5>
+            	<p class="grey-text text-lighten-4">GWS Remote Interface Daemon lite, is a light-weight Web User Interface, which is powered by 6Harmonics Software Team since 2012.</p>
+          	</div>
+          	<div class="col l4 offset-l2 s12">
+            	<h5 class="white-text">Special Thanks</h5>
+            	<ul>
+             		<li><a class="grey-text text-lighten-3" href="https://github.com/bartve-enovation/uhttpd" target="_blank">uhttpd in GitHub</a></li>
+             		<li><a class="grey-text text-lighten-3" href="https://github.com/lua/lua" target="_blank">Lua in GitHub</a></li>
+              		<li><a class="grey-text text-lighten-3" href="http://materializecss.com/" target="_blank">Materialize CSS</a></li>
+              		<li><a class="grey-text text-lighten-3" href="https://github.com/flot/flot" target="_blank">Flot Chart in GitHub</a></li>
+              		<!--<li><a class="grey-text text-lighten-3" href="#">6Harmonics Beijing Team</a></li>-->
+            	</ul>
+          	</div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+		<div class="container">&copy; 2017
+		<a class="grey-text text-lighten-4 right" href="#!">Powered by 6Harmonics</a>
+		</div>
+	</div>
+</footer>
+<script type="text/javascript" src="res/jquery.min.js"></script>
+<script type="text/javascript" src="res/materialize/js/materialize.min.js"></script>
+<script type="text/javascript" src="res/login.js"></script>
+<!-- Design & Powered by Qige from 6Harmonics/6WiLink -->
+</body>
+</html>
