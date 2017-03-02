@@ -28,7 +28,7 @@ function Get.Run()
 		elseif (_k == 'sync') then
 			_result = Get.ops.all()
 		else
-			_result = string.format('unknown (%s)', _k)
+			_result = string.format('unknown (%s)', _k or '[nil]')
 		end
 		Http.job.Reply(_result)
 	--else

@@ -374,15 +374,15 @@
 			<h5>ICMP / Ping</h5>
 			<form class="row">
 				<div class="input-field col s6">
-					<input id="qz-tool-target" placeholder="Copy target ip address or MAC from STATUS" class="validate" type="text" value="192.168.1.2" />
-					<label>Target Address or MAC</label>
+					<input id="qz-tool-ping-target" placeholder="Copy target ip address or MAC from STATUS" class="validate" type="text" value="192.168.1.2" />
+					<label for="qz-tool-ping-target">Target Address or MAC</label>
 				</div>
 				<div class="input-field col s6">
-					<button id="qz-btn-icmp-start" class="btn blue-grey" disabled>Start</button>
+					<button id="qz-btn-ping-start" class="btn blue-grey">Start</button>
 				</div>
 				<div class="input-field col s12">
-					<textarea id="qz-tool-icmp-result" class="materialize-textarea"></textarea>
-      				<label for="qz-tool-icmp-result">ICMP / Ping Result</label>
+					<textarea id="qz-tool-ping-result" class="materialize-textarea qz-textarea">.</textarea>
+      				<label for="qz-tool-ping-result">ICMP / Ping Result</label>
       			</div>
 			</div>
 		</form>
@@ -390,23 +390,27 @@
 	<div class="container">
 		<div class="section">
 			<h5>UDP Flooding Tool</h5>
-			<form class="row">
+			<div class="row">
 				<div class="input-field col s6">
-					<input id="qz-tool-udp-times" placeholder="Unit: Second" type="text" class="validate" value="300" />
-					<label for="qz-tool-udp-times">Seconds of Flooding</label>
+					<input id="qz-tool-flood-target" placeholder="Your Target Address / MAC" type="text" class="validate" value="192.168.1.2" />
+					<label for="qz-tool-flood-target">Target</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="qz-tool-udp-target" placeholder="Your Target Address / MAC" type="text" class="validate" value="192.168.1.2" />
-					<label for="qz-tool-udp-target">Target</label>
+					<input id="qz-tool-flood-bw" placeholder="Unit: Second" type="text" class="validate" value="30" />
+					<label for="qz-tool-flood-bw">Total Flooding Bandwidth (Unit: Mbps)</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="qz-tool-udp-continue" type="checkbox" class="filled-in" checked="checked" disabled />
-					<label for="qz-tool-udp-continue">Auto Start/Continue when Time-up</label>
+					<input id="qz-tool-flood-as" type="checkbox" class="filled-in" />
+					<label for="qz-tool-flood-as">Auto Start/Continue when Time-up</label>
 				</div>
 				<div class="input-field col s6">
-					<button id="qz-btn-udp-start" class="btn blue-grey" disabled>Start UDP Flooding</button>
+					<input id="qz-tool-flood-times" placeholder="Unit: Second" type="text" class="validate" value="10" />
+					<label for="qz-tool-flood-times">Seconds of Flooding</label>
 				</div>
-			</form>
+				<div class="input-field col s12 center">
+					<button id="qz-btn-flood-start" class="btn blue-grey">Start UDP Flooding</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

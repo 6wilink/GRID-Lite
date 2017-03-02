@@ -376,10 +376,12 @@
 		},
 		obj: {
 			enable: function(obj) {
-				obj.attr('disabled', false);
+				if (typeof(obj) == 'object')
+					obj.removeAttr('disabled');
 			},
 			disable: function(obj) {
-				obj.attr('disable', true);
+				if (typeof(obj) == 'object')
+					obj.attr('disabled', 'disabled');
 			}
 		}
 	}
@@ -479,7 +481,17 @@
 						_val: obj.val()
 					};
 					$.ops.change(obj);
-				})
+				});
+
+				$('#qz-btn-flood-start').click(function() {
+					var obj = $(this);
+					$.ops.tool.flood(obj);
+				});
+
+				$('#qz-btn-ping-start').click(function() {
+					var obj = $(this);
+					$.ops.tool.ping(obj);
+				});
 			}
 
 			$('.qz-btn-local-chart-fields').click(function() { // 2017.02.28
@@ -487,6 +499,29 @@
 				store.flot.fields = type;
 			});
 
+ 		},
+ 		tool: {
+ 			flood: function(obj) { // 2017.03.02
+				var target = $('#qz-tool-flood-target').val();
+				var times = $('#qz-tool-flood-times').val();
+				var bw = $('#qz-tool-flood-bw').val();
+				var as = $('#qz-tool-flood-as').attr('checked');
+
+				console.log('tool > flooding now: to/times/bw/as =', target, times, bw, as);
+				$.ops.ajax('flood', '/cgi-bin/tool', {
+					k: 'flood', to: target, times: times, bw: bw
+				}, obj);
+			},
+			ping: function(obj) { // 2017.03.02
+				var target = $('#qz-tool-ping-target').val();
+				var times = 4;
+				//var times = $('#qz-tool-ping-times').val();
+
+				console.log('tool > ping now ...', target, times);
+				$.ops.ajax('ping', '/cgi-bin/tool', {
+					k: 'ping', to: target, times: times
+				}, obj);
+			}
  		},
 		change: function(obj) { // 2017.02.28
 			if (obj.qz._val != '' && obj.qz._val != '-') {
@@ -502,11 +537,11 @@
 
 			// prevent multi-submit
 			if (obj) {
-				$.ui.obj.disabled(obj);
-				console.log(' disable:', obj.attr('disabled'));
+				$.ui.obj.disable(obj);
 			}
 
 			$.get(url, params, function(resp) { // 2017.02.28
+				console.dir('dbg> $.get with resp', resp);
 				switch(ops) {
 				case 'abb':
 					prompt = 'ABB has been RESET';
@@ -519,6 +554,14 @@
 					break;
 				case 'sys':
 					prompt = 'Device is REBOOTING';
+					break;
+				case 'flood':
+					prompt = 'Flooding target done';
+					break;
+				case 'ping':
+					// TODO: set result to "textarea"
+					prompt = 'PING target done';
+					$('#qz-tool-ping-result').val(resp);
 					break;
 				default:
 					prompt = 'Operation completed';
@@ -536,6 +579,7 @@
 				if (obj) $.ui.obj.enable(obj);
 			})
 			.fail(function(resp) { // 2017.02.28
+				console.dir('dbg> $.get failed with resp', resp);
 				switch(ops) {
 				case 'nw':
 					prompt = 'Network has been RESET';
@@ -543,8 +587,16 @@
 				case 'sys':
 					prompt = 'Device is REBOOTING';
 					break;
+				case 'flood':
+					prompt = 'Flooding target FAILED';
+					break;
+				case 'ping':
+					// TODO: set result to "textarea"
+					prompt = 'PING target FAILED';
+					$('#qz-tool-ping-result').val(resp);
+					break;
 				default:
-					prompt = 'Operation failed > ' + ops;
+					prompt = 'Operation FAILED > ' + ops;
 					break;
 				}
 				console.log('ajax (fail) result:', prompt);
@@ -557,7 +609,6 @@
 
 				// release submit
 				if (obj) $.ui.obj.enable(obj);
-				//console.log(' disable:', obj.attr('disabled'));
 			});
 		},
 		ajax_done: function(ops) { // 2017.02.28
@@ -572,6 +623,12 @@
 				break;
 			default:
 				break;
+			}
+		},
+		ajax_set: function(text) {
+			if (typeof(obj) == 'object') {
+				console.log('dbg>', text);
+				obj.val(text);
 			}
 		}
 	}
