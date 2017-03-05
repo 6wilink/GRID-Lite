@@ -78,23 +78,20 @@ function ABB.ops.read()
 
 	local enc = _iw.encryption(_dev)
 
-	local bssid = _iw.bssid(_dev)
-	local ssid = _iw.ssid(_dev)
-	local mode = _iw.mode(_dev)
 	local noise = fmt.n(_iw.noise(_dev))
 	local signal = fmt.n(_iw.signal(_dev))
 	local br = fmt.n(_iw.bitrate(_dev))/1024*(_bw/20) -- Mbit*(8/20)
 
 	-- get & save
-	_abb.bssid = bssid or '(unknown)'
+	_abb.ssid = _iw.ssid(_dev) or '(unknown ssid)'
+	_abb.bssid = _iw.bssid(_dev) or '(unknown bssid)'
 	_abb.signal = signal or noise or -101
 	_abb.noise = noise or -101
 	_abb.br = br or 0
 	_abb.chbw = _bw
-	_abb.mode =  ABB.ops.mode(mode)
-	_abb.ssid = ssid or '(unknown)'
+	_abb.mode =  ABB.ops.mode(_iw.mode(_dev))
 	_abb.encrypt = enc and enc.description or ''
-	_abb.peers = '{}'
+	_abb.peers = ABB.ops.peers() or '{}'
 
 	ABB.cache._abb = _abb
 	ABB.cache._ts = os.time()
@@ -112,6 +109,11 @@ function ABB.ops.mode(_mode)
 	end
 end
 
+function ABB.ops.peers()
+	local _dev = ABB.conf.dev or 'wlan0'
+	local _iw = ABB.cache.iw
+
+end
 
 
 ABB.get = {}
