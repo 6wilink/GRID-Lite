@@ -69,7 +69,7 @@ function NW.ops.thrpt()
 
 	-- read LAN rxbytes, txbytes
 	local _wls_rxbtxb = NW.get.rxbtxb(wls_ifname)
-	if (#_wls_rxbtxb >= 2) then
+	if (_wls_rxbtxb and #_wls_rxbtxb >= 2) then
 		NW.cache._wls_rxb = _wls_rxbtxb[1]
 		NW.cache._wls_txb = _wls_rxbtxb[2]
 	else
@@ -79,7 +79,7 @@ function NW.ops.thrpt()
 
 	-- read WAN rxbytes, txbytes
 	local _eth_rxbtxb = NW.get.rxbtxb(eth_ifname)
-	if (#_eth_rxbtxb >= 2) then
+	if (_eth_rxbtxb and #_eth_rxbtxb >= 2) then
 		NW.cache._eth_rxb = _eth_rxbtxb[1]
 		NW.cache._eth_txb = _eth_rxbtxb[2]
 	else

@@ -3,13 +3,16 @@
 // data controller
 (function($) {
 	$.cache = {
+		// ...
+		init: function() {
+		},
 		fmt: {
 			float: function(num) {
 				return Math.floor(num * 10) / 10;
 			}
 		},
 		calc: {
-			rxbtxb: function(bytes, bytes_last) {
+			thrpt: function(bytes, bytes_last) {
 				var thrpt = 0;
 				if (bytes > bytes_last) {
 					var ts_gap = 1; // TODO: calc ts gap
@@ -20,9 +23,6 @@
 				thrpt = $.cache.fmt.float(thrpt);
 				return thrpt;
 			}
-		},
-		// ...
-		init: function() {
 		},
 		// get random value
 		RANDOM: { // 2017.02.28
@@ -35,6 +35,13 @@
 				if ($(this)) clearInterval($(this));
 			});
 		},
+		save: { // 2017.02.28
+			local: function() { // 2017.02.28
+				var _ = store.query;
+				store.query_last = _;
+				store.query = null;
+			}
+		},
 		// clear chart data when click "CLEAR" button
 		clear: {
 			local: function() {
@@ -43,19 +50,31 @@
 		},
 		// ajax query
 		query: { // 2017.02.28
-			failed: function() { // 2017.02.28
-				var data = {
-					local: {
-						signal: -199,
-						noise: -198,
-						br: -1,
-						chbw: -1,
-						mode: '(unknown)',
-						ssid: '(unknown)',
-						encrypt: '(unknown)'
-					}
-				};
-				return data;
+			failed: {
+				instant: function() { // 2017.02.28
+					var data = {
+						local: {
+							signal: -199,
+							noise: -198,
+							br: -1,
+							chbw: -1,
+							mode: '(unknown)',
+							ssid: '(unknown)',
+							encrypt: '(unknown)'
+						},
+						nw: {
+							eth_txb: 0,
+							eth_rxb: 0,
+							wls_txb: 0,
+							wls_rxb: 0
+						}
+					};
+					return data;
+				},
+				delayed: function() { // return structured object, don't update
+					var data = { gws: null, sys: null };
+					return data;
+				}
 			},
 			// 'demo' mode
 			DEMO: function(idx) { // 2017.02.28
@@ -102,18 +121,29 @@
 		},
 		// start ajax/proxy query
 		sync: { // 2017.02.28
-			local: function() { // 2017.02.28
-				// TODO: call & handle ajax fails 
-				$.get('/cgi-bin/get', { k: 'sync' }, function(resp) {
-					//console.log('get?k=sync', resp);
-					store.query = {
-						local: resp
-					};
-				}, 'json')
-				.fail(function() {
-					console.log('get?k=sync', "error> local sync failed");
-					store.query = $.cache.query.failed();
-				});
+			local: {
+				instant: function() { // 2017.02.28
+					$.get('/cgi-bin/get', { k: 'instant' }, function(resp) {
+						//console.log('get?k=instant', resp);
+						store.query = {
+							local: resp
+						};
+					}, 'json')
+					.fail(function() {
+						console.log('get?k=instant', "error> local (instant) failed");
+						store.query = $.cache.query.failed.instant();
+					});
+				},
+				delayed: function() {
+					$.get('/cgi-bin/get', { k: 'delayed' }, function(resp) {
+						//console.log('get?k=delayed', resp);
+						store.delayed = resp;
+					}, 'json')
+					.fail(function() {
+						console.log('get?k=delayed', "error> local (delayed) failed");
+						store.delayed = $.cache.query.failed.delayed();
+					});
+				}
 			},
 			// proxy query
 			peers: function() {
@@ -218,12 +248,14 @@
 						if ("abb" in local) {						
 							var snr = 0, signal = -199, noise = -198;
 							if ("signal" in local.abb && "noise" in local.abb) {
-								signal = local.abb.signal;
-								noise = local.abb.noise;
+								signal = local.abb.signal || -110;
+								noise = local.abb.noise || -105; // fix gws4k noise=unknown
 								snr = signal - noise;
 							} else {
 								snr = 0;
 							}
+
+							if (snr < 0) snr = 0;
 
 							// push
 							if ("snr" in local_history) {
@@ -253,22 +285,22 @@
 							if (("eth_txb" in local.nw) && local_last && ("nw" in local_last)) {
 								if ("eth_txb" in local_last.nw) {
 									//console.log('dbg> 0. local/last eth_txb:', local.nw.eth_txb, local_last.nw.eth_txb);
-									eth_thrpt = $.cache.calc.rxbtxb(local.nw.eth_txb, local_last.nw.eth_txb);
+									eth_thrpt = $.cache.calc.thrpt(local.nw.eth_txb, local_last.nw.eth_txb);
 								}
 								//console.log('dbg> 1. eth Thrpt:', eth_thrpt);
 								// save downlink
 								if ("eth_rxb" in local_last.nw) {
-									eth_thrpt += $.cache.calc.rxbtxb(local.nw.eth_rxb, local_last.nw.eth_rxb);
+									eth_thrpt += $.cache.calc.thrpt(local.nw.eth_rxb, local_last.nw.eth_rxb);
 								}
 								//console.log('dbg> 2. eth Thrpt:', eth_thrpt);
 							}
 							if (("wls_txb" in local.nw) && local_last && ("nw" in local_last)) {
 								if ("wls_txb" in local_last.nw) {
-									wls_thrpt = $.cache.calc.rxbtxb(local.nw.wls_txb, local_last.nw.wls_txb);
+									wls_thrpt = $.cache.calc.thrpt(local.nw.wls_txb, local_last.nw.wls_txb);
 								}
 								// save downlink
 								if ("wls_rxb" in local_last.nw) {
-									wls_thrpt += $.cache.calc.rxbtxb(local.nw.wls_rxb, local_last.nw.wls_rxb);
+									wls_thrpt += $.cache.calc.thrpt(local.nw.wls_rxb, local_last.nw.wls_rxb);
 								}
 							}
 
@@ -321,30 +353,27 @@
 			}
 		},
 
-		save: { // 2017.02.28
-			local: function() { // 2017.02.28
-				var _ = store.query;
-				store.query_last = _;
-				store.query = null;
-			}
-		},
 
 		// "realtime" update
 		// TODO: parse & save "store.cache" into "store.history"
-		update: function() { // 2017.02.28
-			// main data sync sequences
-			$.cache.sync.local();
-			$.cache.parse.local.status();
-			$.cache.parse.local.chart();
+		update: {
+			instant: function() { // 2017.02.28
+				// main data sync sequences
+				$.cache.sync.local.instant();
+				$.cache.parse.local.chart();
 
-			//$.cache.sync.peers();
-			//$.cache.parse.peers();
+				//$.cache.sync.peers();
+				//$.cache.parse.peers();
+			},
+			delayed: function() {
+				$.cache.sync.local.delayed();
+			}
 		},
 		// 'demo' mode entry
 		// TODO: parse & save "store.cache" into "store.history"
 		DEMO: function() { // 2017.02.28
 			$.cache.sync.DEMO();
-			$.cache.parse.local.status();
+			$.cache.parse.local.instant();
 			$.cache.parse.local.chart();
 			//$.cache.parse.peers.status();
 			//$.cache.parse.peers.chart();
@@ -362,24 +391,140 @@
 			$.flot.init();
 			$.ui.forms();
 			if (mode != 'realtime' && mode != 'proxy') {
-				var text = '<div class="container section center">(DEMO mode, please <a href="/grid/index.html">LOGIN</a> first)</div>'
-				$('#tab2,#tab3,#tab4,#tab5').html(text);
+				$.ui.obj.DEMO();
 			}
 		},
-		update: function() { // 2017.02.28
-			$.flot.sync();
+		update: {
+			instant: function() { // 2017.03.03
+				//console.log("$.cache.parse.local()", store.query);
+				var query = (store && "query" in store) ? store.query_last : null;
+				var local = (query && "local" in query) ? query.local : null;
+
+				var abb = (local && "abb" in local) ? local.abb : null;
+				var nw = (local && "nw" in local) ? local.nw : null;
+				var sys = (local && "sys" in local) ? local.sys : null;
+
+				var abb_text = '';
+				if (abb) {
+					if (abb.bssid)		abb_text += abb.bssid;
+					if (abb.ssid)		abb_text += ' | '+abb.ssid;
+					if (abb.chbw)		abb_text += ' | '+abb.chbw+'M';
+					if (abb.mode)		abb_text += ' | '+abb.mode;
+				}
+				if (nw) {
+					var text = '';
+					if (nw.lan_ip && nw.lan_ip != '-') text += nw.lan_ip;
+					if (nw.wan_ip && nw.wan_ip != '-') text += ' / '+nw.wan_ip;
+					$('#qz-local-nw').text(text);
+
+					text = abb_text;
+					if (nw.bridge) {
+						text += ' (bridge)';
+					} else {
+						text += ' (router)';	
+					}
+
+					if (sys) {						
+						if (sys.qos > 0)		text += ' | QoS';
+						if (sys.firewall > 0)	text += ' | Firweall'
+						if (sys.tdma > 0)		text += ' | TDMA';
+						if (sys.atf > 0)		text += ' | ATF';
+					}
+					$('#qz-local-sts').text(text);
+				}
+
+				// update chart
+				$.flot.sync();
+			},
+			delayed: function() {
+				//console.log('dbg> $.ui.update.delayed()');
+				var delayed = store.delayed;
+				//console.dir(delayed);
+				var gws = (delayed && "gws" in delayed) ? delayed.gws : null;
+				var sys = (delayed && "sys" in delayed) ? delayed.sys : null;
+
+				if (gws) {
+					var text;
+					var rgn = -1, ch = -1, txpwr = -99, tpc = -1, rxgain = -1, agc = -1;
+					var freq = -1, bw = -1;
+
+					rgn = ("rgn" in gws) ? gws.rgn : -1;
+					ch = ("ch" in gws) ? gws.ch : -1;
+
+					text = 'R'+rgn+' - CH'+ch;
+					$('#qz-local-gws1').text(text);
+
+					freq = (rgn > 0) ? 474+(ch-21)*8 : 473+(ch-14)*6;
+					bw = ("bw" in gws) ? gws.bw : -1;
+					if (bw > 0) {
+						text = freq+'MHz - '+bw+'M';
+					} else {
+						text = freq+'MHz - (unknown)';
+					}
+					$('#qz-local-gws2').text(text);
+
+					txpwr = ("txpwr" in gws) ? gws.txpwr : -99;
+					tpc = ("tpc" in gws) ? gws.tpc : -1;
+					if (txpwr >= -15) {
+						text = txpwr+' dBm';
+					} else {
+						text = 'Tx OFF';
+					}
+					text += ' - ';
+					if (tpc > 0) {
+						text += 'TPC ON';
+					} else if (tpc == 0) {
+						text += 'TPC OFF';
+					} else {
+						text += 'No TPC';
+					}
+					$('#qz-local-gws3').text(text);
+
+
+					rxgain = ("rxg" in gws) ? gws.rxg : -99;
+					agc = ("agc" in gws) ? gws.agc : -1;
+					if (rxgain > -99) {
+						text = rxgain+' dB';
+					} else {
+						text = '0';
+					}
+					text += ' - ';
+					if (agc > 0) {
+						text += 'AGC ON';
+					} else if (agc == 0) {
+						text += 'AGC OFF';
+					} else {
+						text += 'No AGC';
+					}
+					$('#qz-local-gws4').text(text);
+
+					text = ("note" in gws) ? gws.note : '...';
+					$('#qz-local-gws5').text(text);
+					
+					console.log("delayed> region/channel/txpwr/tpc/rxgain/agc", 
+						rgn, ch, txpwr, tpc, rxgain, agc);
+				}
+			}
 		},
 		forms: function() { // 2017.02.28
 			$('form').submit(function() { // 2017.02.28
+				// prevent all "form" submit
 				return false;
 			});
 		},
 		obj: {
 			enable: function(obj) {
-				obj.attr('disabled', false);
+				if (typeof(obj) == 'object')
+					obj.removeAttr('disabled');
 			},
 			disable: function(obj) {
-				obj.attr('disable', true);
+				if (typeof(obj) == 'object')
+					obj.attr('disabled', 'disabled');
+			},
+			// clean "div" contents when DEMO
+			DEMO: function() {
+				var text = '<div class="container section center">(DEMO mode, please <a href="/grid/index.html">LOGIN</a> first)</div>'
+				$('#tab2,#tab3,#tab4,#tab5').html(text);
 			}
 		}
 	}
@@ -391,6 +536,7 @@
 (function($) { // 2017.02.28
 	$.ops = { // 2017.02.28
 		init: function(mode) { // 2017.02.28
+			// empty some "div" in "DEMO" mode
 			if (mode == 'demo') {
 				$('#tab2,#tab3,#tab4,#tab5').click(function() { // 2017.02.28
 					var obj = $(this);
@@ -398,6 +544,7 @@
 					$.materialize.toast('Not available in "DEMO" mode');
 				});
 			} else {
+				// bind these buttons click() 
 				$('#qz-btn-sys-reset').click(function() { // 2017.02.28
 					$('#qz-modal-chcfm-items').text('Reset Network');
 					$('#qz-modal-chcfm-affected').text('This Operation Will REBOOT This Device');
@@ -479,7 +626,17 @@
 						_val: obj.val()
 					};
 					$.ops.change(obj);
-				})
+				});
+
+				$('#qz-btn-flood-start').click(function() {
+					var obj = $(this);
+					$.ops.tool.flood(obj);
+				});
+
+				$('#qz-btn-ping-start').click(function() {
+					var obj = $(this);
+					$.ops.tool.ping(obj);
+				});
 			}
 
 			$('.qz-btn-local-chart-fields').click(function() { // 2017.02.28
@@ -487,6 +644,29 @@
 				store.flot.fields = type;
 			});
 
+ 		},
+ 		tool: {
+ 			flood: function(obj) { // 2017.03.02
+				var target = $('#qz-tool-flood-target').val();
+				var times = $('#qz-tool-flood-times').val();
+				var bw = $('#qz-tool-flood-bw').val();
+				var as = $('#qz-tool-flood-as').attr('checked');
+
+				console.log('tool > flooding now: to/times/bw/as =', target, times, bw, as);
+				$.ops.ajax('flood', '/cgi-bin/tool', {
+					k: 'flood', to: target, times: times, bw: bw
+				}, obj);
+			},
+			ping: function(obj) { // 2017.03.02
+				var target = $('#qz-tool-ping-target').val();
+				var times = 4;
+				//var times = $('#qz-tool-ping-times').val();
+
+				console.log('tool > ping now ...', target, times);
+				$.ops.ajax('ping', '/cgi-bin/tool', {
+					k: 'ping', to: target, times: times
+				}, obj);
+			}
  		},
 		change: function(obj) { // 2017.02.28
 			if (obj.qz._val != '' && obj.qz._val != '-') {
@@ -501,12 +681,13 @@
 			var prompt = '';
 
 			// prevent multi-submit
+			// disable the button or input that been changed
 			if (obj) {
-				$.ui.obj.disabled(obj);
-				console.log(' disable:', obj.attr('disabled'));
+				$.ui.obj.disable(obj);
 			}
 
 			$.get(url, params, function(resp) { // 2017.02.28
+				console.dir('dbg> $.get with resp', resp);
 				switch(ops) {
 				case 'abb':
 					prompt = 'ABB has been RESET';
@@ -520,6 +701,14 @@
 				case 'sys':
 					prompt = 'Device is REBOOTING';
 					break;
+				case 'flood':
+					prompt = 'Flooding target done';
+					break;
+				case 'ping':
+					// TODO: set result to "textarea"
+					prompt = 'PING target done';
+					$('#qz-tool-ping-result').val(resp);
+					break;
 				default:
 					prompt = 'Operation completed';
 					break;
@@ -532,10 +721,11 @@
 				// reset sys: close
 				$.ops.ajax_done(ops);
 
-				// release submit
+				// release button or input
 				if (obj) $.ui.obj.enable(obj);
 			})
 			.fail(function(resp) { // 2017.02.28
+				console.dir('dbg> $.get failed with resp', resp);
 				switch(ops) {
 				case 'nw':
 					prompt = 'Network has been RESET';
@@ -543,8 +733,16 @@
 				case 'sys':
 					prompt = 'Device is REBOOTING';
 					break;
+				case 'flood':
+					prompt = 'Flooding target FAILED';
+					break;
+				case 'ping':
+					// TODO: set result to "textarea"
+					prompt = 'PING target FAILED';
+					$('#qz-tool-ping-result').val(resp);
+					break;
 				default:
-					prompt = 'Operation failed > ' + ops;
+					prompt = 'Operation FAILED > ' + ops;
 					break;
 				}
 				console.log('ajax (fail) result:', prompt);
@@ -557,9 +755,9 @@
 
 				// release submit
 				if (obj) $.ui.obj.enable(obj);
-				//console.log(' disable:', obj.attr('disabled'));
 			});
 		},
+		// call when need to operate URL, or reload()
 		ajax_done: function(ops) { // 2017.02.28
 			switch(ops) {
 			case 'nw':
@@ -573,6 +771,14 @@
 			default:
 				break;
 			}
+		},
+		// some job that may need after $.get() operated
+		// eg. "Tools!" > "Ping"
+		ajax_set: function(text) {
+			if (typeof(obj) == 'object') {
+				console.log('dbg>', text);
+				obj.val(text);
+			}
 		}
 	}
 }) (jQuery); // $.ops
@@ -583,19 +789,35 @@
 	$.app = {
 		init: function(mode) { // 2017.02.28
 			store.mode = mode;
-			$.ui.init(mode);
 			$.cache.init();
+			$.ui.init(mode);
 			$.ops.init(mode);
 		},
 		// update store.query.cache with "ajax"
-		update: function() { // 2017.02.28
-			$.cache.update();
-			$.ui.update();
+		// there 2 types of ajax query
+		// 1. these return immediately, 
+		// like query abb via "libiwinfo-lua", "cat /proc/net/dev"
+		// so use "$.app.update.instant()";
+		// 2. those will take few seconds, like "rfinfo"
+		// so use "$.app.update.delayed()".
+		update: {
+			instant: function() { // 2017.02.28
+				$.cache.update.instant();
+				$.ui.update.instant();
+			},
+			delayed: function() { // 2017.03.04
+				$.cache.update.delayed();
+				$.ui.update.delayed();
+			}
 		},
 		// update store.query.cache with "DEMO"
+		// DEMO mode data will be generated locally by Browser itself
+		// so don't need to update them seperately
+		// but it shares the same UI update methods.
 		DEMO: function() { // 2017.02.28
 			$.cache.DEMO();
-			$.ui.update();
+			$.ui.update.instant();
+			$.ui.update.delayed();
 		},
 		run: function(mode) { // 2017.02.28
 			// init cache/data, ui
@@ -604,8 +826,11 @@
 			case 'realtime':
 				console.log("App Running (realtime).");
 				// main loop
-				$.app.update();
-				store.flot.intl.local = setInterval("$.app.update()", 1000);
+				$.app.update.instant();
+				store.flot.intl.local.instant = setInterval("$.app.update.instant()", 1000);
+
+				$.app.update.delayed();
+				store.flot.intl.local.delayed = setInterval("$.app.update.delayed()", 4000);
 				break;
 			case 'demo':
 			default:

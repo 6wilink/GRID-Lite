@@ -24,7 +24,10 @@ var store = {
 		fields: 'all',
 		// setInterval handlers
 		intl: {
-			local: null,
+			local: {
+				instant: null,
+				delayed: null
+			},
 			peers: [],
 			DEMO: null
 		},
@@ -43,7 +46,11 @@ var store = {
 	query: null,
 	query_last: null,
 
-	// history data
+	// save these parameters not frequently updated
+	// and not calculate gap between each time
+	delayed: null, 
+
+  // history data
 	history: {
 		local: {
 			snr: [],

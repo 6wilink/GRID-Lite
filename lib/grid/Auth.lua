@@ -18,6 +18,11 @@ function Auth.Status()
 	return Auth.verify.remote()
 end
 
+function Auth.Https()
+	cgi.save.init()
+	Http.job.Reply(Auth.nobody.https())
+end
+
 function Auth.Logout()
 	cgi.save.init()
 	Http.job.Redirect(Auth.user.logout())
@@ -81,6 +86,16 @@ function Auth.nobody.login()
   	return _result, _target, _delay
 end
 
+function Auth.nobody.https()
+	local _result
+	local referer = os.getenv("HTTP_REFERER")
+	if (string.find(referer, 'https')) then
+		_result = '{"error": null, "result": "ok"}'
+	else
+		_result = '{"error": "https required", "result": "error"}'
+	end
+	return _result
+end
 
 -- User ops
 Auth.user = {}

@@ -38,10 +38,11 @@
     					<div class="card-reveal">
     						<span class="card-title grey-text text-darken-4">GWS / UHF<i class="material-icons right">...</i></span>
       						<ul class="collection">
-								<li class="collection-item"><span class="badge" id="qz-local-rgn-ch">...</span>Region - Channel</li>
-								<li class="collection-item"><span class="badge" id="qz-local-freq-chbw">...</span>Frequency - Bandwidth</li>
-								<li class="collection-item"><span class="badge" id="qz-local-txpwr-tpc">...</span>Tx Power</li>
-								<li class="collection-item"><span class="badge" id="qz-local-rxg-rxagc">...</span>Rx Gain</li>
+								<li class="collection-item"><span class="badge" id="qz-local-gws1">...</span>Region - Channel</li>
+								<li class="collection-item"><span class="badge" id="qz-local-gws2">...</span>Frequency - Bandwidth</li>
+								<li class="collection-item"><span class="badge" id="qz-local-gws3">...</span>Tx Power</li>
+								<li class="collection-item"><span class="badge" id="qz-local-gws4">...</span>Rx Gain</li>
+								<li class="collection-item"><span class="badge" id="qz-local-gws5">...</span>Desc</li>
 							</ul>
       					</div>
       					<div class="card-action">
@@ -55,8 +56,9 @@
 			</div>
 			<h5>Connected Node(s)</h5>
 			<div class="row">
-				<div id="qz-peers-none" class="col s12 section">( Not connected )</div>
-				<!--<div id="qz-peers" class="col s12">
+				<div id="qz-peers-none" class="col s12 section">( Upgrade to Pro! )</div>
+				<!--<div id="qz-peers-none" class="col s12 section">( Not connected )</div>
+				<div id="qz-peers" class="col s12">
 					<div class="card">
 						<div class="card-image waves-effect waves-block waves-light">
       						<div class="qz-space">
@@ -155,7 +157,7 @@
 									</div>
 								</div>
 				    		</div>
-				    		<div class="col s6 offset-s1">
+				    		<!--<div class="col s6 offset-s1">
 				    			<div class="row">
 									<div class="input-field col s12">
 										<input alt="abb" name="ssid" id="qz-set-abb-ssid" placeholder="Default is gws2016" class="validate" type="text" value="gws2016" />
@@ -166,7 +168,7 @@
 										<label for="qz-set-abb-passwd">Password</label>
 									</div>
 								</div>
-							</div>
+							</div>-->
 						</form>
 					</div>
 				</li>
@@ -178,7 +180,7 @@
 								<div class="row">
 									<h6>Tx Chain</h6>
 									<div class="input-field col s5">
-										<input alt="gws" name="tpc" id="qz-set-gws-tpc" type="checkbox" class="filled-in" checked />
+										<input alt="gws" name="tpc" id="qz-set-gws-tpc" type="checkbox" class="filled-in" checked disabled />
 	      								<label for="qz-set-gws-tpc">Tx TPC</label>
 									</div>
 									<div class="input-field col s7">
@@ -247,11 +249,11 @@
 				    		<div class="col s6 offset-s1">
 				    			<div class="row">
 									<div class="input-field col s12">
-										<input alt="nw" name="wanip" id="qz-set-wan-ip" placeholder="Default is 10.10.1.1" class="validate" type="text" value="-" />
+										<input alt="nw" name="wanip" id="qz-set-wan-ip" placeholder="Default is 10.10.1.1" class="validate" type="text" value="-" disabled />
 										<label for="qz-set-wan-ip">WAN Address</label>
 									</div>
 									<div class="input-field col s12">
-										<input alt="nw" name="lanip" id="qz-set-lan-ip" placeholder="Default is 192.168.66.1" class="validate" type="text" value="192.168.66.1" />
+										<input alt="nw" name="lanip" id="qz-set-lan-ip" placeholder="Default is 192.168.66.1" class="validate" type="text" value="192.168.66.1" disabled />
 										<label for="qz-set-lan-ip">LAN Address</label>
 									</div>
 								</div>
@@ -304,6 +306,15 @@
 					<div class="collapsible-header blue-grey lighten-1">Advanced</div>
 					<div class="collapsible-body">
 		    			<div class="row">
+							<div class="col s12">
+								<div class="row">
+									<h6>HTTPS</h6>
+									<div class="input-field col s12">
+										<input id="qz-set-serv-https" type="checkbox" class="filled-in" disabled />
+	      								<label for="qz-set-serv-https">Enable HTTPs</label>
+									</div>
+								</div>
+							</div>
 							<div class="input-field col s12">
 								<a href="#modal_change_confirm" id="qz-btn-fw-factory" class="btn blue-grey" disabled>Restore to Factory !</a>
 							</div>
@@ -374,15 +385,15 @@
 			<h5>ICMP / Ping</h5>
 			<form class="row">
 				<div class="input-field col s6">
-					<input id="qz-tool-target" placeholder="Copy target ip address or MAC from STATUS" class="validate" type="text" value="192.168.1.2" />
-					<label>Target Address or MAC</label>
+					<input id="qz-tool-ping-target" placeholder="Copy target ip address or MAC from STATUS" class="validate" type="text" value="192.168.1.2" />
+					<label for="qz-tool-ping-target">Target Address or MAC</label>
 				</div>
 				<div class="input-field col s6">
-					<button id="qz-btn-icmp-start" class="btn blue-grey" disabled>Start</button>
+					<button id="qz-btn-ping-start" class="btn blue-grey">Start</button>
 				</div>
 				<div class="input-field col s12">
-					<textarea id="qz-tool-icmp-result" class="materialize-textarea"></textarea>
-      				<label for="qz-tool-icmp-result">ICMP / Ping Result</label>
+					<textarea id="qz-tool-ping-result" class="materialize-textarea qz-textarea">-</textarea>
+      				<label for="qz-tool-ping-result">ICMP / Ping Result</label>
       			</div>
 			</div>
 		</form>
@@ -390,23 +401,27 @@
 	<div class="container">
 		<div class="section">
 			<h5>UDP Flooding Tool</h5>
-			<form class="row">
+			<div class="row">
 				<div class="input-field col s6">
-					<input id="qz-tool-udp-times" placeholder="Unit: Second" type="text" class="validate" value="300" />
-					<label for="qz-tool-udp-times">Seconds of Flooding</label>
+					<input id="qz-tool-flood-target" placeholder="Your Target Address / MAC" type="text" class="validate" value="192.168.1.2" />
+					<label for="qz-tool-flood-target">Target</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="qz-tool-udp-target" placeholder="Your Target Address / MAC" type="text" class="validate" value="192.168.1.2" />
-					<label for="qz-tool-udp-target">Target</label>
+					<input id="qz-tool-flood-bw" placeholder="Unit: Second" type="text" class="validate" value="30" />
+					<label for="qz-tool-flood-bw">Total Flooding Bandwidth (Unit: Mbps)</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="qz-tool-udp-continue" type="checkbox" class="filled-in" checked="checked" disabled />
-					<label for="qz-tool-udp-continue">Auto Start/Continue when Time-up</label>
+					<input id="qz-tool-flood-as" type="checkbox" class="filled-in" />
+					<label for="qz-tool-flood-as">Auto Start/Continue when Time-up</label>
 				</div>
 				<div class="input-field col s6">
-					<button id="qz-btn-udp-start" class="btn blue-grey" disabled>Start UDP Flooding</button>
+					<input id="qz-tool-flood-times" placeholder="Unit: Second" type="text" class="validate" value="10" />
+					<label for="qz-tool-flood-times">Seconds of Flooding</label>
 				</div>
-			</form>
+				<div class="input-field col s12 center">
+					<button id="qz-btn-flood-start" class="btn blue-grey">Start UDP Flooding</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

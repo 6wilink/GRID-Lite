@@ -58,9 +58,15 @@ Set.cmd.sys = 'reboot'
 
 Set.cmd.gws = {}
 Set.cmd.gws.reset = '/etc/init.d/gws_radio restart'
-Set.cmd.gws.rgn = 'uci set gws_radio.v1.region=%s; uci commit gws_radio'
-Set.cmd.gws.rxg = 'uci set gws_radio.v1.rxgain=%s; uci commit gws_radio'
-Set.cmd.gws.ch = 'uci set gws_radio.v1.channel=%s; uci commit gws_radio'
+--Set.cmd.gws.rgn = 'uci set gws_radio.v1.region=%s; uci commit gws_radio'
+--Set.cmd.gws.rxg = 'uci set gws_radio.v1.rxgain=%s; uci commit gws_radio'
+--Set.cmd.gws.ch = 'uci set gws_radio.v1.channel=%s; uci commit gws_radio'
+Set.cmd.gws.rgn = 'setregion %s'
+Set.cmd.gws.ch = 'setchan %s'
+Set.cmd.gws.chbw = 'setchanbw %s'
+Set.cmd.gws.txpwr = 'settxpwr %s'
+Set.cmd.gws.agc = 'setrxagc %s'
+Set.cmd.gws.rxg = 'setrxgain %s'
 
 
 Set.ops = {}
@@ -89,11 +95,14 @@ function Set.ops.gws(_item, _val)
 		_fmt = Set.cmd.gws.rgn
 	elseif (_item == 'ch') then
 		_fmt = Set.cmd.gws.ch
+	elseif (_item == 'txpwr') then
+		_fmt = Set.cmd.gws.txpwr
 		--return Set.ops.exec(Set.cmd.gws.reset, '')
 	end
 	if (_fmt and _val) then
 		local _cmd = string.format(_fmt, _val)
-		return Set.ops.exec(_cmd, Set.cmd.gws.reset)
+		local _result = cmd.exec(_cmd)
+		return string.format('{"error": null, "cmd": "%s", "result": "%s"', _cmd, _result)
 	else
 		local _error = string.format("gws: %s=%s", _item, _val)
 		return _error

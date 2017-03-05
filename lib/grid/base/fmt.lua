@@ -9,7 +9,7 @@ fmt = {}
 fmt.http = {}
 function fmt.http.find(key, data)
   if (key and data) then
-    local s1, s2, val = string.find(data, key.."=(%w*)")
+    local s1, s2, val = string.find(data, key.."=([%w\.]*)")
     if (val) then
       return val
     end

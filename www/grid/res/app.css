@@ -31,6 +31,10 @@ main {
 	height: 360px;
 }
 
+.qz-textarea {
+	height: 200px !important;
+}
+
 .card .card-content {
 	padding-top: 1rem;
 	padding-bottom: 1rem;
