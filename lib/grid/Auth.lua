@@ -97,7 +97,6 @@ function Auth.nobody.https()
 	return _result
 end
 
-
 -- User ops
 Auth.user = {}
 function Auth.user.logout()

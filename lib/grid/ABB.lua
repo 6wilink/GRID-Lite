@@ -78,6 +78,9 @@ function ABB.ops.read()
 
 	local enc = _iw.encryption(_dev)
 
+	local bssid = _iw.bssid(_dev)
+	local ssid = _iw.ssid(_dev)
+	local mode = _iw.mode(_dev)
 	local noise = fmt.n(_iw.noise(_dev))
 	local signal = fmt.n(_iw.signal(_dev))
 	local br = fmt.n(_iw.bitrate(_dev))/1024*(_bw/20) -- Mbit*(8/20)
@@ -114,7 +117,6 @@ function ABB.ops.peers()
 	local _iw = ABB.cache.iw
 
 end
-
 
 ABB.get = {}
 

@@ -170,8 +170,55 @@
 		parse: { // 2017.02.28
 			// TODO: parse data with DEMO
 			local: { // 2017.02.28
-				// parse data from store.query, store.query_last
-				// prepare & save to history, then $.ui.update() can redraw()
+				status: function() { // 2017.02.28
+					//console.log("$.cache.parse.local()", store.query);
+					var query = (store && "query" in store) ? store.query_last : null;
+					var local = (query && "local" in query) ? query.local : null;
+
+					var abb = (local && "abb" in local) ? local.abb : null;
+					var nw = (local && "nw" in local) ? local.nw : null;
+					var gws = (local && "gws" in local) ? local.gws : null;
+					var sys = (local && "sys" in local) ? local.sys : null;
+
+					var abb_text = '';
+					if (abb) {
+						if (abb.bssid)		abb_text += abb.bssid;
+						if (abb.ssid)		abb_text += ' | '+abb.ssid;
+						if (abb.chbw)		abb_text += ' | '+abb.chbw+'M';
+						if (abb.mode)		abb_text += ' | '+abb.mode;
+					}
+					if (gws) {
+						var text = 'R'+gws.rgn+' - CH'+gws.ch;
+						$('#qz-local-rgn-ch').text(text);
+						text = gws.freq+' M - '+gws.chbw+' M';
+						$('#qz-local-freq-chbw').text(text);
+						text = gws.txpwr+' dBm - TPC '+(gws.tpc ? 'ON' : 'OFF');
+						$('#qz-local-txpwr-tpc').text(text);
+						text = gws.rxg+' dB - AGC '+(gws.agc ? 'ON' : 'OFF');
+						$('#qz-local-rxg-rxagc').text(text);
+					}
+					if (nw) {
+						var text = '';
+						if (nw.lan_ip && nw.lan_ip != '-') text += nw.lan_ip;
+						if (nw.wan_ip && nw.wan_ip != '-') text += ' / '+nw.wan_ip;
+						$('#qz-local-nw').text(text);
+
+						text = abb_text;
+						if (nw.bridge) {
+							text += ' (router)';
+						} else {
+							text += ' (bridged)';	
+						}
+
+						if (sys) {						
+							if (sys.qos > 0)		text += ' | QoS';
+							if (sys.firewall > 0)	text += ' | Firweall'
+							if (sys.tdma > 0)		text += ' | TDMA';
+							if (sys.atf > 0)		text += ' | ATF';
+						}
+						$('#qz-local-sts').text(text);
+					}
+				},
 				chart: function() { // 2017.03.01
 					// set store.history = history;
 					var _local_history;

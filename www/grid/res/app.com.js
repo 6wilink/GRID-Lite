@@ -50,7 +50,7 @@ var store = {
 	// and not calculate gap between each time
 	delayed: null, 
 
-	// history data
+  // history data
 	history: {
 		local: {
 			snr: [],
