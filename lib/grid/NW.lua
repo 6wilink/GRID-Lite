@@ -59,7 +59,7 @@ end
 -- TODO: fix CAR with muilti EARs
 function NW.ops.thrpt()
 	local wls_mode = ABB.cache.mode()
-	if (wls_mode == 'CAR') then
+	if (wls_mode == 'CAR' or wls_mode == 'Mesh') then
 		wls_ifname = NW.conf.ap_ifname
 		eth_ifname = NW.conf.eth_ifname
 	else

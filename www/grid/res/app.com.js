@@ -12,6 +12,8 @@ var store = {
 	// default is 'DEMO' ('realtime', 'proxy')
 	mode: 'demo',
 
+	invalid: -999,
+
 	// ajax failes when gws reboot
 	offlineCounter: 0,
 	offlineCounterBar: 6,
@@ -50,15 +52,18 @@ var store = {
 	// and not calculate gap between each time
 	delayed: null, 
 
-  // history data
+	// history data
 	history: {
 		local: {
 			snr: [],
 			br: [],
-			eth_thrpt: [],
-			wls_thrpt: []
+			eth_tx_thrpt: [], eth_rx_thrpt: [],
+			wls_tx_thrpt: [], wls_rx_thrpt: []
 		}
-	}
+	},
+
+	// peers proxy data
+	proxy: null
 }; // store
 
 // window.location.href
@@ -136,13 +141,15 @@ var store = {
 		chart: {
 			new: function(idx, item) { // 2017.03.01
 				var data = [{
-					label: '&lt; Bitrate (Mbit/s)', data: []
+					label: '> Noise (dBm)', data: []
 				},{
-					label: '> SNR (db)', data: []
+					label: '< Eth0 Tx(Mbps)', data: []
 				},{
-					label: '< Eth0 (Mbps)', data: []
+					label: '< Eth0 Rx(Mbps)', data: []
 				},{
-					label: '< Wlan0 (Mbps)', data: []
+					label: '< Wlan0 Tx(Mbps)', data: []
+				},{
+					label: '< Wlan0 Rx(Mbps)', data: []
 				}];
 				var flot = $.plot(item, data, {
 					series: {
@@ -169,7 +176,7 @@ var store = {
 						show: true, min: 0, max: 32,
 						steps: true
 					},{
-						show: true, tickDecimals: 0, min: 0, max: 64,
+						show: true, tickDecimals: 0, min: -110, max: -78,
 						//alignTicksWithAxis: 1, 
 						//steps: true,
 						position: 'right'
@@ -213,77 +220,110 @@ var store = {
 			local: function() { // 2017.03.01
 				var i, j;
 
+				var invalid = store.invalid;
+
 				var fcharts = store.flot.chart;
 				var chart = fcharts[0];
 
-				var snr = store.history.local.snr;
-				var br = store.history.local.br;
-				var eth_thrpt = store.history.local.eth_thrpt;
-				var wls_thrpt = store.history.local.wls_thrpt;
+				var noise = store.history.local.noise;
+				var eth_tx_thrpt = store.history.local.eth_tx_thrpt;
+				var eth_rx_thrpt = store.history.local.eth_rx_thrpt;
+				var wls_tx_thrpt = store.history.local.wls_tx_thrpt;
+				var wls_rx_thrpt = store.history.local.wls_rx_thrpt;
 
-				var fd_snr = [], fd_br = [], fd_wls_thrpt = [], fd_eth_thrpt = [];
+				var fd_noise = [], fd_wls_tx_thrpt = [], fd_wls_rx_thrpt = [];
+				var fd_eth_tx_thrpt = [], fd_eth_rx_thrpt = [];
 
-				if (snr && snr.length > 0) {
-					for(i = 0, j = snr.length; i < snr.length; i ++) {
-						var val = snr[i];
-						if (val >= 0) {
-							fd_snr.push([j-i-1, val]);
+				if (noise && noise.length > 0) {
+					for(i = 0, j = noise.length; i < noise.length; i ++) {
+						var val = noise[i];
+						if (val > invalid) {
+							fd_noise.push([j-i-1, val]);
 						} else {
-							fd_snr.push(null);
+							fd_noise.push(null);
 						}
 					}
 				}
 
-				if (br && br.length > 0) {
-					for(i = 0, j = br.length; i < br.length; i ++) {
-						var val = br[i];
-						if (val >= 0) {
-							fd_br.push([j-i-1, val]);
-						} else {
-							fd_br.push(null);
-						}
+				if (eth_tx_thrpt && eth_tx_thrpt.length > 0) {
+					for(i = 0, j = eth_tx_thrpt.length; i < eth_tx_thrpt.length; i ++) {
+						fd_eth_tx_thrpt.push([j-i-1, eth_tx_thrpt[i]]);
 					}
 				}
 
-				if (eth_thrpt && eth_thrpt.length > 0) {
-					for(i = 0, j = eth_thrpt.length; i < eth_thrpt.length; i ++) {
-						fd_eth_thrpt.push([j-i-1, eth_thrpt[i]]);
+				if (eth_rx_thrpt && eth_rx_thrpt.length > 0) {
+					for(i = 0, j = eth_rx_thrpt.length; i < eth_rx_thrpt.length; i ++) {
+						fd_eth_rx_thrpt.push([j-i-1, eth_rx_thrpt[i]]);
 					}
 				}
 
-				if (wls_thrpt && wls_thrpt.length > 0) {
-					for(i = 0, j = wls_thrpt.length; i < wls_thrpt.length; i ++) {
-						fd_wls_thrpt.push([j-i-1, wls_thrpt[i]]);
+				if (wls_tx_thrpt && wls_tx_thrpt.length > 0) {
+					for(i = 0, j = wls_tx_thrpt.length; i < wls_tx_thrpt.length; i ++) {
+						fd_wls_tx_thrpt.push([j-i-1, wls_tx_thrpt[i]]);
+					}
+				}
+
+
+				if (wls_rx_thrpt && wls_rx_thrpt.length > 0) {
+					for(i = 0, j = wls_rx_thrpt.length; i < wls_rx_thrpt.length; i ++) {
+						fd_wls_rx_thrpt.push([j-i-1, wls_rx_thrpt[i]]);
 					}
 				}
 
 				// custom chart lines
 				var cd;
 				var _fields = store.flot.fields;
-				if (_fields == 'nw') {
-					cd = [{ label: '< Bitrate', data: null },
-						{ label: '> SNR', data: null, yaxis: 2 },
-						{ label: '< DL Thrpt', data: fd_eth_thrpt },
-						{ label: '< UL Thrpt', data: fd_wls_thrpt }
+				if (_fields == 'eth') {
+					cd = [
+						{ label: '> Noise', data: null, yaxis: 2 },
+						{ label: '< Eth Tx Thrpt', data: fd_eth_tx_thrpt },
+						{ label: '< Eth Rx Thrpt', data: fd_eth_rx_thrpt },
+						{ label: '< Wls Tx Thrpt', data: null },
+						{ label: '< Wls Rx Thrpt', data: null }
+					];
+				} else if (_fields == 'wls') {
+					cd = [
+						{ label: '> Noise', data: null, yaxis: 2 },
+						{ label: '< Eth Tx Thrpt', data: null },
+						{ label: '< Eth Rx Thrpt', data: null },
+						{ label: '< Wls Tx Thrpt', data: fd_wls_tx_thrpt },
+						{ label: '< Wls Rx Thrpt', data: fd_wls_rx_thrpt }
 					];
 				} else if (_fields == 'abb') {
-					cd = [{ label: '< Bitrate', data: fd_br },
-						{ label: '> SNR', data: fd_snr, yaxis: 2 },
-						{ label: '< Eth0 Thrpt', data: null },
-						{ label: '< Wlan0 Thrpt', data: null }
+					cd = [
+						{ label: '> Noise', data: fd_noise, yaxis: 2 },
+						{ label: '< Eth Tx Thrpt', data: null },
+						{ label: '< Eth Rx Thrpt', data: null },
+						{ label: '< Wls Tx Thrpt', data: null },
+						{ label: '< Wls Rx Thrpt', data: null }
 					];
 				} else {
-					cd = [{ label: '< Bitrate', data: fd_br },
-						{ label: '> SNR', data: fd_snr, yaxis: 2 },
-						{ label: '< Eth0 Thrpt', data: fd_eth_thrpt },
-						{ label: '< Wlan0 Thrpt', data: fd_wls_thrpt }
+					cd = [
+						{ label: '> Noise', data: fd_noise, yaxis: 2 },
+						{ label: '< Eth Tx Thrpt', data: fd_eth_tx_thrpt },
+						{ label: '< Eth Rx Thrpt', data: fd_eth_rx_thrpt },
+						{ label: '< Wls Tx Thrpt', data: fd_wls_tx_thrpt },
+						{ label: '< Wls Rx Thrpt', data: fd_wls_rx_thrpt }
 					];
 				}
 
 				$.flot.chart.update(chart, cd);
 			},
 			peers: function() {
+				var peers = (store.history && "peers" in store.history) ? store.history.peers : null;
+				var peers_qty = (peers) ? peers.length : 0;
 
+				var fcharts = store.flot.chart;
+				var fcharts_qty = fcharts.length;
+
+
+				//console.log('dbg> peers qty/flot charts/charts to add =', peers_qty, fcharts_qty, peers_qty-(fcharts_qty-1));
+				
+				if (fcharts_qty > 1) {
+					$.each(fcharts, function(idx, fchart) {
+						console.log('fcharts', idx, fchart);
+					})
+				}
 			}
 		},
 		// parse store.history"

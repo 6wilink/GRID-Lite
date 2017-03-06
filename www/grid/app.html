@@ -5,7 +5,7 @@
 	<link href="res/google/icon.css" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="res/materialize/css/materialize.min.css"  media="screen,projection" />
 	<link type="text/css" rel="stylesheet" href="res/app.css" media="screen,projection" />
-	<title>GRID lite from 6Harmonics (v1.0-1-220217 prototype)</title>
+	<title>GRID lite from 6Harmonics (v1 Alpha-01)</title>
 </head>
 <body class="blue-grey lighten-5">
 <nav class="nav-extended blue-grey">
@@ -47,7 +47,8 @@
       					</div>
       					<div class="card-action">
               				<a href="#" class="qz-btn-local-chart-fields" alt="all">All</a>
-              				<a href="#" class="qz-btn-local-chart-fields" alt="nw">Network</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="eth">Ethernet</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="wls">Wireless</a>
               				<a href="#" class="qz-btn-local-chart-fields" alt="abb">ABB</a>
               				<a href="/cgi-bin/bye" id="qz-btn-logout" class="right">Log Out</a>
             			</div>
@@ -184,17 +185,17 @@
 	      								<label for="qz-set-gws-tpc">Tx TPC</label>
 									</div>
 									<div class="input-field col s7">
-										<input alt="gws" name="txpwr" id="qz-set-gws-txpwr" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<input alt="gws" name="txpwr" id="qz-set-gws-txpwr" placeholder="Unit: dBm" class="validate" type="text" value="-" />
 										<label for="qz-set-gws-txpwr">Tx Power</label>
 									</div>
 									<div class="input-field col s12">
-										<input alt="gws" name="ch" id="qz-set-gws-ch" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<input alt="gws" name="ch" id="qz-set-gws-ch" placeholder="Unit: dBm" class="validate" type="text" value="-" />
 										<label for="qz-set-gws-ch">Channel</label>
 									</div>
 									<div class="input-field col s12">
 										<select alt="gws" name="rgn" id="qz-set-gws-rgn" class="browser-default">
 											<option value="0">Region 0</option>
-											<option value="1" selected>Region 1</option>
+											<option value="1">Region 1</option>
 										</select>
 									</div>
 								</div>
@@ -212,7 +213,7 @@
 	      								<label for="qz-set-gws-rxagc">Rx AGC</label>
 									</div>
 									<div class="input-field col s7">
-										<input alt="gws" name="rxg" id="qz-set-gws-rxg" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<input alt="gws" name="rxg" id="qz-set-gws-rxg" placeholder="Unit: dBm" class="validate" type="text" value="-" />
 										<label for="qz-set-gws-rxg">Rx Gain</label>
 									</div>
 								</div>
@@ -233,7 +234,7 @@
 										</select>
 				    				</div>
 									<div class="input-field col s12">
-										<input alt="serv" name="dhcp" id="qz-set-serv-dhcp" type="checkbox" class="filled-in" />
+										<input alt="serv" name="dhcp" id="qz-set-serv-dhcp" type="checkbox" class="filled-in" disabled />
 	      								<label for="qz-set-serv-dhcp">Enable DHCP Service on LAN</label>
 									</div>
 									<div class="input-field col s12">
@@ -407,7 +408,7 @@
 					<label for="qz-tool-flood-target">Target</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="qz-tool-flood-bw" placeholder="Unit: Second" type="text" class="validate" value="30" />
+					<input id="qz-tool-flood-bw" placeholder="Unit: Second" type="text" class="validate" value="20" />
 					<label for="qz-tool-flood-bw">Total Flooding Bandwidth (Unit: Mbps)</label>
 				</div>
 				<div class="input-field col s6">
@@ -415,7 +416,7 @@
 					<label for="qz-tool-flood-as">Auto Start/Continue when Time-up</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="qz-tool-flood-times" placeholder="Unit: Second" type="text" class="validate" value="10" />
+					<input id="qz-tool-flood-times" placeholder="Unit: Second" type="text" class="validate" value="30" />
 					<label for="qz-tool-flood-times">Seconds of Flooding</label>
 				</div>
 				<div class="input-field col s12 center">

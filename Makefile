@@ -50,7 +50,8 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/www
 
 	$(CP) ./lib/* $(1)/usr/lib/lua/
-	$(INSTALL_CONF) ./conf/$(APP_NAME).conf $(1)/etc/config/$(APP_NAME)
+	$(INSTALL_CONF) ./conf/$(PKG_NAME).conf $(1)/usr/lib/lua/grid/$(APP_NAME).conf
+	$(INSTALL_CONF) ./conf/$(PKG_NAME).conf $(1)/etc/config/$(APP_NAME)
 	$(INSTALL_BIN) ./bin/* $(1)/www/cgi-bin/
 	$(CP) ./www/* $(1)/www/
 endef
