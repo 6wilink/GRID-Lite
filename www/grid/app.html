@@ -5,7 +5,7 @@
 	<link href="res/google/icon.css" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="res/materialize/css/materialize.min.css"  media="screen,projection" />
 	<link type="text/css" rel="stylesheet" href="res/app.css" media="screen,projection" />
-	<title>GRID lite from 6Harmonics (v1.0-1-220217 prototype)</title>
+	<title>GRID lite from 6Harmonics (v1 Alpha-01)</title>
 </head>
 <body class="blue-grey lighten-5">
 <nav class="nav-extended blue-grey">
@@ -47,7 +47,8 @@
       					</div>
       					<div class="card-action">
               				<a href="#" class="qz-btn-local-chart-fields" alt="all">All</a>
-              				<a href="#" class="qz-btn-local-chart-fields" alt="nw">Network</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="eth">Ethernet</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="wls">Wireless</a>
               				<a href="#" class="qz-btn-local-chart-fields" alt="abb">ABB</a>
               				<a href="/cgi-bin/bye" id="qz-btn-logout" class="right">Log Out</a>
             			</div>
@@ -55,66 +56,8 @@
 				</div>
 			</div>
 			<h5>Connected Node(s)</h5>
-			<div class="row">
+			<div id="qz-peers" class="row">
 				<div id="qz-peers-none" class="col s12 section">( Upgrade to Pro! )</div>
-				<!--<div id="qz-peers-none" class="col s12 section">( Not connected )</div>
-				<div id="qz-peers" class="col s12">
-					<div class="card">
-						<div class="card-image waves-effect waves-block waves-light">
-      						<div class="qz-space">
-      							<div class="qz-chart-holder qz-chart-peer lighten-5"></div>
-							</div>
-    					</div>
-    					<div class="card-content center">
-    						<p class="card-title activator grey-text text-darken-4 qz-peer-nw">192.168.1.100 / 192.168.66.1</p>
-							<p class="qz-peer-sts">00:5E:AC:00:5E:AE | EAR (router)</p>
-						</div>
-    					<div class="card-reveal">
-    						<span class="card-title grey-text text-darken-4">GWS Params<i class="material-icons right">.</i></span>
-      						<ul class="collection">
-								<li class="collection-item"><span class="badge qz-peer-txpwr">33 dBm</span>Tx Power</li>
-								<li class="collection-item"><span class="badge qz-peer-rxg">12 db</span>Rx Gain</li>
-								<li class="collection-item"><span class="badge qz-peer-rxagc">ON</span>AGC</li>
-								<li class="collection-item"><span class="badge blue qz-peer-tpc">OFF</span>TPC</li>
-								<li class="collection-item"><span class="badge grey qz-peer-atf">OFF</span>ATF</li>
-								<li class="collection-item"><span class="badge grey qz-peer-tdma">OFF</span>TDMA</li>
-							</ul>
-      					</div>
-      					<div class="card-action">
-              				<a href="#model_proxy_leagal">Monitor</a>
-              				<a href="#" class="qz-peer-reset">Reset</a>
-            			</div>
-  					</div>
-				</div>
-				<div class="col s12">
-					<div class="card">
-						<div class="card-image waves-effect waves-block waves-light">
-      						<div class="qz-space">
-      							<div class="qz-chart-holder qz-chart-peer lighten-5"></div>
-							</div>
-    					</div>
-    					<div class="card-content center">
-    						<p class="card-title activator grey-text text-darken-4">192.168.1.101</p>
-							<p>00:5E:AC:00:5E:AD | EAR (bridged) | QoS</p>
-						</div>
-    					<div class="card-reveal">
-    						<span class="card-title grey-text text-darken-4">GWS Params<i class="material-icons right">:</i></span>
-      						<ul class="collection">
-								<li class="collection-item"><span class="badge">33 dBm</span>Tx Power</li>
-								<li class="collection-item"><span class="badge new red">12 db</span>Rx Gain</li>
-								<li class="collection-item"><span class="badge">ON</span>AGC</li>
-								<li class="collection-item"><span class="badge blue">OFF</span>TPC</li>
-								<li class="collection-item"><span class="badge grey">OFF</span>ATF</li>
-								<li class="collection-item"><span class="badge grey">OFF</span>TDMA</li>
-							</ul>
-      					</div>
-      					<div class="card-action">
-              				<a href="#model_proxy_leagal">Monitor</a>
-              				<a href="#">Reset</a>
-            			</div>
-  					</div>
-				</div>-->
-				
 			</div>
 		</div>
 	</div>
@@ -128,8 +71,8 @@
 			<p>Thank you</p>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-			<a href="app.html?k=proxy&c=blue" target="_blank" class="modal-action modal-close waves-effect waves-green btn-flat qz-btn-proxy-agree">Agree</a>
+			<button class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</button>
+			<a href="#" target="_blank" class="modal-action modal-close waves-effect waves-green btn-flat qz-btn-proxy-agree">Agree</a>
 		</div>
 	</div>
 </div>
@@ -184,17 +127,17 @@
 	      								<label for="qz-set-gws-tpc">Tx TPC</label>
 									</div>
 									<div class="input-field col s7">
-										<input alt="gws" name="txpwr" id="qz-set-gws-txpwr" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<input alt="gws" name="txpwr" id="qz-set-gws-txpwr" placeholder="Unit: dBm" class="validate" type="text" value="-" />
 										<label for="qz-set-gws-txpwr">Tx Power</label>
 									</div>
 									<div class="input-field col s12">
-										<input alt="gws" name="ch" id="qz-set-gws-ch" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<input alt="gws" name="ch" id="qz-set-gws-ch" placeholder="Unit: dBm" class="validate" type="text" value="-" />
 										<label for="qz-set-gws-ch">Channel</label>
 									</div>
 									<div class="input-field col s12">
 										<select alt="gws" name="rgn" id="qz-set-gws-rgn" class="browser-default">
 											<option value="0">Region 0</option>
-											<option value="1" selected>Region 1</option>
+											<option value="1">Region 1</option>
 										</select>
 									</div>
 								</div>
@@ -212,7 +155,7 @@
 	      								<label for="qz-set-gws-rxagc">Rx AGC</label>
 									</div>
 									<div class="input-field col s7">
-										<input alt="gws" name="rxg" id="qz-set-gws-rxg" placeholder="Unit: dBm" class="validate" type="text" value="33" />
+										<input alt="gws" name="rxg" id="qz-set-gws-rxg" placeholder="Unit: dBm" class="validate" type="text" value="-" />
 										<label for="qz-set-gws-rxg">Rx Gain</label>
 									</div>
 								</div>
@@ -233,7 +176,7 @@
 										</select>
 				    				</div>
 									<div class="input-field col s12">
-										<input alt="serv" name="dhcp" id="qz-set-serv-dhcp" type="checkbox" class="filled-in" />
+										<input alt="serv" name="dhcp" id="qz-set-serv-dhcp" type="checkbox" class="filled-in" disabled />
 	      								<label for="qz-set-serv-dhcp">Enable DHCP Service on LAN</label>
 									</div>
 									<div class="input-field col s12">
@@ -407,7 +350,7 @@
 					<label for="qz-tool-flood-target">Target</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="qz-tool-flood-bw" placeholder="Unit: Second" type="text" class="validate" value="30" />
+					<input id="qz-tool-flood-bw" placeholder="Unit: Second" type="text" class="validate" value="20" />
 					<label for="qz-tool-flood-bw">Total Flooding Bandwidth (Unit: Mbps)</label>
 				</div>
 				<div class="input-field col s6">
@@ -415,7 +358,7 @@
 					<label for="qz-tool-flood-as">Auto Start/Continue when Time-up</label>
 				</div>
 				<div class="input-field col s6">
-					<input id="qz-tool-flood-times" placeholder="Unit: Second" type="text" class="validate" value="10" />
+					<input id="qz-tool-flood-times" placeholder="Unit: Second" type="text" class="validate" value="30" />
 					<label for="qz-tool-flood-times">Seconds of Flooding</label>
 				</div>
 				<div class="input-field col s12 center">
