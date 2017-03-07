@@ -55,14 +55,61 @@
 					var data = { local: null, nw: null };
 					return data;
 				},
-				delayed: function() { // return structured object, don't update
-					var data = { gws: null, sys: null };
+				delayed: function() {
+					var data = {
+						gws: {
+							rgn: 1,
+							ch: 43,
+							freq: 650,
+							agc: 0,
+							rxg: -10 + $.cache.RANDOM.int(30),
+							txpwr: 21,
+							tpc: $.cache.RANDOM.int(1),
+							chbw: 8
+						},
+						sys: {
+							qos: 1,
+							firewall: 0,
+							atf: -1,
+							tdma: 1
+						}
+					};
 					return data;
 				}
 			},
 			// 'demo' mode
 			DEMO: {
 				instant: function(idx) { // 2017.02.28
+					var x = $.cache.RANDOM.int(100);
+					var peers;
+					if (x > -1) {
+						peers = [{
+							mac: '01:53:01:09:19:15',
+							ip: '192.168.1.211',
+							signal: -75 + $.cache.RANDOM.int(10),
+							noise: -101 + $.cache.RANDOM.int(2),
+							tx_mcs: 4,
+							tx_br: 22 + $.cache.RANDOM.int(2),
+							rx_mcs: 4,
+							rx_br: 18 + $.cache.RANDOM.int(2),
+							tx_short_gi: -1,
+							rx_short_gi: -1,
+							inactive: $.cache.RANDOM.int(2048)
+						}/*,{
+							mac: '01:53:01:09:19:16',
+							ip: '192.168.1.212',
+							signal: -70 + $.cache.RANDOM.int(10),
+							noise: -101 + $.cache.RANDOM.int(2),
+							txmcs: 2,
+							txbr: 12.6,
+							rxmcs: 1,
+							rxbr: 6.8,
+							shortgi: 0,
+							inactive: $.cache.RANDOM.int(2048)
+						}*/];
+					} else {
+						peers = null;
+					}
 					var data = {
 						abb: {
 							bssid: '01:35:11:05:35:56',
@@ -71,27 +118,7 @@
 							mode: 'CAR',
 							ssid: 'gws2017',
 							encrypt: '',
-							peers: [{
-								mac: '01:53:01:09:19:15',
-								ip: '192.168.1.211',
-								signal: -75 + $.cache.RANDOM.int(10),
-								noise: -101 + $.cache.RANDOM.int(2),
-								txmcs: 4,
-								txbr: 28,
-								rxmcs: 3,
-								rxbr: 28,
-								shortgi: 0,
-							},{
-								mac: '01:53:01:09:19:16',
-								ip: '192.168.1.212',
-								signal: -70 + $.cache.RANDOM.int(10),
-								noise: -101 + $.cache.RANDOM.int(2),
-								txmcs: 2,
-								txbr: 12.6,
-								rxmcs: 1,
-								rxbr: 6.8,
-								shortgi: 0,
-							}]
+							peers: peers
 						},
 						nw: {
 							bridge: 1,
@@ -143,10 +170,11 @@
 							};
 						},
 						error: function(xhr, status, error) {
+if (store.debug)
 							console.log('get?k=instant', "error> local (instant) failed", error);
 							store.query = $.cache.query.failed.instant();
 						},
-						timeout: 500,
+						timeout: 666,
 						dataType: 'json'
 					});
 				},
@@ -159,6 +187,7 @@
 							store.delayed = resp;
 						}, 
 						error: function(xhr, status, error) {
+if (store.debug)
 							console.log('get?k=delayed', "error> local (delayed) failed", error);
 							store.delayed = $.cache.query.failed.delayed();
 						},
@@ -176,6 +205,7 @@
 					success: function(resp) {
 					},
 					error: function() {
+if (store.debug)
 						console.log("error> peers sync failed");
 					},
 					dataType: 'json',
@@ -277,6 +307,7 @@
 							eth_rx_thrpt = $.cache.fmt.float(eth_rx_thrpt); 
 							wls_tx_thrpt = $.cache.fmt.float(wls_tx_thrpt); 
 							wls_rx_thrpt = $.cache.fmt.float(wls_rx_thrpt); 
+if (store.debug)
 							console.log('realtime> eth/wls tx/rx Thrpt:', eth_tx_thrpt, eth_rx_thrpt, wls_tx_thrpt, wls_rx_thrpt);
 						}
 
@@ -300,7 +331,15 @@
 						} else {
 							_wls_rx_thrpt.push(wls_rx_thrpt);
 						}
+						if ("wls_rx_thrpt" in local_history) {
+							_wls_rx_thrpt = $.flot.one(local_history.wls_rx_thrpt, wls_rx_thrpt, 60);
+						} else {
+							_wls_rx_thrpt.push(wls_rx_thrpt);
+						}
 
+
+						// TODO: should not put null to history right away,
+						// we should push a null value instead of whole null value
 
 						// TODO: should not put null to history right away,
 						// we should push a null value instead of whole null value
@@ -332,17 +371,87 @@
 				peers: function() {
 					var _peer_history = [];
 
+					var _invalid = $.cache._invalid;
+
 					var query = (store && "query" in store) ? store.query : null;
 					var local = (query && "local" in query) ? query.local : null;
 					var abb = (local && "abb" in local) ? local.abb : null;
 					var peers = (abb && "peers" in abb) ? abb.peers : null;
-					//console.log('$.cache.parse.peers():', query, local, abb, peers);
+					//console.log('dbg 0307> $.cache.parse.peers():', query, local, abb, peers);
 
 					if (peers && peers.length > 0) {
 						// prepare each peer for flot chart
 						$.each(peers, function(idx, obj) {
-							_peer_history.push(obj);
+							//console.log("dbg 0307> $.cache.parse.peers(): peer=", obj);
+
+							// update & set display
+							$.ui.update.peer(idx, obj);
+
+							var _peer = {};
+							var history = (store && "history" in store) ? store.history : null;
+							var peers_history = (history && "peers" in history) ? 
+									history.peers : null;
+							var peer_history = (peers_history && peers_history.length > idx) ? 
+									peers_history[idx] : null;
+							//console.log("dbg 0307> this peer_history", history, peers_history, peer_history);
+
+
+							var _rx_br = [], _rx_mcs = [], _tx_br = [], _tx_mcs = [], _snr = [];
+
+							var rx_br = (obj && "rx_br" in obj) ? obj.rx_br : 0;
+							var rx_mcs = (obj && "rx_mcs" in obj) ? obj.rx_mcs : 0;
+							var tx_br = (obj && "tx_br" in obj) ? obj.tx_br : 0;
+							var tx_mcs = (obj && "tx_mcs" in obj) ? obj.tx_mcs : 0;
+
+							var snr;
+							var noise = (obj && "noise" in obj) ? obj.noise : _invalid;
+							var signal = (obj && "signal" in obj) ? obj.signal : _invalid;
+							if (signal && noise) {
+								snr = signal - noise;
+							} else {
+								snr = 0;
+							}
+							
+							if (snr < 0) {
+								snr = 0;
+							}
+							if (tx_br == rx_br) {
+								tx_br -= 0.1;
+								rx_br += 0.1;
+							}
+							if (tx_mcs == rx_mcs) {
+								tx_mcs -= 0.05;
+								rx_mcs += 0.05;
+							}
+
+if (store.debug)
+							console.log('realtime> peer'+idx+' rxbr/rxmcs/txbr/txmcs/snr=', 
+								rx_br, rx_mcs, tx_br, tx_mcs, snr);
+							if (peer_history) {
+								_rx_br = $.flot.one(peer_history.rx_br, rx_br, 60);
+								_rx_mcs = $.flot.one(peer_history.rx_mcs, rx_mcs, 60);
+								_tx_br = $.flot.one(peer_history.tx_br, tx_br, 60);
+								_tx_mcs = $.flot.one(peer_history.tx_mcs, tx_mcs, 60);
+								_snr = $.flot.one(peer_history.snr, snr, 60);
+							} else {
+								_rx_br.push(rx_br);
+								_rx_mcs.push(rx_mcs);
+								_tx_br.push(tx_br);
+								_tx_mcs.push(tx_mcs);
+								_snr.push(snr);
+							}
+
+							_peer.rx_br = _rx_br;
+							_peer.rx_mcs = _rx_mcs;
+							_peer.tx_br = _tx_br;
+							_peer.tx_mcs = _tx_mcs;
+							_peer.snr = _snr;
+							_peer_history[idx] = _peer;
 						});
+						//if (store.history.peers)
+						//console.log('store.history.peers after parse()', store.history.peers);
+					} else{
+						// should push a null value in each fields
 					}
 
 					store.history.peers = _peer_history;
@@ -413,6 +522,25 @@
 			}
 		},
 		update: {
+			peer: function(idx, peer_cache) {
+				var _p = $('.qz-peer-chart-n').eq(idx);
+				if (_p) {
+					var text1 = '', text2 = '';
+					var mac = (peer_cache && "mac" in peer_cache) ? peer_cache.mac : '';
+					var ip = (peer_cache && "ip" in peer_cache) ? peer_cache.ip : '';
+
+					if (ip) {
+						text1 = ip;
+						text2 = mac;
+					} else {
+						text1 = mac;
+						text = '';
+					}
+					_p.find('.qz-peer-name').text(text1);
+					_p.find('.qz-peer-desc').text(text2);
+					_p.find('.qz-btn-peer-proxy').attr('alt', mac);
+				}
+			},
 			instant: function() { // 2017.03.03
 				//console.log("$.ui.update.instant()", store.query);
 				var query = (store && "query_last" in store) ? store.query_last : null;
@@ -529,13 +657,14 @@
 					text = ("note" in gws) ? gws.note : '...';
 					$('#qz-local-gws5').text(text);
 					
+if (store.debug)
 					console.log("gws> region/channel/txpwr/tpc/rxgain/agc", rgn, ch, txpwr, tpc, rxgain, agc);
 				}
 			}
 		},
 		redraw: function() {
 			// update chart
-			$.flot.sync();
+			$.flot.update();
 		},
 		forms: function() { // 2017.02.28
 			$('form').submit(function() { // 2017.02.28
@@ -609,6 +738,7 @@
 				$('#qz-btn-confirm-change').click(function() { // 2017.02.28
 					var ops = $(this).attr('ops');
 					var val = $(this).attr('val');
+if (store.debug)
 					console.log('ops>', ops, val);
 
 					var url = '/cgi-bin/' + ops;
@@ -676,6 +806,15 @@
 			});
 
  		},
+ 		bind: {
+ 			peer_btn: function() {
+				$('.qz-btn-peer-proxy').click(function() {
+					var mac = $(this).attr('alt');
+					console.log('> prepare proxy dialog/modal. dev=', mac);
+					$('.qz-btn-proxy-agree').attr('href', '/cgi-bin/proxy?target='+mac);
+				});
+ 			}
+ 		},
  		tool: {
  			flood: function(obj) { // 2017.03.02
 				var target = $('#qz-tool-flood-target').val();
@@ -683,6 +822,7 @@
 				var bw = $('#qz-tool-flood-bw').val();
 				var as = $('#qz-tool-flood-as').attr('checked');
 
+if (store.debug)
 				console.log('tool > flooding now: to/times/bw/as =', target, times, bw, as);
 				$.ops.ajax('flood', '/cgi-bin/tool', {
 					k: 'flood', to: target, times: times, bw: bw
@@ -693,6 +833,7 @@
 				var times = 4;
 				//var times = $('#qz-tool-ping-times').val();
 
+if (store.debug)
 				console.log('tool > ping now ...', target, times);
 				$.ops.ajax('ping', '/cgi-bin/tool', {
 					k: 'ping', to: target, times: times
@@ -701,6 +842,7 @@
  		},
 		change: function(obj) { // 2017.02.28
 			if (obj.qz._val != '' && obj.qz._val != '-') {
+if (store.debug)
 				console.log('save >', obj.qz._com, obj.qz._item, obj.qz._val);
 
 				$.ops.ajax('Save', '/cgi-bin/set', {
@@ -879,6 +1021,7 @@
 
 // app starts here
 $(function() { // 2017.02.28
+	console.log("* NOTICE: CURRENT ONLY AVAILABLE FOR SINGLE PEER!");
 	var m = $.url.get('k') || 'demo';
 	$.app.run(m);
 });

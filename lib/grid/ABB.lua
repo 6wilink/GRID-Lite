@@ -83,9 +83,17 @@ function ABB.ops.read()
 
 	local enc = _iw.encryption(_dev)
 
-	local bssid = _iw.bssid(_dev)
-	local ssid = _iw.ssid(_dev)
-	local mode = _iw.mode(_dev)
+	local _mode = ABB.ops.mode(_iw.mode(_dev))
+
+	local bssid, ssid
+	if (_mode == 'Mesh Point') then
+		-- fix issue#22
+		bssid = cmd.exec('ifconfig wlan0 | grep wlan0 -m1 | awk \'{print $5}\' | tr -d "\n"')
+		ssid = cmd.exec('uci get wireless.@wifi-iface[0].mesh_id > /tmp/.grid_meshid; cat /tmp/.grid_meshid | tr -d "\n"')
+	else
+		bssid = _iw.bssid(_dev)
+		ssid = _iw.ssid(_dev)
+	end
 	local noise = fmt.n(_iw.noise(_dev))
 	if (noise == 0) then
 		noise = -101 -- gws4k noise=0
@@ -128,8 +136,8 @@ end
 function ABB.ops.peers()
 	local _result = '['
 	local _fmt = '{"mac": "%s", "ip": "%s", "signal": %d, "noise": %d, '
-		.. '"txmcs": %d, "txbr": %.1f, "short_gi": %d, '
-		.. '"rxmcs": %d, "rxbr": %.1f, "short_gi": %d, '
+		.. '"tx_mcs": %d, "tx_br": %.1f, "tx_short_gi": %d, '
+		.. '"rx_mcs": %d, "rx_br": %.1f, "rx_short_gi": %d, '
 		.. '"inactive": %d }'
 
 	local _dev = ABB.conf.dev or 'wlan0'
