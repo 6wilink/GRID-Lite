@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link href="res/google/icon.css" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="res/materialize/css/materialize.min.css"  media="screen,projection" />
 	<link type="text/css" rel="stylesheet" href="res/app.css" media="screen,projection" />
-	<title>GRID lite from 6Harmonics (v1 Alpha-01)</title>
+	<title>系统控制接入（第一版a01）</title>
 </head>
 <body class="blue-grey lighten-5">
 <nav class="nav-extended blue-grey">
 	<div class="nav-content">
 		<ul class="tabs tabs-transparent">
-			<li class="tab"><a class="active" href="#tab1">Status</a></li>
-			<li class="tab"><a href="#tab2">Settings</a></li>
-			<li class="tab"><a href="#tab3">Spectrum</a></li>
-			<li class="tab"><a href="#tab4">Tools !</a></li>
-			<li class="tab"><a href="#tab5">Security</a></li>
+			<li class="tab"><a class="active" href="#tab1">运行状态</a></li>
+			<li class="tab"><a href="#tab2">参数配置</a></li>
+			<li class="tab"><a href="#tab3">频谱扫描</a></li>
+			<li class="tab"><a href="#tab4">网络工具</a></li>
+			<li class="tab"><a href="#tab5">安全选项</a></li>
 		</ul>
 	</div>
 </nav>
 <div id="tab1" class="col s12">
 	<div class="container">
 		<div class="section">
-			<h5>Local Node</h5>
+			<h5>本地设备</h5>
 			<div class="row">
 				<div class="col s12">
 					<div class="card">
@@ -36,28 +38,28 @@
 							<p id="qz-local-sts">...</p>
 						</div>
     					<div class="card-reveal">
-    						<span class="card-title grey-text text-darken-4">GWS / UHF<i class="material-icons right">...</i></span>
+    						<span class="card-title grey-text text-darken-4">甚高频UHF<i class="material-icons right">...</i></span>
       						<ul class="collection">
-								<li class="collection-item"><span class="badge" id="qz-local-gws1">...</span>Region - Channel</li>
-								<li class="collection-item"><span class="badge" id="qz-local-gws2">...</span>Frequency - Bandwidth</li>
-								<li class="collection-item"><span class="badge" id="qz-local-gws3">...</span>Tx Power</li>
-								<li class="collection-item"><span class="badge" id="qz-local-gws4">...</span>Rx Gain</li>
-								<li class="collection-item"><span class="badge" id="qz-local-gws5">...</span>Desc</li>
+								<li class="collection-item"><span class="badge" id="qz-local-gws1">...</span>区域码 - 频道号</li>
+								<li class="collection-item"><span class="badge" id="qz-local-gws2">...</span>频率 - 带宽</li>
+								<li class="collection-item"><span class="badge" id="qz-local-gws3">...</span>发射功率</li>
+								<li class="collection-item"><span class="badge" id="qz-local-gws4">...</span>接收增益</li>
+								<li class="collection-item"><span class="badge" id="qz-local-gws5">...</span>其它信息</li>
 							</ul>
       					</div>
       					<div class="card-action">
-              				<a href="#" class="qz-btn-local-chart-fields" alt="all">All</a>
-              				<a href="#" class="qz-btn-local-chart-fields" alt="eth">Ethernet</a>
-              				<a href="#" class="qz-btn-local-chart-fields" alt="wls">Wireless</a>
-              				<a href="#" class="qz-btn-local-chart-fields" alt="abb">ABB</a>
-              				<a href="/cgi-bin/bye" id="qz-btn-logout" class="right">Log Out</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="all">所有</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="eth">以太网</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="wls">无线网</a>
+              				<a href="#" class="qz-btn-local-chart-fields" alt="abb">模拟基带</a>
+              				<a href="/cgi-bin/bye" id="qz-btn-logout" class="right">退出</a>
             			</div>
   					</div>
 				</div>
 			</div>
-			<h5>Connected Node(s)</h5>
+			<h5>已连接设备</h5>
 			<div id="qz-peers" class="row">
-				<div id="qz-peers-none" class="col s12 section">( Upgrade to Pro! )</div>
+				<div id="qz-peers-none" class="col s12 section">（请升级到专业版）</div>
 			</div>
 		</div>
 	</div>
@@ -65,14 +67,14 @@
 	<!-- Modal Structure -->
 	<div id="model_proxy_leagal" class="modal">
 		<div class="modal-content">
-			<h4>Leagal Statement</h4>
-			<p>If you are the owner of this device, or with propper authentication(s), then go ahead.</p>
-			<p>If not, this means you are breaking into others' property, in the meanwhile, breaking a "Federal Law". Please click "LEAVE" button and close this page.</p>
+			<h4>全法性声明</h4>
+			<p>如果您是设备的所有者，或者经过了所有者适当的授权，请点击“同意”继续；</p>
+			<p>其它情况请点击“离开”，并关闭此页面。</p>
 			<p>Thank you</p>
 		</div>
 		<div class="modal-footer">
-			<button class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</button>
-			<a href="#" target="_blank" class="modal-action modal-close waves-effect waves-green btn-flat qz-btn-proxy-agree">Agree</a>
+			<button class="modal-action modal-close waves-effect waves-green btn-flat">离开</button>
+			<a href="#" target="_blank" class="modal-action modal-close waves-effect waves-green btn-flat qz-btn-proxy-agree">同意</a>
 		</div>
 	</div>
 </div>
@@ -81,22 +83,22 @@
 		<div class="section">
 			<ul class="collapsible" data-collapsible="accordion">
 				<li>
-					<div class="collapsible-header blue-grey lighten-5">Analog Baseband</div>
+					<div class="collapsible-header blue-grey lighten-5">模拟基带</div>
 					<div class="collapsible-body">
 						<form class="row">
 							<div class="col s5">
 								<div class="row">
 				    				<div class="input-field col s12">
 				    					<select alt="abb" name="mode" id="qz-set-abb-mode" class="browser-default">
-											<option value="2" selected>Core Adaptive Radio (CAR, WDS)</option>
-											<option value="1">Edge Adaptive Radio (EAR, WDS)</option>
-											<option value="0">Mesh Node (Mesh, WDS)</option>
+											<option value="2" selected>基站自适应设备（CAR, WDS）</option>
+											<option value="1">子站自适应设备（EAR, WDS）</option>
+											<option value="0">自组网自适应设备（Mesh）</option>
 										</select>
 				    				</div>
 				    			</div>
 				    			<div class="row">
 									<div class="input-field col s12">
-										<a href="#modal_change_confirm" id="qz-btn-abb-reset" class="btn blue-grey">Reset ABB</a>
+										<a href="#modal_change_confirm" id="qz-btn-abb-reset" class="btn blue-grey">模拟基带重置</a>
 									</div>
 								</div>
 				    		</div>
@@ -116,47 +118,47 @@
 					</div>
 				</li>
 				<li>
-					<div class="collapsible-header active blue-grey lighten-4">GWS / UHF</div>
+					<div class="collapsible-header active blue-grey lighten-4">甚高频UHF</div>
 					<div class="collapsible-body">
 						<form class="row">
 							<div class="col s5">
 								<div class="row">
-									<h6>Tx Chain</h6>
+									<h6>发射链路</h6>
 									<div class="input-field col s5">
 										<input alt="gws" name="tpc" id="qz-set-gws-tpc" type="checkbox" class="filled-in" checked disabled />
-	      								<label for="qz-set-gws-tpc">Tx TPC</label>
+	      								<label for="qz-set-gws-tpc">发射功率控制</label>
 									</div>
 									<div class="input-field col s7">
 										<input alt="gws" name="txpwr" id="qz-set-gws-txpwr" placeholder="Unit: dBm" class="validate" type="text" value="-" />
-										<label for="qz-set-gws-txpwr">Tx Power</label>
+										<label for="qz-set-gws-txpwr">发射功率</label>
 									</div>
 									<div class="input-field col s12">
 										<input alt="gws" name="ch" id="qz-set-gws-ch" placeholder="Unit: dBm" class="validate" type="text" value="-" />
-										<label for="qz-set-gws-ch">Channel</label>
+										<label for="qz-set-gws-ch">频道</label>
 									</div>
 									<div class="input-field col s12">
 										<select alt="gws" name="rgn" id="qz-set-gws-rgn" class="browser-default">
-											<option value="0">Region 0</option>
-											<option value="1">Region 1</option>
+											<option value="0">区域0 - 6MHz</option>
+											<option value="1">区域1 - 8MHz</option>
 										</select>
 									</div>
 								</div>
 				    			<div class="row">
 									<div class="input-field col s12">
-										<a href="#modal_change_confirm" id="qz-btn-gws-reset" class="btn blue-grey">Reset Radio</a>
+										<a href="#modal_change_confirm" id="qz-btn-gws-reset" class="btn blue-grey">收发机重置</a>
 									</div>
 								</div>
 							</div>
 							<div class="col s6 offset-s1">
 								<div class="row">
-									<h6>Rx Chain</h6>
+									<h6>接收链路</h6>
 									<div class="input-field col s5">
 										<input alt="gws" name="rxagc" id="qz-set-gws-rxagc" type="checkbox" class="filled-in" checked="checked" />
-	      								<label for="qz-set-gws-rxagc">Rx AGC</label>
+	      								<label for="qz-set-gws-rxagc">自动增益控制</label>
 									</div>
 									<div class="input-field col s7">
 										<input alt="gws" name="rxg" id="qz-set-gws-rxg" placeholder="Unit: dBm" class="validate" type="text" value="-" />
-										<label for="qz-set-gws-rxg">Rx Gain</label>
+										<label for="qz-set-gws-rxg">接收增益</label>
 									</div>
 								</div>
 							</div>
@@ -164,28 +166,28 @@
 					</div>
 				</li>
 				<li>
-					<div class="collapsible-header blue-grey lighten-3">Network</div>
+					<div class="collapsible-header blue-grey lighten-3">网络配置</div>
 					<div class="collapsible-body">
 						<form class="row">
 							<div class="col s5">
 								<div class="row">
 				    				<div class="input-field col s12">
 				    					<select alt="nw" name="br" id="qz-set-nw-type" class="browser-default">
-											<option value="1" selected>Run as Access Point ( Layer 2 )</option>
-											<option value="0">Run as Router ( Layer 3 )</option>
+											<option value="1" selected>接入点模式 ( Layer 2 )</option>
+											<option value="0">路由器模式 ( Layer 3 )</option>
 										</select>
 				    				</div>
 									<div class="input-field col s12">
 										<input alt="serv" name="dhcp" id="qz-set-serv-dhcp" type="checkbox" class="filled-in" disabled />
-	      								<label for="qz-set-serv-dhcp">Enable DHCP Service on LAN</label>
+	      								<label for="qz-set-serv-dhcp">在局域网上开启DHCP服务</label>
 									</div>
 									<div class="input-field col s12">
 										<input alt="serv" name="firewall" id="qz-set-serv-firewall" type="checkbox" class="filled-in" disabled />
-	      								<label for="qz-set-serv-firewall">Firewall</label>
+	      								<label for="qz-set-serv-firewall">防火墙</label>
 									</div>
 									<div class="input-field col s12">
 										<input alt="serv" name="qos" id="qz-set-serv-qos" type="checkbox" class="filled-in" disabled />
-	      								<label for="qz-set-serv-qos">QoS</label>
+	      								<label for="qz-set-serv-qos">服务质量服务QoS</label>
 									</div>
 				    			</div>
 				    		</div>
@@ -193,32 +195,32 @@
 				    			<div class="row">
 									<div class="input-field col s12">
 										<input alt="nw" name="wanip" id="qz-set-wan-ip" placeholder="Default is 10.10.1.1" class="validate" type="text" value="-" disabled />
-										<label for="qz-set-wan-ip">WAN Address</label>
+										<label for="qz-set-wan-ip">广域网WAN地址</label>
 									</div>
 									<div class="input-field col s12">
 										<input alt="nw" name="lanip" id="qz-set-lan-ip" placeholder="Default is 192.168.66.1" class="validate" type="text" value="192.168.66.1" disabled />
-										<label for="qz-set-lan-ip">LAN Address</label>
+										<label for="qz-set-lan-ip">局域网LAN地址</label>
 									</div>
 								</div>
 							</div>
 				    	</form>
 		    			<div class="row">
 							<div class="input-field col s12">
-								<a href="#modal_change_confirm" id="qz-btn-nw-reset" class="btn blue-grey">Reset Network</a>
+								<a href="#modal_change_confirm" id="qz-btn-nw-reset" class="btn blue-grey">网络重置</a>
 							</div>
 						</div>
 				    </div>
 				</li>
 				<li>
-					<div class="collapsible-header blue-grey lighten-2">System</div>
+					<div class="collapsible-header blue-grey lighten-2">系统配置</div>
 					<div class="collapsible-body">
 						<form class="row">
 							<div class="col s6">
 								<div class="row">
-									<h6>Date time</h6>
+									<h6>时间日期</h6>
 									<div class="input-field col s12">
 										<input alt="serv" name="ntpd" id="qz-set-serv-ntpd" type="checkbox" class="filled-in" disabled />
-	      								<label for="qz-set-serv-ntpd">NTP daemon</label>
+	      								<label for="qz-set-serv-ntpd">开启网络时间同步NTP服务</label>
 									</div>
 								</div>
 							</div>
@@ -240,13 +242,13 @@
 						</form>
 		    			<div class="row">
 							<div class="input-field col s12">
-								<a href="#modal_change_confirm" id="qz-btn-sys-reset" class="btn blue-grey">Reboot !</a>
+								<a href="#modal_change_confirm" id="qz-btn-sys-reset" class="btn blue-grey">重新启动 ！</a>
 							</div>
 						</div>
 					</div>
 				</li>
 				<li>
-					<div class="collapsible-header blue-grey lighten-1">Advanced</div>
+					<div class="collapsible-header blue-grey lighten-1">高级选项</div>
 					<div class="collapsible-body">
 		    			<div class="row">
 							<div class="col s12">
@@ -254,37 +256,37 @@
 									<h6>HTTPS</h6>
 									<div class="input-field col s12">
 										<input id="qz-set-serv-https" type="checkbox" class="filled-in" disabled />
-	      								<label for="qz-set-serv-https">Enable HTTPs</label>
+	      								<label for="qz-set-serv-https">开启HTTPs</label>
 									</div>
 								</div>
 							</div>
 							<div class="input-field col s12">
-								<a href="#modal_change_confirm" id="qz-btn-fw-factory" class="btn blue-grey" disabled>Restore to Factory !</a>
+								<a href="#modal_change_confirm" id="qz-btn-fw-factory" class="btn blue-grey" disabled>恢复出厂设置 ！</a>
 							</div>
 						</div>
 						<form class="row">
 							<div class="col s6">
 								<div class="row">
-									<h6>Tx / Downlink</h6>
+									<h6>发射链路/下行链路</h6>
 									<div class="input-field col s12">
 										<input id="qz-set-serv-atf" type="checkbox" class="filled-in" disabled />
-	      								<label for="qz-set-serv-atf">ATF</label>
+	      								<label for="qz-set-serv-atf">开启ATF</label>
 									</div>
 								</div>
 							</div>
 							<div class="col s6">
 								<div class="row">
-									<h6>Rx / Uplink</h6>
+									<h6>接收链路/上行链路</h6>
 									<div class="input-field col s12">
 										<input id="qz-set-serv-tdma" type="checkbox" class="filled-in" disabled />
-	      								<label for="qz-set-serv-tdma">TDMA</label>
+	      								<label for="qz-set-serv-tdma">开启TDMA</label>
 									</div>
 								</div>
 							</div>
 						</form>
 						<div class="row">
 							<div class="col s12">
-								I don't want to provide FIRMWARE UPGRADE function. Maybe in next release.
+								暂时不提供固件在线升级服务
 							</div>
 						</div>
 					</div>
@@ -296,27 +298,27 @@
 	<!-- Modal Structure -->
 	<div id="modal_change_confirm" class="modal">
 		<div class="modal-content">
-			<h4>Operation Confirm</h4>
-			<p id="qz-modal-chcfm-items">(Nothing yet)</p>
-			<p id="qz-modal-chcfm-affected">(Nothing affected)</p>
-			<p>If you want to change these item below, click "Confirm"</p>
-			<p>If not, click "Cancel"</p>
-			<p>Thank you</p>
+			<h4>操作确认</h4>
+			<p id="qz-modal-chcfm-items">（未知操作）</p>
+			<p id="qz-modal-chcfm-affected">（未知影响）</p>
+			<p>如果确认以上操作及其影响，请点击“确定”</p>
+			<p>其它请点击“取消”</p>
+			<p>感谢您的配合。</p>
 		</div>
 		<div class="modal-footer">
-			<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
-			<button id="qz-btn-confirm-change" class="modal-action modal-close waves-effect waves-green btn-flat">Confirm</button>
+			<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
+			<button id="qz-btn-confirm-change" class="modal-action modal-close waves-effect waves-green btn-flat">确定</button>
 		</div>
 	</div>
 </div>
 <div id="tab3" class="col s12">
 	<div class="container">
 		<div class="section">
-			<h5>Spectrum Scan</h5>
+			<h5>频谱扫描</h5>
 			<form class="row">
 				<div class="input-field col s6">
-					<button id="qz-btn-chscan-start" class="btn blue-grey" disabled>Start !</button>
-					<button id="qz-btn-chscan-stop" class="btn blue-grey" disabled>Stop !</button>
+					<button id="qz-btn-chscan-start" class="btn blue-grey" disabled>开始扫描 ！</button>
+					<button id="qz-btn-chscan-stop" class="btn blue-grey" disabled>停止扫描 ！</button>
 				</div>
 			</div>
 		</form>
@@ -325,44 +327,44 @@
 <div id="tab4" class="col s12">
 	<div class="container">
 		<div class="section">
-			<h5>ICMP / Ping</h5>
+			<h5>ICMP / Ping诊断</h5>
 			<form class="row">
 				<div class="input-field col s6">
 					<input id="qz-tool-ping-target" placeholder="Copy target ip address or MAC from STATUS" class="validate" type="text" value="192.168.1.2" />
-					<label for="qz-tool-ping-target">Target Address or MAC</label>
+					<label for="qz-tool-ping-target">目标IP地址</label>
 				</div>
 				<div class="input-field col s6">
-					<button id="qz-btn-ping-start" class="btn blue-grey">Start</button>
+					<button id="qz-btn-ping-start" class="btn blue-grey">开始</button>
 				</div>
 				<div class="input-field col s12">
 					<textarea id="qz-tool-ping-result" class="materialize-textarea qz-textarea">-</textarea>
-      				<label for="qz-tool-ping-result">ICMP / Ping Result</label>
+      				<label for="qz-tool-ping-result">ICMP / Ping诊断结果</label>
       			</div>
 			</div>
 		</form>
 	</div>
 	<div class="container">
 		<div class="section">
-			<h5>UDP Flooding Tool</h5>
+			<h5>UDP Flooding工具</h5>
 			<div class="row">
 				<div class="input-field col s6">
 					<input id="qz-tool-flood-target" placeholder="Your Target Address / MAC" type="text" class="validate" value="192.168.1.2" />
-					<label for="qz-tool-flood-target">Target</label>
+					<label for="qz-tool-flood-target">目标</label>
 				</div>
 				<div class="input-field col s6">
 					<input id="qz-tool-flood-bw" placeholder="Unit: Second" type="text" class="validate" value="20" />
-					<label for="qz-tool-flood-bw">Total Flooding Bandwidth (Unit: Mbps)</label>
+					<label for="qz-tool-flood-bw">总发起带宽</label>
 				</div>
 				<div class="input-field col s6">
 					<input id="qz-tool-flood-as" type="checkbox" class="filled-in" />
-					<label for="qz-tool-flood-as">Auto Start/Continue when Time-up</label>
+					<label for="qz-tool-flood-as">当结果后自动开始</label>
 				</div>
 				<div class="input-field col s6">
 					<input id="qz-tool-flood-times" placeholder="Unit: Second" type="text" class="validate" value="30" />
-					<label for="qz-tool-flood-times">Seconds of Flooding</label>
+					<label for="qz-tool-flood-times">发起时长</label>
 				</div>
 				<div class="input-field col s12 center">
-					<button id="qz-btn-flood-start" class="btn blue-grey">Start UDP Flooding</button>
+					<button id="qz-btn-flood-start" class="btn blue-grey">开始UDP Flooding</button>
 				</div>
 			</div>
 		</div>
@@ -371,32 +373,32 @@
 <div id="tab5" class="col s6 offset-s3">
 	<div class="container">
 		<div class="section">
-			<h5 class="center">Change Your Password</h5>
+			<h5 class="center">修改您的密码</h5>
 			<div class="row">
 	    		<form class="col s8 offset-s2">
 	    			<div class="row">
 	    				<div class="input-field col s12">
-	    					<input id="qz-adm-passwd-old" placeholder="Your Current Password" type="password" class="validate">
-	    					<label for="qz-adm-passwd-old">Current Password</label>
+	    					<input id="qz-adm-passwd-old" placeholder="点击输入当前密码" type="password" class="validate">
+	    					<label for="qz-adm-passwd-old">当前密码</label>
 	    				</div>
 	        			<div class="input-field col s12">
-	          				<input id="qz-adm-passwd-new" placeholder="Your New Password" type="password" class="validate">
-	          				<label for="qz-adm-passwd-new">New Password</label>
+	          				<input id="qz-adm-passwd-new" placeholder="点击输入新密码" type="password" class="validate">
+	          				<label for="qz-adm-passwd-new">新密码</label>
 	        			</div>
 	        			<div class="input-field col s12">
-	         				<input id="qz-adm-passwd-confirm" placeholder="Re-type Your New Password" type="password" class="validate">
-	          				<label for="qz-adm-passwd-confirm">Confirm Password</label>
+	         				<input id="qz-adm-passwd-confirm" placeholder="点击再次输入新密码" type="password" class="validate">
+	          				<label for="qz-adm-passwd-confirm">确认密码</label>
 	        			</div>
 	        			<div class="input-field col s6">
-	        				<button id="qz-btn-passwd-change" class="btn blue-grey" disabled>Change</button>
+	        				<button id="qz-btn-passwd-change" class="btn blue-grey" disabled>修改</button>
 	        			</div>
 	      			</div>
 				</form>
 			</div>
 		</div>
 		<div class="section center">
-			<h5>You want to Sign Out?</h5>
-			<a href="/cgi-bin/bye" class="btn lime darken-4">Click to Logout</a>
+			<h5>您想要安全退出吗？</h5>
+			<a href="/cgi-bin/bye" class="btn lime darken-4">点击退出</a>
 		</div>
 	</div>
 </div>

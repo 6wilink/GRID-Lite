@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
 	<link href="res/google/icon.css" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="res/materialize/css/materialize.min.css"  media="screen,projection" />
 	<link type="text/css" rel="stylesheet" href="res/app.css" media="screen,projection" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>GRID lite from 6Harmonics</title>
+	<title>系统控制接入（第一版a01）</title>
 </head>
 <body class="blue-grey">
 <header>
@@ -16,7 +18,7 @@
 				<img alt="6Harmonics" src="res/6Harmonics-Logo-Large.png" class="qz-img-logo circle" />
 			</a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
-			<li><a href="mailto:qige@6harmonics.com?subject=Login%20GRID%20Lite">Question ?</a></li>
+			<li><a href="mailto:qige@6harmonics.com?subject=Login%20GRID%20Lite">无法登录？</a></li>
 		</ul>
 		</div></div>
 	</nav>
@@ -25,26 +27,26 @@
 	<div class="row container valign">
 		<form id="qz-form-login" class="col s8 offset-s2" action="/cgi-bin/auth" method="POST">
       		<div class="row blue-grey lighten-5">
-				<h4 class="light center">Login Now</h4>
+				<h4 class="light center">验证身份</h4>
 				<div class="progress qz-doing">
 					<div class="indeterminate"></div>
 				</div>
 	        	<div class="input-field col s12">
-	          		<input id="username" name="username" type="text" placeholder="Click here to input your username">
-	          		<label for="username">Your Username</label>
+	          		<input id="username" name="username" type="text" placeholder="点击此处输入用户名">
+	          		<label for="username">授权用户</label>
 	        	</div>
 	        	<div class="input-field col s12">
-	          		<input id="password" name="password" type="password"placeholder="Click here to input your password">
-	          		<label for="password">Your Password</label>
+	          		<input id="password" name="password" type="password" placeholder="点击此处输入密码">
+	          		<label for="password">验证密码</label>
 	        	</div>
 				<div class="input-field col s12 center">
-					<a class="modal-trigger waves-effect waves-light btn blue-grey lighten-3" href="#modal_leagal">New Device</a>
-					<a href="app.html?k=demo" class="waves-effect waves-light btn blue-grey lighten-3">Try DEMO</a>
-					<button class="waves-effect waves-light btn blue-grey qz-submit">Submit</button>
+					<a class="modal-trigger waves-effect waves-light btn blue-grey lighten-3" href="#modal_leagal">首次登录</a>
+					<a href="app.html?k=demo" class="waves-effect waves-light btn blue-grey lighten-3">演示模示</a>
+					<button class="waves-effect waves-light btn blue-grey qz-submit">开始验证</button>
 				</div>
 	        	<div class="input-field col s12 center">
 	      			<input type="checkbox" class="filled-in" id="filled-in-box" disabled="disabled" />
-	      			<label for="filled-in-box">Remeber Me</label>
+	      			<label for="filled-in-box">记住验证信息</label>
 				</div>
 				<div class="input-field col s12 center">
 				</div>
@@ -54,14 +56,14 @@
 	<!-- Modal Structure -->
 	<div id="modal_leagal" class="modal">
 		<div class="modal-content">
-			<h4>Leagal Statement</h4>
-				<p>If you are the owner of this device, or with propper authentication(s), then go ahead.</p>
-				<p>If not, this means you are breaking into others' property, in the meanwhile, breaking a "Federal Law". Please click "LEAVE" button and close this page.</p>
-				<p>Thank you</p>
-			</div>
-			<div class="modal-footer">
-			<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">LEAVE</a>
-			<a id="qz-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+			<h4>合法性声明</h4>
+			<p>如果您是设备的所有者，或者经过了所有者适当的授权，请点击“同意”继续；</p>
+			<p>其它情况请点击“离开”，并关闭此页面。</p>
+			<p>感谢您的配合。</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat ">离开</a>
+			<a id="qz-owner" href="#" class="modal-action modal-close waves-effect waves-green btn-flat">同意</a>
 		</div>
 	</div>
 </main>
@@ -69,16 +71,16 @@
 	<div class="container">
         <div class="row">
           	<div class="col l6 s12">
-            	<h5 class="white-text">GRID lite</h5>
-            	<p class="grey-text text-lighten-4">GWS Remote Interface Daemon lite, is a light-weight Web User Interface, which is powered by 6Harmonics Software Team since 2012.</p>
+            	<h5 class="white-text">设备接入控制</h5>
+            	<p class="grey-text text-lighten-4">此软件是由北京六维畅联科技有限公司研发，最早可以回溯到2012年。</p>
           	</div>
           	<div class="col l4 offset-l2 s12">
-            	<h5 class="white-text">Special Thanks</h5>
+            	<h5 class="white-text">特别感谢</h5>
             	<ul>
-             		<li><a class="grey-text text-lighten-3" href="https://github.com/bartve-enovation/uhttpd" target="_blank">uhttpd in GitHub</a></li>
-             		<li><a class="grey-text text-lighten-3" href="https://github.com/lua/lua" target="_blank">Lua in GitHub</a></li>
+             		<li><a class="grey-text text-lighten-3" href="https://github.com/bartve-enovation/uhttpd" target="_blank">GitHub上的uhttpd项目</a></li>
+             		<li><a class="grey-text text-lighten-3" href="https://github.com/lua/lua" target="_blank">GitHub上的Lua项目</a></li>
               		<li><a class="grey-text text-lighten-3" href="http://materializecss.com/" target="_blank">Materialize CSS</a></li>
-              		<li><a class="grey-text text-lighten-3" href="https://github.com/flot/flot" target="_blank">Flot Chart in GitHub</a></li>
+              		<li><a class="grey-text text-lighten-3" href="https://github.com/flot/flot" target="_blank">GitHub上的Flot Chart</a></li>
               		<!--<li><a class="grey-text text-lighten-3" href="#">6Harmonics Beijing Team</a></li>-->
             	</ul>
           	</div>
@@ -86,7 +88,7 @@
     </div>
     <div class="footer-copyright">
 		<div class="container">&copy; 2017
-		<a class="grey-text text-lighten-4 right" href="#!">Powered by 6Harmonics</a>
+		<a class="grey-text text-lighten-4 right" href="#!">北京研发团队</a>
 		</div>
 	</div>
 </footer>
