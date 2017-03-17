@@ -807,7 +807,7 @@ if (store.debug)
 					var mac = $(this).attr('alt');
 					console.log('> prepare proxy dialog/modal. dev=', mac);
 					//$('.qz-btn-proxy-agree').attr('href', '/cgi-bin/proxy?target='+mac);
-					$.materialize.toast('保留功能，请升级至专业版。');
+					$.materialize.toast('高级功能，请升级至专业版。');
 				});
  			}
  		},

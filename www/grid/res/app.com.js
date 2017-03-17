@@ -540,7 +540,7 @@ var store = {
 			</div>
 		</div>
 		<div class="card-content center">
-			<p class="card-title activator grey-text text-darken-4 qz-peer-name">...</p>
+			<p class="card-title grey-text text-darken-4 qz-peer-name">...</p>
 			<p class="qz-peer-desc">...</p>
 		</div>
 		<div class="card-reveal">
@@ -554,9 +554,9 @@ var store = {
 				<li class="collection-item"><span class="badge qz-peer-tdma">...</span>TDMA</li>
 			</ul>
 		</div>
-		<div class="card-action">
+		<!--<div class="card-action">
 			<a href="#model_proxy_leagal" class="qz-btn-peer-proxy" alt="">管理</a>
-		</div>
+		</div>-->
 	</div>
 </div>
 					`;
