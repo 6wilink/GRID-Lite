@@ -331,11 +331,6 @@ if (store.debug)
 						} else {
 							_wls_rx_thrpt.push(wls_rx_thrpt);
 						}
-						if ("wls_rx_thrpt" in local_history) {
-							_wls_rx_thrpt = $.flot.one(local_history.wls_rx_thrpt, wls_rx_thrpt, 60);
-						} else {
-							_wls_rx_thrpt.push(wls_rx_thrpt);
-						}
 
 
 						// TODO: should not put null to history right away,
