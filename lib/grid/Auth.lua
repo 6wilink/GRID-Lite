@@ -39,9 +39,11 @@ Auth.conf.path_exit = '/grid/'
 Auth.verify = {}
 function Auth.verify.remote()
  	if (user.verify.remote()) then
-  		return true, 'valid remote'
+  		--return true, 'valid remote'
+  		return true, '已验证主机'
   	else
-  		return false, 'invalid remote'
+  		--return false, 'invalid remote'
+  		return false, '未验证主机'
 	end
 end
 
@@ -59,10 +61,12 @@ function Auth.verify.all()
     	local _passwd = fmt.http.find('password', _post)
 		if (user.verify.login(_user, _passwd)) then
 			user.ops.save()
-			reason = 'valid user and password'
+			--reason = 'valid user and password'
+			reason = '无效用户名和密码'
 			return true, reason
 		else
-			reason = 'invalid user or password'
+			--reason = 'invalid user or password'
+			reason = '无效用户名或密码'
 		end
 	end
 
@@ -75,11 +79,13 @@ function Auth.nobody.login()
   	local _result, _target, _delay
 	local flag, reason = Auth.verify.all()
 	if (flag) then
-		_result = 'Welcome. Thank you.'
+		--_result = 'Welcome. Thank you.'
+		_result = '感谢您的使用。'
 		_target = Auth.conf.path_ok
 		_delay = 1
 	else
-		_result = 'Login failed: ' .. reason
+		--_result = 'Login failed: ' .. reason
+		_result = '验证身份失败。原因为：' .. reason
 		_target = Auth.conf.path_error
 		_delay = 3
 	end
@@ -104,11 +110,13 @@ function Auth.user.logout()
   	local flag, reason = Auth.verify.remote()
   	if (flag) then
   		user.ops.logout()
-  		_result = 'Thank you. Have a nice day.'
+  		--_result = 'Thank you. Have a nice day.'
+  		_result = '谢谢，祝您好运。'
   		_target = Auth.conf.path_exit
   		_delay = 3
   	else
-  		_result = 'Sorry. You need to login first'
+  		--_result = 'Sorry. You need to login first'
+  		_result = '抱歉，请先验证身份。'
   		_target = Auth.conf.path_error
   		_delay = 3
   	end
