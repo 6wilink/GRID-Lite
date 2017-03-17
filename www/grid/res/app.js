@@ -806,7 +806,8 @@ if (store.debug)
 				$('.qz-btn-peer-proxy').click(function() {
 					var mac = $(this).attr('alt');
 					console.log('> prepare proxy dialog/modal. dev=', mac);
-					$('.qz-btn-proxy-agree').attr('href', '/cgi-bin/proxy?target='+mac);
+					//$('.qz-btn-proxy-agree').attr('href', '/cgi-bin/proxy?target='+mac);
+					$.materialize.toast('保留功能，请升级至专业版。');
 				});
  			}
  		},
