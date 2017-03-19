@@ -146,13 +146,13 @@ var store = {
 				var data = [{
 					label: '> Noise (dBm)', data: []
 				},{
-					label: '< Eth0 Tx(Mbps)', data: []
+					label: '< Eth Tx(Mbps)', data: []
 				},{
-					label: '< Eth0 Rx(Mbps)', data: []
+					label: '< Eth Rx(Mbps)', data: []
 				},{
-					label: '< Wlan0 Tx(Mbps)', data: []
+					label: '< Wls Tx(Mbps)', data: []
 				},{
-					label: '< Wlan0 Rx(Mbps)', data: []
+					label: '< Wls Rx(Mbps)', data: []
 				}];
 				var flot = $.plot(item, data, {
 					series: {
