@@ -373,7 +373,6 @@ if (store.debug)
 									peers_history[idx] : null;
 							//console.log("dbg 0307> this peer_history", history, peers_history, peer_history);
 
-
 							var _rx_br = [], _rx_mcs = [], _tx_br = [], _tx_mcs = [], _snr = [];
 
 							var rx_br = (obj && "rx_br" in obj) ? obj.rx_br : 0;
@@ -419,7 +418,7 @@ if (store.debug)
 								_snr.push(snr);
 							}
 
-							_peer.rx_br = _rx_br;
+              _peer.rx_br = _rx_br;
 							_peer.rx_mcs = _rx_mcs;
 							_peer.tx_br = _tx_br;
 							_peer.tx_mcs = _tx_mcs;

@@ -354,7 +354,6 @@ var store = {
 					}
 				}
 
-
 				if (wls_rx_thrpt && wls_rx_thrpt.length > 0) {
 					for(i = 0, j = wls_rx_thrpt.length; i < wls_rx_thrpt.length; i ++) {
 						fd_wls_rx_thrpt.push([j-i-1, wls_rx_thrpt[i]]);
