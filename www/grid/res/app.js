@@ -418,7 +418,7 @@ if (store.debug)
 								_snr.push(snr);
 							}
 
-              _peer.rx_br = _rx_br;
+							_peer.rx_br = _rx_br;
 							_peer.rx_mcs = _rx_mcs;
 							_peer.tx_br = _tx_br;
 							_peer.tx_mcs = _tx_mcs;
@@ -797,14 +797,14 @@ if (store.debug)
 				});
 
 				$('#qz-btn-chscan-start').click(function() { // 2017.03.19
-					$('#qz-modal-chcfm-items').text('Spectrum Scan Warning');
-					$('#qz-modal-chcfm-affected').text('This Operation Will Interrupt Your Current Wireless Communication');
+					$('#qz-modal-chcfm-items').text('频率扫描警告');
+					$('#qz-modal-chcfm-affected').text('此操作将频繁操作设备的模拟基带，无线通信将受到影响');
 					$('#qz-btn-confirm-change').attr('ops', 'tool').attr('val', 'scan');
 				});
 
 				$('#qz-btn-chscan-stop').click(function() { // 2017.03.19
-					$('#qz-modal-chcfm-items').text('Spectrum Scan Warning');
-					$('#qz-modal-chcfm-affected').text('This Operation Will STOP spectrum scanning, and RESTORE your wireless communication');
+					$('#qz-modal-chcfm-items').text('频率扫描警告');
+					$('#qz-modal-chcfm-affected').text('此操作将重置设备的模拟基带，您的无线通信将会恢复');
 					$('#qz-btn-confirm-change').attr('ops', 'tool').attr('val', 'scan_abord');
 				});
 
