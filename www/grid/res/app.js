@@ -318,7 +318,7 @@ if (store.debug)
 							wls_tx_thrpt = $.cache.fmt.float(wls_tx_thrpt); 
 							wls_rx_thrpt = $.cache.fmt.float(wls_rx_thrpt); 
 if (store.debug)
-							console.log('realtime> eth/wls tx/rx Thrpt:', eth_tx_thrpt, eth_rx_thrpt, wls_tx_thrpt, wls_rx_thrpt);
+							console.log('实时> eth/wls tx/rx Thrpt:', eth_tx_thrpt, eth_rx_thrpt, wls_tx_thrpt, wls_rx_thrpt);
 						}
 					} else {
 						noise = $.cache._invalid;
@@ -373,7 +373,6 @@ if (store.debug)
 									peers_history[idx] : null;
 							//console.log("dbg 0307> this peer_history", history, peers_history, peer_history);
 
-
 							var _rx_br = [], _rx_mcs = [], _tx_br = [], _tx_mcs = [], _snr = [];
 
 							var rx_br = (obj && "rx_br" in obj) ? obj.rx_br : 0;
@@ -403,7 +402,7 @@ if (store.debug)
 							}
 
 if (store.debug)
-							console.log('realtime> peer'+idx+' rxbr/rxmcs/txbr/txmcs/snr=', 
+							console.log('实时> peer'+idx+' rxbr/rxmcs/txbr/txmcs/snr=', 
 								rx_br, rx_mcs, tx_br, tx_mcs, snr);
 							if (peer_history) {
 								_rx_br = $.flot.one(peer_history.rx_br, rx_br, 60);
@@ -419,7 +418,7 @@ if (store.debug)
 								_snr.push(snr);
 							}
 
-							_peer.rx_br = _rx_br;
+              _peer.rx_br = _rx_br;
 							_peer.rx_mcs = _rx_mcs;
 							_peer.tx_br = _tx_br;
 							_peer.tx_mcs = _tx_mcs;
@@ -552,14 +551,14 @@ if (store.debug)
 
 					text = abb_text;
 					if (nw.bridge) {
-						text += ' (bridge)';
+						text += ' (桥接)';
 					} else {
-						text += ' (router)';	
+						text += ' (路由器)';	
 					}
 
 					if (sys) {						
 						if (sys.qos > 0)		text += ' | QoS';
-						if (sys.firewall > 0)	text += ' | Firweall'
+						if (sys.firewall > 0)	text += ' | 防火墙'
 						if (sys.tdma > 0)		text += ' | TDMA';
 						if (sys.atf > 0)		text += ' | ATF';
 					}
@@ -591,7 +590,7 @@ if (store.debug)
 					if (bw > 0) {
 						text = freq+'MHz - '+bw+'M';
 					} else {
-						text = freq+'MHz - (unknown)';
+						text = freq+'MHz - (未知)';
 					}
 					$('#qz-local-gws2').text(text);
 
@@ -600,15 +599,15 @@ if (store.debug)
 					if (txpwr >= -15) {
 						text = txpwr+' dBm';
 					} else {
-						text = 'Tx OFF';
+						text = '发射关闭';
 					}
 					text += ' - ';
 					if (tpc > 0) {
-						text += 'TPC ON';
+						text += 'TPC打开';
 					} else if (tpc == 0) {
-						text += 'TPC OFF';
+						text += 'TPC关闭';
 					} else {
-						text += 'No TPC';
+						text += '禁用TPC';
 					}
 					$('#qz-local-gws3').text(text);
 					$.ui.obj.set($('#qz-set-gws-txpwr'), txpwr);
@@ -623,11 +622,11 @@ if (store.debug)
 					}
 					text += ' - ';
 					if (agc > 0) {
-						text += 'AGC ON';
+						text += 'AGC打开';
 					} else if (agc == 0) {
-						text += 'AGC OFF';
+						text += 'AGC关闭';
 					} else {
-						text += 'No AGC';
+						text += '禁用AGC';
 					}
 					$('#qz-local-gws4').text(text);
 					$.ui.obj.set($('#qz-set-gws-rxg'), rxgain > -99 ? rxgain : '-');
@@ -636,7 +635,7 @@ if (store.debug)
 					$('#qz-local-gws5').text(text);
 					
 if (store.debug)
-					console.log("gws> region/channel/txpwr/tpc/rxgain/agc", rgn, ch, txpwr, tpc, rxgain, agc);
+					console.log("射频> region/channel/txpwr/tpc/rxgain/agc", rgn, ch, txpwr, tpc, rxgain, agc);
 				}
 			}
 		},
@@ -661,7 +660,7 @@ if (store.debug)
 			},
 			// clean "div" contents when DEMO
 			DEMO: function() {
-				var text = '<div class="container section center">(DEMO mode, please <a href="/grid/index.html">LOGIN</a> first)</div>'
+				var text = '<div class="container section center">(演示模式，请先<a href="/grid/index.html">登录</a>)</div>'
 				$('#tab2,#tab3,#tab4,#tab5').html(text);
 			},
 			lock: function(obj) {
@@ -703,37 +702,37 @@ if (store.debug)
 				$('#tab2,#tab3,#tab4,#tab5').click(function() { // 2017.02.28
 					var obj = $(this);
 					//console.log('> toast() when click', obj);
-					$.materialize.toast('Not available in "DEMO" mode');
+					$.materialize.toast('演示模式下不可用');
 				});
 			} else {
 				// bind these buttons click() 
 				$('#qz-btn-sys-reset').click(function() { // 2017.02.28
-					$('#qz-modal-chcfm-items').text('Reset Network');
-					$('#qz-modal-chcfm-affected').text('This Operation Will REBOOT This Device');
+					$('#qz-modal-chcfm-items').text('重启设备');
+					$('#qz-modal-chcfm-affected').text('此操作将设备重新启动，所有服务都将受到影响');
 					$('#qz-btn-confirm-change').attr('ops', 'reset').attr('val', 'sys');
 				});
 
 				$('#qz-btn-abb-reset').click(function() { // 2017.02.28
-					$('#qz-modal-chcfm-items').text('Reset Analog Baseband');
-					$('#qz-modal-chcfm-affected').text('This Operation Will Interrupt Your Current Wireless Communication');
+					$('#qz-modal-chcfm-items').text('模拟基带重置');
+					$('#qz-modal-chcfm-affected').text('此操作将重置设备的模拟基带，无线通信将受到影响');
 					$('#qz-btn-confirm-change').attr('ops', 'reset').attr('val', 'abb');
 				});
 
 				$('#qz-btn-gws-reset').click(function() { // 2017.02.28
-					$('#qz-modal-chcfm-items').text('Reset GWS');
-					$('#qz-modal-chcfm-affected').text('This Operation Will Interrupt Your Current Wireless Communication');
+					$('#qz-modal-chcfm-items').text('射频重置');
+					$('#qz-modal-chcfm-affected').text('此操作将重置设备的射频链路，无线通信将受到影响');
 					$('#qz-btn-confirm-change').attr('ops', 'reset').attr('val', 'gws');
 				});
 
 				$('#qz-btn-nw-reset').click(function() { // 2017.02.28
-					$('#qz-modal-chcfm-items').text('Reset Network');
-					$('#qz-modal-chcfm-affected').text('This Operation Will Interrupt Your Current Network Communication, including Wireless Communication');
+					$('#qz-modal-chcfm-items').text('网络重置');
+					$('#qz-modal-chcfm-affected').text('此操作将重置设备的网络配置，网络部分将受到影响，包括无线通信');
 					$('#qz-btn-confirm-change').attr('ops', 'reset').attr('val', 'nw');
 				});
 
 				$('#qz-btn-fw-factory').click(function() { // 2017.02.28
-					$('#qz-modal-chcfm-items').text('Reset to FACTORY SETTINGS');
-					$('#qz-modal-chcfm-affected').text('This Operation Will RESET This Device to FACTORY SETTINGS !');
+					$('#qz-modal-chcfm-items').text('恢复出厂设置');
+					$('#qz-modal-chcfm-affected').text('此操作将重置设备到出厂状态，所有当前的配置都有可能丢失');
 					$('#qz-btn-confirm-change').attr('ops', 'init').attr('val', 'new');
 				})
 
@@ -831,7 +830,8 @@ if (store.debug)
 				$('.qz-btn-peer-proxy').click(function() {
 					var mac = $(this).attr('alt');
 					console.log('> prepare proxy dialog/modal. dev=', mac);
-					$('.qz-btn-proxy-agree').attr('href', '/cgi-bin/proxy?target='+mac);
+					//$('.qz-btn-proxy-agree').attr('href', '/cgi-bin/proxy?target='+mac);
+					$.materialize.toast('高级功能，请升级至专业版。');
 				});
  			}
  		},
@@ -843,7 +843,7 @@ if (store.debug)
 				var as = $('#qz-tool-flood-as').attr('checked');
 
 if (store.debug)
-				console.log('tool > flooding now: to/times/bw/as =', target, times, bw, as);
+				console.log('工具> flooding now: to/times/bw/as =', target, times, bw, as);
 				$.ops.ajax('flood', '/cgi-bin/tool', {
 					k: 'flood', to: target, times: times, bw: bw
 				}, obj);
@@ -854,7 +854,7 @@ if (store.debug)
 				//var times = $('#qz-tool-ping-times').val();
 
 if (store.debug)
-				console.log('tool > ping now ...', target, times);
+				console.log('工具> ping now ...', target, times);
 				$.ops.ajax('ping', '/cgi-bin/tool', {
 					k: 'ping', to: target, times: times
 				}, obj);
@@ -882,7 +882,7 @@ if (store.debug)
 					});
 
 					var next = _b+1;
-					setTimeout("$.ops.tool.scan_read("+_rgn+","+next+","+_e+")", 3500);
+					setTimeout("$.ops.tool.scan_read("+_rgn+","+next+","+_e+")", 2250);
 				}
 			}
  		},
@@ -918,30 +918,30 @@ if (store.debug)
 				//console.dir('dbg> $.get with resp', resp);
 				switch(ops) {
 				case 'abb':
-					prompt = 'ABB has been RESET';
+					prompt = '模拟基带部分已重置';
 					break;
 				case 'gws':
-					prompt = 'GWS has been RESET';
+					prompt = '射频部分已重置';
 					break;
 				case 'nw':
-					prompt = 'Network has been RESET';
+					prompt = '网络部分已重置';
 					break;
 				case 'sys':
-					prompt = 'Device is REBOOTING';
+					prompt = '设备正在重启，请稍候';
 					break;
 				case 'flood':
-					prompt = 'Flooding target done';
+					prompt = 'Flooding目标已完成';
 					break;
 				case 'ping':
 					// TODO: set result to "textarea"
-					prompt = 'PING target done';
+					prompt = 'Ping诊断已完成';
 					$('#qz-tool-ping-result').val(resp);
 					break;
 				case 'scan':
-					prompt = 'Spectrum Scan Started';
+					//prompt = 'Spectrum Scan Started';
 					break;
 				default:
-					prompt = 'Operation completed';
+					prompt = '操作已完成';
 					break;
 				}
 				//console.log('ajax (ok) result:', prompt);
@@ -959,23 +959,23 @@ if (store.debug)
 				//console.dir('dbg> $.get failed with resp', resp);
 				switch(ops) {
 				case 'nw':
-					prompt = 'Network has been RESET';
+					prompt = '网络部分已重置';
 					break;
 				case 'sys':
-					prompt = 'Device is REBOOTING';
+					prompt = '设备正在重启，请稍候';
 					break;
 				case 'flood':
-					prompt = 'Flooding target FAILED';
+					prompt = 'Flooding目标失败 ！';
 					break;
 				case 'ping':
 					// TODO: set result to "textarea"
-					prompt = 'PING target FAILED';
+					prompt = 'Ping诊断失败 ！';
 					$('#qz-tool-ping-result').val(resp);
 					break;
 				case 'scan':
 					break;
 				default:
-					prompt = 'Operation FAILED > ' + ops;
+					prompt = '操作失败 ！ ';
 					break;
 				}
 				//console.log('ajax (fail) result:', prompt);
@@ -994,11 +994,11 @@ if (store.debug)
 		ajax_done: function(ops) { // 2017.02.28
 			switch(ops) {
 			case 'nw':
-				$.materialize.toast('Reload this page due to Device Network is RESET');
+				$.materialize.toast('因网络重置，重新载入页面');
 				setTimeout("$.url.reload()", 3000);
 				break;
 			case 'sys':
-				$.materialize.toast('Closing this page due to Device is REBOOTING', 5000);
+				$.materialize.toast('因设备重启，正在关闭此设备', 5000);
 				setTimeout("$.url.goto('/', 'Reboot')", 5000);
 				break;
 			default:

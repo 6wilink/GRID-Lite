@@ -153,15 +153,15 @@ var store = {
 		chart: {
 			new: function(idx, item) { // 2017.03.01
 				var data = [{
-					label: '> Noise (dBm)', data: []
+					label: '> 噪声 (dBm)', data: []
 				},{
-					label: '< Eth Tx(Mbps)', data: []
+					label: '< 有线发送(Mbps)', data: []
 				},{
-					label: '< Eth Rx(Mbps)', data: []
+					label: '< 有线接收(Mbps)', data: []
 				},{
-					label: '< Wls Tx(Mbps)', data: []
+					label: '< 无线发送(Mbps)', data: []
 				},{
-					label: '< Wls Rx(Mbps)', data: []
+					label: '< 无线接收(Mbps)', data: []
 				}];
 				var flot = $.plot(item, data, {
 					series: {
@@ -188,7 +188,7 @@ var store = {
 						show: true, min: 0, max: 32,
 						steps: true
 					},{
-						show: true, tickDecimals: 0, min: -110, max: -78,
+						show: true, tickDecimals: 0, min: -110, max: -56,
 						//alignTicksWithAxis: 1, 
 						//steps: true,
 						position: 'right'
@@ -203,15 +203,15 @@ var store = {
 			},
 			peer: function(item) {
 				var data = [{
-					label: '< Rx Br (Mbit/s)', data: []
+					label: '< 接收比特率(Mbit/s)', data: []
 				},{
-					label: '< Tx Br (Mbit/s)', data: []
+					label: '< 发送比特率(Mbit/s)', data: []
 				},{
-					label: '<< Rx MCS', data: []
+					label: '<< 接收MCS', data: []
 				},{
-					label: '<< Tx MCS', data: []
+					label: '<< 发送MCS', data: []
 				},{
-					label: '> SNR (db)', data: []
+					label: '> 信噪比 (db)', data: []
 				}];
 				var flot = $.plot(item, data, {
 					series: {
@@ -365,35 +365,35 @@ var store = {
 				var _fields = store.flot.fields;
 				if (_fields == 'eth') {
 					cd = [
-						{ label: '> Noise', data: null, yaxis: 2 },
-						{ label: '< Eth Tx Thrpt', data: fd_eth_tx_thrpt },
-						{ label: '< Eth Rx Thrpt', data: fd_eth_rx_thrpt },
-						{ label: '< Wls Tx Thrpt', data: null },
-						{ label: '< Wls Rx Thrpt', data: null }
+						{ label: '> 噪声', data: null, yaxis: 2 },
+						{ label: '< 有线发送速率', data: fd_eth_tx_thrpt },
+						{ label: '< 有线接收速率', data: fd_eth_rx_thrpt },
+						{ label: '< 无线发送速率', data: null },
+						{ label: '< 无线接收速率', data: null }
 					];
 				} else if (_fields == 'wls') {
 					cd = [
-						{ label: '> Noise', data: null, yaxis: 2 },
-						{ label: '< Eth Tx Thrpt', data: null },
-						{ label: '< Eth Rx Thrpt', data: null },
-						{ label: '< Wls Tx Thrpt', data: fd_wls_tx_thrpt },
-						{ label: '< Wls Rx Thrpt', data: fd_wls_rx_thrpt }
+						{ label: '> 噪声', data: null, yaxis: 2 },
+						{ label: '< 有线发送速率', data: null },
+						{ label: '< 有线接收速率', data: null },
+						{ label: '< 无线发送速率', data: fd_wls_tx_thrpt },
+						{ label: '< 无线接收速率', data: fd_wls_rx_thrpt }
 					];
 				} else if (_fields == 'abb') {
 					cd = [
-						{ label: '> Noise', data: fd_noise, yaxis: 2 },
-						{ label: '< Eth Tx Thrpt', data: null },
-						{ label: '< Eth Rx Thrpt', data: null },
-						{ label: '< Wls Tx Thrpt', data: null },
-						{ label: '< Wls Rx Thrpt', data: null }
+						{ label: '> 噪声', data: fd_noise, yaxis: 2 },
+						{ label: '< 有线发送速率', data: null },
+						{ label: '< 有线接收速率', data: null },
+						{ label: '< 无线发送速率', data: null },
+						{ label: '< 无线接收速率', data: null }
 					];
 				} else {
 					cd = [
-						{ label: '> Noise', data: fd_noise, yaxis: 2 },
-						{ label: '< Eth Tx Thrpt', data: fd_eth_tx_thrpt },
-						{ label: '< Eth Rx Thrpt', data: fd_eth_rx_thrpt },
-						{ label: '< Wls Tx Thrpt', data: fd_wls_tx_thrpt },
-						{ label: '< Wls Rx Thrpt', data: fd_wls_rx_thrpt }
+						{ label: '> 噪声', data: fd_noise, yaxis: 2 },
+						{ label: '< 有线发送速率', data: fd_eth_tx_thrpt },
+						{ label: '< 有线接收速率', data: fd_eth_rx_thrpt },
+						{ label: '< 无线发送速率', data: fd_wls_tx_thrpt },
+						{ label: '< 无线接收速率', data: fd_wls_rx_thrpt }
 					];
 				}
 
@@ -533,11 +533,11 @@ var store = {
 				}
 
 				_peer_cd = [
-					{ label: '< Rx Br (Mbit/s)', data: _rx_br },
-					{ label: '< Tx Br (Mbit/s)', data: _tx_br },
-					{ label: '<< Rx MCS', data: _rx_mcs, yaxis: 3 },
-					{ label: '<< Tx MCS', data: _tx_mcs, yaxis: 3 },
-					{ label: '> SNR (db)', data: _snr_fd, yaxis: 2 }
+					{ label: '< 接收比特率(Mbit/s)', data: _rx_br },
+					{ label: '< 发送比特率(Mbit/s)', data: _tx_br },
+					{ label: '<< 接收MCS', data: _rx_mcs, yaxis: 3 },
+					{ label: '<< 发送MCS', data: _tx_mcs, yaxis: 3 },
+					{ label: '> 信噪比(db)', data: _snr_fd, yaxis: 2 }
 				];
 
 				$.flot.chart.update(peer_chart, _peer_cd);
@@ -595,25 +595,25 @@ var store = {
 			<p class="qz-peer-desc">...</p>
 		</div>
 		<div class="card-reveal">
-			<span class="card-title grey-text text-darken-4">GWS Params<i class="material-icons right">.</i></span>
+			<span class="card-title grey-text text-darken-4">射频参数<i class="material-icons right">.</i></span>
 				<ul class="collection">
-				<li class="collection-item"><span class="badge qz-peer-txpwr">...</span>Tx Power</li>
-				<li class="collection-item"><span class="badge qz-peer-rxg">...</span>Rx Gain</li>
-				<li class="collection-item"><span class="badge qz-peer-rxagc">...</span>AGC</li>
-				<li class="collection-item"><span class="badge qz-peer-tpc">...</span>TPC</li>
+				<li class="collection-item"><span class="badge qz-peer-txpwr">...</span>发射功率</li>
+				<li class="collection-item"><span class="badge qz-peer-rxg">...</span>接收增益</li>
+				<li class="collection-item"><span class="badge qz-peer-rxagc">...</span>自动增益控制AGC</li>
+				<li class="collection-item"><span class="badge qz-peer-tpc">...</span>发射功率控制TPC</li>
 				<li class="collection-item"><span class="badge qz-peer-atf">...</span>ATF</li>
 				<li class="collection-item"><span class="badge qz-peer-tdma">...</span>TDMA</li>
 			</ul>
 		</div>
 		<!--<div class="card-action">
-			<a href="#model_proxy_leagal" class="qz-btn-peer-proxy" alt="">Manage</a>
+			<a href="#model_proxy_leagal" class="qz-btn-peer-proxy" alt="">管理</a>
 		</div>-->
 	</div>
 </div>
 					`;
 				},
 				empty: function() {
-					return '<div id="qz-peers-none" class="col s12 section">( Not connected )</div>';
+					return '<div id="qz-peers-none" class="col s12 section">( 暂未连接 )</div>';
 				},
 			},
 		}
