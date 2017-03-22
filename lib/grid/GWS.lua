@@ -178,7 +178,7 @@ end
 GWS.ops = {}
 
 -- to different cmds based on different platform
-function GWS.ops.read()
+function GWS.ops.Read()
 	local _gws = {}
 	
 	local _platform = GWS.conf.platform
@@ -202,7 +202,7 @@ function GWS.ops.Update()
 	local _fmt = '{"rgn": %d, "ch": %d, "bw": %d, '
 		.. '"txpwr": %d, "tpc": %d, "rxg": %d, "agc": %d, "note": "%s" }'
 
-	local _gws = GWS.ops.read()
+	local _gws = GWS.ops.Read()
 	_result = string.format(_fmt, _gws.rgn or -1, _gws.ch or -1, _gws.chbw or -1, 
 		_gws.txpwr or 0, _gws.tpc or -1, _gws.rxg or 0, _gws.agc or -1, _gws.note or '')
 

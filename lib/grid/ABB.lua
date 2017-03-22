@@ -48,8 +48,6 @@ end
 
 -- return ABB base information
 function ABB.ops.Update()
-	ABB.ops.init()
-
 	local _result
 	local _data
 
@@ -57,7 +55,7 @@ function ABB.ops.Update()
 	local ts = os.time()
 	local _ts = ABB.cache._ts or 0
 	if (ts - _ts > ts_gap_bar) then
-		_data = ABB.ops.read()
+		_data = ABB.ops.Read()
 	else
 		_data = ABB.cache._abb
 	end
@@ -72,7 +70,22 @@ function ABB.ops.Update()
 end
 
 
-function ABB.ops.read()
+function ABB.ops.Noise()
+	ABB.ops.init()
+
+	local _dev = ABB.conf.dev or 'wlan0'
+	local _iw = ABB.cache.iw
+	--local _mode = ABB.ops.mode(_iw.mode(_dev))
+	local noise = fmt.n(_iw.noise(_dev))
+	if (noise == 0) then
+		noise = -101 -- gws4k noise=0
+	end
+	return noise
+end
+
+function ABB.ops.Read()
+	ABB.ops.init()
+
 	local _abb = {}
 
 	local _dev = ABB.conf.dev or 'wlan0'

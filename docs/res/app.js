@@ -82,7 +82,7 @@
 				instant: function(idx) { // 2017.02.28
 					var x = $.cache.RANDOM.int(100);
 					var peers;
-					if (x > 10) {
+					if (x > -1) {
 						peers = [{
 							mac: '01:53:01:09:19:15',
 							ip: '192.168.1.211',
@@ -230,19 +230,6 @@ if (store.debug)
 		// parse store.query.cache,
 		// save store.history;
 		parse: { // 2017.02.28
-			chscan: function(idx, noise) {
-				var cs = (store && "chscan" in store) ? store.chscan : null;
-				if (cs == null) cs = [];
-				if (idx >= 21) {
-					console.log('scan > ', idx, noise, cs.length);
-					if (noise > -999) {
-						cs.push([idx, noise]);
-					} else {
-						cs.push(null);
-					}
-				}
-				store.chscan = cs;
-			},
 			instant: {
 				// TODO: parse data with DEMO
 				local: function() { // 2017.02.28
@@ -266,27 +253,30 @@ if (store.debug)
 					// start calculation
 					// if local=null, 1st time calculation;
 					// if not, start caculatte thrpt of eth/wls
-					var noise = $.cache._invalid;
-					var eth_rx_thrpt = eth_tx_thrpt = 0;
-					var wls_rx_thrpt = wls_tx_thrpt = 0;
-					var _noise = ("noise" in local_history) ? local_history.noise : [];
-					var _eth_tx_thrpt = ("eth_tx_thrpt" in local_history) ? local_history.eth_tx_thrpt : [];
-					var _eth_rx_thrpt = ("eth_rx_thrpt" in local_history) ? local_history.eth_rx_thrpt : [];
-					var _wls_tx_thrpt = ("wls_tx_thrpt" in local_history) ? local_history.wls_tx_thrpt : [];
-					var _wls_rx_thrpt = ("wls_rx_thrpt" in local_history) ? local_history.wls_rx_thrpt : [];
-
 					if (local) {
+						var _noise = [];
+						var _eth_tx_thrpt = [], _eth_rx_thrpt = [];
+						var _wls_tx_thrpt = [], _wls_rx_thrpt = [];
+
 						// calc & save snr
 						if ("abb" in local) {						
+							var noise = $.cache._invalid;
 							if ("noise" in local.abb) {
 								noise = local.abb.noise || $.cache._invalid; // fix gws4k noise=unknown
 							}
 
+							// push
+							if ("noise" in local_history) {
+								_noise = $.flot.one(local_history.noise, noise, 60);
+							} else {
+								_noise.push(noise);
+							}
 							//console.log('realtime> Noise:',noise);
 						}
 
 						// save uplink
 						//console.log('dbg> local.nw', local.nw);
+						var eth_tx_thrpt = 0, eth_rx_thrpt = 0, wls_tx_thrpt = 0, wls_rx_thrpt = 0;
 						if ("nw" in local && local_last && "nw" in local_last) {
 							var nw = local.nw;
 							var nw_last = local_last.nw;
@@ -320,27 +310,59 @@ if (store.debug)
 if (store.debug)
 							console.log('realtime> eth/wls tx/rx Thrpt:', eth_tx_thrpt, eth_rx_thrpt, wls_tx_thrpt, wls_rx_thrpt);
 						}
-					} else {
-						noise = $.cache._invalid;
-						eth_rx_thrpt = eth_tx_thrpt = -1;
-						wls_rx_thrpt = wls_tx_thrpt = -1;
-					}
 
-					// push
-					_noise = $.flot.one(local_history.noise, noise, 60);
-					_eth_tx_thrpt = $.flot.one(local_history.eth_tx_thrpt, eth_tx_thrpt, 60);
-					_eth_rx_thrpt = $.flot.one(local_history.eth_rx_thrpt, eth_rx_thrpt, 60);
-					_wls_tx_thrpt = $.flot.one(local_history.wls_tx_thrpt, wls_tx_thrpt, 60);
-					_wls_rx_thrpt = $.flot.one(local_history.wls_rx_thrpt, wls_rx_thrpt, 60);
-					
-					// save to store.history
-					_local_history = {
-						noise: _noise,
-						eth_tx_thrpt: _eth_tx_thrpt,
-						eth_rx_thrpt: _eth_rx_thrpt,
-						wls_tx_thrpt: _wls_tx_thrpt,
-						wls_rx_thrpt: _wls_rx_thrpt,
-					};
+						if ("eth_tx_thrpt" in local_history) {
+							_eth_tx_thrpt = $.flot.one(local_history.eth_tx_thrpt, eth_tx_thrpt, 60);
+						} else {
+							_eth_tx_thrpt.push(eth_tx_thrpt);
+						}
+						if ("eth_rx_thrpt" in local_history) {
+							_eth_rx_thrpt = $.flot.one(local_history.eth_rx_thrpt, eth_rx_thrpt, 60);
+						} else {
+							_eth_rx_thrpt.push(eth_rx_thrpt);
+						}
+						if ("wls_tx_thrpt" in local_history) {
+							_wls_tx_thrpt = $.flot.one(local_history.wls_tx_thrpt, wls_tx_thrpt, 60);
+						} else {
+							_wls_tx_thrpt.push(wls_tx_thrpt);
+						}
+						if ("wls_rx_thrpt" in local_history) {
+							_wls_rx_thrpt = $.flot.one(local_history.wls_rx_thrpt, wls_rx_thrpt, 60);
+						} else {
+							_wls_rx_thrpt.push(wls_rx_thrpt);
+						}
+						if ("wls_rx_thrpt" in local_history) {
+							_wls_rx_thrpt = $.flot.one(local_history.wls_rx_thrpt, wls_rx_thrpt, 60);
+						} else {
+							_wls_rx_thrpt.push(wls_rx_thrpt);
+						}
+
+
+						// TODO: should not put null to history right away,
+						// we should push a null value instead of whole null value
+
+						// TODO: should not put null to history right away,
+						// we should push a null value instead of whole null value
+
+						// save to store.history
+						_local_history = {
+							noise: _noise,
+							eth_tx_thrpt: _eth_tx_thrpt,
+							eth_rx_thrpt: _eth_rx_thrpt,
+							wls_tx_thrpt: _wls_tx_thrpt,
+							wls_rx_thrpt: _wls_rx_thrpt,
+						};
+
+					} else {
+						// if local=null, it's 1st time calculating
+						_local_history = {
+							noise: null,
+							eth_tx_thprt: null,
+							eth_rx_thprt: null,
+							wls_tx_thrpt: null,
+							wls_rx_thrpt: null
+						}
+					}
 
 					// save result to "store.history.local"
 					store.history.local = _local_history;
@@ -584,7 +606,7 @@ if (store.debug)
 					text = 'R'+rgn+' - CH'+ch;
 					$('#qz-local-gws1').text(text);
 					$('#qz-set-gws-rgn').val(rgn);
-					$.ui.obj.set($('#qz-set-gws-ch'), ch);
+					$('#qz-set-gws-ch').val(ch);
 
 					freq = (rgn > 0) ? 474+(ch-21)*8 : 473+(ch-14)*6;
 					bw = ("bw" in gws) ? gws.bw : -1;
@@ -611,7 +633,7 @@ if (store.debug)
 						text += 'No TPC';
 					}
 					$('#qz-local-gws3').text(text);
-					$.ui.obj.set($('#qz-set-gws-txpwr'), txpwr);
+					$('#qz-set-gws-txpwr').val(txpwr);
 
 
 					rxgain = ("rxg" in gws) ? gws.rxg : -99;
@@ -630,7 +652,7 @@ if (store.debug)
 						text += 'No AGC';
 					}
 					$('#qz-local-gws4').text(text);
-					$.ui.obj.set($('#qz-set-gws-rxg'), rxgain > -99 ? rxgain : '-');
+					$('#qz-set-gws-rxg').val(rxgain > -99 ? rxgain : '-');
 
 					text = ("note" in gws) ? gws.note : '...';
 					$('#qz-local-gws5').text(text);
@@ -663,30 +685,6 @@ if (store.debug)
 			DEMO: function() {
 				var text = '<div class="container section center">(DEMO mode, please <a href="/grid/index.html">LOGIN</a> first)</div>'
 				$('#tab2,#tab3,#tab4,#tab5').html(text);
-			},
-			lock: function(obj) {
-				if (typeof(obj) == 'object') {
-					var id = obj.attr('id');
-					store.typing_id = id;
-				}
-			},
-			unlock: function(obj) {
-				if (typeof(obj) == 'object') {
-					var id = obj.attr('id');
-					var tid = store.typing_id;
-					if (tid != id) {
-						store.typing_id = null;
-					}
-				}
-			},
-			set: function(obj, val) {
-				if (typeof(obj) == 'object') {
-					var id = obj.attr('id');
-					var tid = store.typing_id;
-					if (tid != id) {
-						obj.val(val);
-					} 
-				}
 			}
 		}
 	}
@@ -751,7 +749,7 @@ if (store.debug)
 					$.ops.ajax(val, url, null);
 				});
 
-				$('.qz-input-submit').keydown(function(e) { // 2017.02.28
+				$(':text').keydown(function(e) { // 2017.02.28
 					if (e.keyCode == 13) {
 						var obj = $(this);
 						obj.qz = {
@@ -761,12 +759,6 @@ if (store.debug)
 						};
 						$.ops.change(obj);
 					}
-				}).focus(function() {
-					var obj = $(this);
-					$.ui.obj.lock(obj);
-				}).blur(function() {
-					var obj = $(this);
-					$.ui.obj.unlock(obj);
 				});
 				$(':checkbox').click(function() { // 2017.02.28
 					var obj = $(this);
@@ -795,18 +787,6 @@ if (store.debug)
 						_val: obj.val()
 					};
 					$.ops.change(obj);
-				});
-
-				$('#qz-btn-chscan-start').click(function() { // 2017.03.19
-					$('#qz-modal-chcfm-items').text('Spectrum Scan Warning');
-					$('#qz-modal-chcfm-affected').text('This Operation Will Interrupt Your Current Wireless Communication');
-					$('#qz-btn-confirm-change').attr('ops', 'tool').attr('val', 'scan');
-				});
-
-				$('#qz-btn-chscan-stop').click(function() { // 2017.03.19
-					$('#qz-modal-chcfm-items').text('Spectrum Scan Warning');
-					$('#qz-modal-chcfm-affected').text('This Operation Will STOP spectrum scanning, and RESTORE your wireless communication');
-					$('#qz-btn-confirm-change').attr('ops', 'tool').attr('val', 'scan_abord');
 				});
 
 				$('#qz-btn-flood-start').click(function() {
@@ -858,32 +838,6 @@ if (store.debug)
 				$.ops.ajax('ping', '/cgi-bin/tool', {
 					k: 'ping', to: target, times: times
 				}, obj);
-			},
-			scan: function() {
-				var _rgn = 1, _b = 19, _e = 51;
-				store.chscan = null;
-				$.ops.tool.scan_read(_rgn, _b, _e);
-			},
-			scan_read: function(_rgn, _b, _e) {
-				if (_b <= _e) {
-					$.get('/cgi-bin/tool', { k: 'scan_read', rgn: _rgn, ch: _b }, 
-						function(resp) {
-							var freq = _rgn > 0 ? 474+8*(_b-21) : 473+6*(_b-14);
-							var noise = resp.data.noise;
-if (store.debug)
-							console.log('scan >', freq, noise);
-
-							$.cache.parse.chscan(_b, noise);
-							$.flot.sync.chscan();
-						},
-					'json')
-					.fail(function() {
-						console.log('unknown noise of ch', _b);
-					});
-
-					var next = _b+1;
-					setTimeout("$.ops.tool.scan_read("+_rgn+","+next+","+_e+")", 3500);
-				}
 			}
  		},
 		change: function(obj) { // 2017.02.28
@@ -905,16 +859,7 @@ if (store.debug)
 				$.ui.obj.disable(obj);
 			}
 
-			if (ops == 'scan') {
-				$.ops.tool.scan();				
-			}
-
-			$.ajax({
-				url: url, 
-				method: 'get',
-				data: params,
-				timeout: 120000
-			}).done(function(resp) { // 2017.02.28
+			$.get(url, params, function(resp) { // 2017.02.28
 				//console.dir('dbg> $.get with resp', resp);
 				switch(ops) {
 				case 'abb':
@@ -936,9 +881,6 @@ if (store.debug)
 					// TODO: set result to "textarea"
 					prompt = 'PING target done';
 					$('#qz-tool-ping-result').val(resp);
-					break;
-				case 'scan':
-					prompt = 'Spectrum Scan Started';
 					break;
 				default:
 					prompt = 'Operation completed';
@@ -971,8 +913,6 @@ if (store.debug)
 					// TODO: set result to "textarea"
 					prompt = 'PING target FAILED';
 					$('#qz-tool-ping-result').val(resp);
-					break;
-				case 'scan':
 					break;
 				default:
 					prompt = 'Operation FAILED > ' + ops;
