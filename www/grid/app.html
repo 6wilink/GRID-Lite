@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link href="res/google/icon.css" rel="stylesheet">
 	<link type="text/css" rel="stylesheet" href="res/materialize/css/materialize.min.css"  media="screen,projection" />
@@ -63,20 +63,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- Modal Structure -->
-	<div id="model_proxy_leagal" class="modal">
-		<div class="modal-content">
-			<h4>全法性声明</h4>
-			<p>如果您是设备的所有者，或者经过了所有者适当的授权，请点击“同意”继续；</p>
-			<p>其它情况请点击“离开”，并关闭此页面。</p>
-			<p>感谢您的配合。</p>
-		</div>
-		<div class="modal-footer">
-			<button class="modal-action modal-close waves-effect waves-green btn-flat">离开</button>
-			<a href="#" target="_blank" class="modal-action modal-close waves-effect waves-green btn-flat qz-btn-proxy-agree">同意</a>
-		</div>
-	</div>
 </div>
 <div id="tab2" class="col s12">
 	<div class="container">
@@ -85,7 +71,7 @@
 				<li>
 					<div class="collapsible-header blue-grey lighten-5">模拟基带</div>
 					<div class="collapsible-body">
-						<form class="row">
+						<div class="row">
 							<div class="col s5">
 								<div class="row">
 				    				<div class="input-field col s12">
@@ -105,22 +91,22 @@
 				    		<!--<div class="col s6 offset-s1">
 				    			<div class="row">
 									<div class="input-field col s12">
-										<input alt="abb" name="ssid" id="qz-set-abb-ssid" placeholder="Default is gws2016" class="validate" type="text" value="gws2016" />
+										<input alt="abb" name="ssid" id="qz-set-abb-ssid" placeholder="Default is gws2016" class="validate qz-input-submit" type="text" value="gws2016" />
 										<label for="qz-set-abb-ssid">SSID</label>
 									</div>
 									<div class="input-field col s12">
-										<input alt="abb" name="passwd" id="qz-set-abb-passwd" placeholder="6Harmonics or 12345678" class="validate" type="text" value="" />
+										<input alt="abb" name="passwd" id="qz-set-abb-passwd" placeholder="6Harmonics or 12345678" class="validate qz-input-submit" type="text" value="" />
 										<label for="qz-set-abb-passwd">Password</label>
 									</div>
 								</div>
 							</div>-->
-						</form>
+						</div>
 					</div>
 				</li>
 				<li>
 					<div class="collapsible-header active blue-grey lighten-4">甚高频UHF</div>
 					<div class="collapsible-body">
-						<form class="row">
+						<div class="row">
 							<div class="col s5">
 								<div class="row">
 									<h6>发射链路</h6>
@@ -129,11 +115,11 @@
 	      								<label for="qz-set-gws-tpc">发射功率控制</label>
 									</div>
 									<div class="input-field col s7">
-										<input alt="gws" name="txpwr" id="qz-set-gws-txpwr" placeholder="Unit: dBm" class="validate" type="text" value="-" />
+										<input alt="gws" name="txpwr" id="qz-set-gws-txpwr" placeholder="Unit: dBm" class="validate qz-input-submit" type="text" value="-" />
 										<label for="qz-set-gws-txpwr">发射功率</label>
 									</div>
 									<div class="input-field col s12">
-										<input alt="gws" name="ch" id="qz-set-gws-ch" placeholder="Unit: dBm" class="validate" type="text" value="-" />
+										<input alt="gws" name="ch" id="qz-set-gws-ch" placeholder="Unit: dBm" class="validate qz-input-submit" type="text" value="-" />
 										<label for="qz-set-gws-ch">频道</label>
 									</div>
 									<div class="input-field col s12">
@@ -157,18 +143,18 @@
 	      								<label for="qz-set-gws-rxagc">自动增益控制</label>
 									</div>
 									<div class="input-field col s7">
-										<input alt="gws" name="rxg" id="qz-set-gws-rxg" placeholder="Unit: dBm" class="validate" type="text" value="-" />
+										<input alt="gws" name="rxg" id="qz-set-gws-rxg" placeholder="Unit: dBm" class="validate qz-input-submit" type="text" value="-" />
 										<label for="qz-set-gws-rxg">接收增益</label>
 									</div>
 								</div>
 							</div>
-						</form>
+						</div>
 					</div>
 				</li>
 				<li>
 					<div class="collapsible-header blue-grey lighten-3">网络配置</div>
 					<div class="collapsible-body">
-						<form class="row">
+						<div class="row">
 							<div class="col s5">
 								<div class="row">
 				    				<div class="input-field col s12">
@@ -194,16 +180,16 @@
 				    		<div class="col s6 offset-s1">
 				    			<div class="row">
 									<div class="input-field col s12">
-										<input alt="nw" name="wanip" id="qz-set-wan-ip" placeholder="Default is 10.10.1.1" class="validate" type="text" value="-" disabled />
+										<input alt="nw" name="wanip" id="qz-set-wan-ip" placeholder="Default is 10.10.1.1" class="validate qz-input-submit" type="text" value="-" disabled />
 										<label for="qz-set-wan-ip">广域网WAN地址</label>
 									</div>
 									<div class="input-field col s12">
-										<input alt="nw" name="lanip" id="qz-set-lan-ip" placeholder="Default is 192.168.66.1" class="validate" type="text" value="192.168.66.1" disabled />
+										<input alt="nw" name="lanip" id="qz-set-lan-ip" placeholder="Default is 192.168.66.1" class="validate qz-input-submit" type="text" value="192.168.66.1" disabled />
 										<label for="qz-set-lan-ip">局域网LAN地址</label>
 									</div>
 								</div>
 							</div>
-				    	</form>
+				    	</div>
 		    			<div class="row">
 							<div class="input-field col s12">
 								<a href="#modal_change_confirm" id="qz-btn-nw-reset" class="btn blue-grey">网络重置</a>
@@ -214,7 +200,7 @@
 				<li>
 					<div class="collapsible-header blue-grey lighten-2">系统配置</div>
 					<div class="collapsible-body">
-						<form class="row">
+						<div class="row">
 							<div class="col s6">
 								<div class="row">
 									<h6>时间日期</h6>
@@ -239,7 +225,7 @@
 									</div>
 								</div>
 							</div>
-						</form>
+						</div>
 		    			<div class="row">
 							<div class="input-field col s12">
 								<a href="#modal_change_confirm" id="qz-btn-sys-reset" class="btn blue-grey">重新启动 ！</a>
@@ -264,7 +250,7 @@
 								<a href="#modal_change_confirm" id="qz-btn-fw-factory" class="btn blue-grey" disabled>恢复出厂设置 ！</a>
 							</div>
 						</div>
-						<form class="row">
+						<div class="row">
 							<div class="col s6">
 								<div class="row">
 									<h6>发射链路/下行链路</h6>
@@ -283,7 +269,7 @@
 									</div>
 								</div>
 							</div>
-						</form>
+						</div>
 						<div class="row">
 							<div class="col s12">
 								暂时不提供固件在线升级服务
@@ -294,41 +280,40 @@
 			</ul>
 		</div>
 	</div>
-
-	<!-- Modal Structure -->
-	<div id="modal_change_confirm" class="modal">
-		<div class="modal-content">
-			<h4>操作确认</h4>
-			<p id="qz-modal-chcfm-items">（未知操作）</p>
-			<p id="qz-modal-chcfm-affected">（未知影响）</p>
-			<p>如果确认以上操作及其影响，请点击“确定”</p>
-			<p>其它请点击“取消”</p>
-			<p>感谢您的配合。</p>
-		</div>
-		<div class="modal-footer">
-			<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
-			<button id="qz-btn-confirm-change" class="modal-action modal-close waves-effect waves-green btn-flat">确定</button>
-		</div>
-	</div>
 </div>
 <div id="tab3" class="col s12">
 	<div class="container">
 		<div class="section">
 			<h5>频谱扫描</h5>
-			<form class="row">
+			<div class="row">
 				<div class="input-field col s6">
-					<button id="qz-btn-chscan-start" class="btn blue-grey" disabled>开始扫描 ！</button>
-					<button id="qz-btn-chscan-stop" class="btn blue-grey" disabled>停止扫描 ！</button>
+					<a href="#modal_change_confirm" id="qz-btn-chscan-start" class="btn blue-grey">开始扫描 ！</a>
+					<button id="qz-btn-chscan-stop" class="btn blue-grey">停止扫描 ！</button>
 				</div>
 			</div>
-		</form>
+			<div class="row">
+				<div class="col s12">
+					<div class="card">
+						<div class="card-image waves-effect waves-block waves-light">
+      						<div class="qz-space">
+      							<div id="qz-chart-local-chscan" class="qz-chart-chscan-holder lime lighten-5"></div>
+      						</div>
+    					</div>
+    					<div class="card-content center">
+    						<p id="qz-local-chscan-title" class="card-title grey-text text-darken-4">区域1，频道21至51</p>
+							<p id="qz-local-chscan-sts">频率扫描范围470至700 MHz</p>
+						</div>
+  					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <div id="tab4" class="col s12">
 	<div class="container">
 		<div class="section">
 			<h5>ICMP / Ping诊断</h5>
-			<form class="row">
+			<div class="row">
 				<div class="input-field col s6">
 					<input id="qz-tool-ping-target" placeholder="Copy target ip address or MAC from STATUS" class="validate" type="text" value="192.168.1.2" />
 					<label for="qz-tool-ping-target">目标IP地址</label>
@@ -341,7 +326,7 @@
       				<label for="qz-tool-ping-result">ICMP / Ping诊断结果</label>
       			</div>
 			</div>
-		</form>
+		</div>
 	</div>
 	<div class="container">
 		<div class="section">
@@ -375,7 +360,7 @@
 		<div class="section">
 			<h5 class="center">修改您的密码</h5>
 			<div class="row">
-	    		<form class="col s8 offset-s2">
+	    		<div class="col s8 offset-s2">
 	    			<div class="row">
 	    				<div class="input-field col s12">
 	    					<input id="qz-adm-passwd-old" placeholder="点击输入当前密码" type="password" class="validate">
@@ -393,13 +378,44 @@
 	        				<button id="qz-btn-passwd-change" class="btn blue-grey" disabled>修改</button>
 	        			</div>
 	      			</div>
-				</form>
+				</div>
 			</div>
 		</div>
 		<div class="section center">
 			<h5>您想要安全退出吗？</h5>
 			<a href="/cgi-bin/bye" class="btn lime darken-4">点击退出</a>
 		</div>
+	</div>
+</div>
+
+<!-- Modal Structure -->
+<div id="model_proxy_leagal" class="modal">
+	<div class="modal-content">
+		<h4>全法性声明</h4>
+		<p>如果您是设备的所有者，或者经过了所有者适当的授权，请点击“同意”继续；</p>
+		<p>其它情况请点击“离开”，并关闭此页面。</p>
+		<p>感谢您的配合。</p>
+	</div>
+	<div class="modal-footer">
+		<button class="modal-action modal-close waves-effect waves-green btn-flat">离开</button>
+		<a href="#" target="_blank" class="modal-action modal-close waves-effect waves-green btn-flat qz-btn-proxy-agree">同意</a>
+	</div>
+</div>
+
+
+<!-- Modal Structure -->
+<div id="modal_change_confirm" class="modal">
+	<div class="modal-content">
+		<h4>操作确认</h4>
+		<p id="qz-modal-chcfm-items">（未知操作）</p>
+		<p id="qz-modal-chcfm-affected">（未知影响）</p>
+		<p>如果确认以上操作及其影响，请点击“确定”</p>
+		<p>其它请点击“取消”</p>
+		<p>感谢您的配合。</p>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
+		<button id="qz-btn-confirm-change" class="modal-action modal-close waves-effect waves-green btn-flat">确定</button>
 	</div>
 </div>
 
