@@ -1,4 +1,4 @@
 #!/usr/bin/lua
 
-require "grid.Tool"
-Tool.Run()
+local tool = require "grid.Tool"
+tool.Run()
