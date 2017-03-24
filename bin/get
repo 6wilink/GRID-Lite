@@ -1,4 +1,4 @@
 #!/usr/bin/lua
 
-local get = require "grid.Get"
-get.Run()
+require "grid.Get"
+Get.Run()

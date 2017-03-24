@@ -1,4 +1,4 @@
 #!/usr/bin/lua
 
-local set = require "grid.Set"
-set.Run()
+require "grid.Set"
+Set.Run()

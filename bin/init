@@ -1,5 +1,5 @@
 #!/usr/bin/lua
 
-local reset = require "grid.Reset"
-reset.InitFactory()
+require "grid.Reset"
+Reset.InitFactory()
 

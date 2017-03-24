@@ -1,5 +1,5 @@
 #!/usr/bin/lua
 
-local auth = require "grid.Auth"
-auth.Login()
+require "grid.Auth"
+Auth.Login()
 
