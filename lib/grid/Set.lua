@@ -2,23 +2,40 @@
 -- by Qige
 -- 2016.04.05/2017.01.03/2017.01.16
 
-require 'grid.base.cgi'
-require 'grid.base.user'
-require 'grid.base.fmt'
-require 'grid.Http'
-require 'grid.GWS'
+local FMT = require 'six.fmt'
+local CMD = require 'six.cmd'
+local GWS = require 'kpi.GWS'
+
+local CGI = require 'grid.base.cgi'
+local USER = require 'grid.base.user'
+
+
+local N = FMT.n
+local SFmt = string.format
+local FIND = FMT.http.find
+local AUTH = USER.verify.Remote
+
 
 Set = {}
+Set._remote = ''
+Set._get = ''
+function Set.init()
+	CGI.Save()
+	Set._remote = CGI.raw._remote
+	Set._get = CGI.raw._get
+end
 
 function Set.Run()
-	cgi.save.init()
-
 	local _result = ''
-	if (user.verify.remote()) then
-		local _get = cgi.data._get
-		local _com = fmt.http.find('com', _get)
-		local _item = fmt.http.find('item', _get)
-		local _val = fmt.http.find('val', _get)
+
+	Set.init()
+
+	local _remote = Set._remote
+	local _get = Set._get
+	if (AUTH(_remote)) then
+		local _com = FIND('com', _get)
+		local _item = FIND('item', _get)
+		local _val = FIND('val', _get)
 
 		--_com = 'gws'
 		--_item = 'txpwr'
@@ -34,14 +51,14 @@ function Set.Run()
 			elseif (_com == 'sys') then
 				_result = Set.ops.sys(_item, _val)
 			else
-				_result = string.format('unknown (%s/%s/%s)', _com, _item, _val)
+				_result = SFmt('unknown (%s/%s/%s)', _com, _item, _val)
 			end
-			Http.job.Reply(_result)
+			CGI.job.Reply(_result)
 		else
-			Http.job.Error('noparam');
+			CGI.job.Error('noparam');
 		end
 	else
-		Http.data.Error('nobody');
+		CGI.json.Error('nobody');
 	end
 end
 
@@ -80,14 +97,14 @@ function Set.ops.exec(_cmd, _reset)
 	local _result = ''
 	local fmt = Set.cmd.fmt_reply
 	
-	cmd.exec(_cmd)
+	CMD.exec(_cmd)
 	
 	-- resetart service if needed
 	if (_reset) then
-		cmd.exec(_reset)
+		CMD.exec(_reset)
 	end
 
-	_result = string.format(fmt, 'ok', _cmd)
+	_result = SFmt(fmt, 'ok', _cmd)
 	return _result
 end
 
@@ -98,29 +115,29 @@ function Set.ops.gws(_item, _val)
 	local _cmd_fmt
 	if (_item == 'rxg') then
 		_cmd_fmt = Set.cmd.gws.rxg
-		_cmd = string.format(_cmd_fmt, _val)
+		_cmd = SFmt(_cmd_fmt, _val)
 	elseif (_item == 'rgn') then
 		_cmd_fmt = Set.cmd.gws.rgn
-		_cmd = string.format(_cmd_fmt, _val)
+		_cmd = SFmt(_cmd_fmt, _val)
 	elseif (_item == 'ch') then
 		_cmd_fmt = Set.cmd.gws.ch
-		_cmd = string.format(_cmd_fmt, _val)
+		_cmd = SFmt(_cmd_fmt, _val)
 	elseif (_item == 'txpwr') then
 		_cmd_fmt = Set.cmd.gws.txpwr
-		_cmd = string.format(_cmd_fmt, _val)
+		_cmd = SFmt(_cmd_fmt, _val)
 	elseif (_item == 'rxagc') then
 		_cmd_fmt = Set.cmd.gws.rxagc
 		if (_val == 'on') then
-			_cmd = string.format(_cmd_fmt, '1')
+			_cmd = SFmt(_cmd_fmt, '1')
 		else
-			_cmd = string.format(_cmd_fmt, '0')
+			_cmd = SFmt(_cmd_fmt, '0')
 		end
 	end
 	if (_cmd) then
-		local _r = cmd.exec(_cmd)
-		_result = string.format('{"error": null, "cmd": "%s", "result": "%s"', _cmd, _r)
+		local _r = CMD.exec(_cmd)
+		_result = SFmt('{"error": null, "cmd": "%s", "result": "%s"}', _cmd, _r)
 	else
-		local _error = string.format("gws: %s=%s", _item, _val)
+		local _error = SFmt("gws: %s=%s", _item, _val)
 		_result = _error
 	end
 	return _result
@@ -147,10 +164,10 @@ function Set.ops.abb(_item, _val)
 	end
 
 	if (_cmd) then
-		local _r = cmd.exec(_cmd)
-		_result = string.format('{"error": null, "cmd": "%s", "result": "%s"', _cmd, _r)
+		local _r = CMD.exec(_cmd)
+		_result = SFmt('{"error": null, "cmd": "%s", "result": "%s"}', _cmd, _r)
 	else
-		local _error = string.format("abb: %s=%s", _item, _val)
+		local _error = SFmt("abb: %s=%s", _item, _val)
 		_result = _error
 	end
 	

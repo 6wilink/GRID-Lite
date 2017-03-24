@@ -1,8 +1,8 @@
 -- html module
 -- by Qige
--- 2016.04.05/2017.01.03
+-- 2016.04.05/2017.03.24
 
-html = {}
+local html = {}
 
 function html.head(text)
 	return "<head>\n"..text.."\n</head>\n"
