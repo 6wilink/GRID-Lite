@@ -103,7 +103,7 @@ function Auth.nobody.login()
 	local flag, reason = Auth.verify.all()
 	if (flag) then
 		--_result = 'Welcome. Thank you.'
-		_result = '感谢您的使用'
+		_result = '感谢您的使用。'
 		_target = Auth.conf.path_ok
 		_delay = 1
 	else

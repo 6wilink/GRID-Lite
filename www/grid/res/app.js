@@ -418,7 +418,7 @@ if (store.debug)
 								_snr.push(snr);
 							}
 
-							_peer.rx_br = _rx_br;
+              _peer.rx_br = _rx_br;
 							_peer.rx_mcs = _rx_mcs;
 							_peer.tx_br = _tx_br;
 							_peer.tx_mcs = _tx_mcs;
