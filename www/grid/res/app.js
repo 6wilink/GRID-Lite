@@ -768,7 +768,7 @@ if (store.debug)
 					var obj = $(this);
 					$.ui.obj.unlock(obj);
 				});
-				$(':checkbox').click(function() { // 2017.02.28
+				$('.qz-checkbox-submit').click(function() { // 2017.02.28
 					var obj = $(this);
 					var current = (obj.attr('checked') == 'checked') || false;
 					if (current) {
@@ -787,7 +787,7 @@ if (store.debug)
 						$.ops.change(obj);
 					}
 				});
-				$('select').change(function() { // 2017.02.28
+				$('.qz-select-submit').change(function() { // 2017.02.28
 					var obj = $(this);
 					obj.qz = {
 						_com: obj.attr('alt'),

@@ -76,7 +76,7 @@
 							<div class="col s5">
 								<div class="row">
 				    				<div class="input-field col s12">
-				    					<select alt="abb" name="mode" id="qz-set-abb-mode" class="browser-default">
+				    					<select alt="abb" name="mode" id="qz-set-abb-mode" class="browser-default  qz-select-submit">
 											<option value="2" selected>Core Adaptive Radio (CAR, WDS)</option>
 											<option value="1">Edge Adaptive Radio (EAR, WDS)</option>
 											<option value="0">Mesh Node (Mesh, WDS)</option>
@@ -112,7 +112,7 @@
 								<div class="row">
 									<h6>Tx Chain</h6>
 									<div class="input-field col s5">
-										<input alt="gws" name="tpc" id="qz-set-gws-tpc" type="checkbox" class="filled-in" checked disabled />
+										<input alt="gws" name="tpc" id="qz-set-gws-tpc" type="checkbox" class="filled-in qz-checkbox-submit" checked disabled />
 	      								<label for="qz-set-gws-tpc">Tx TPC</label>
 									</div>
 									<div class="input-field col s7">
@@ -124,7 +124,7 @@
 										<label for="qz-set-gws-ch">Channel</label>
 									</div>
 									<div class="input-field col s12">
-										<select alt="gws" name="rgn" id="qz-set-gws-rgn" class="browser-default">
+										<select alt="gws" name="rgn" id="qz-set-gws-rgn" class="browser-default qz-select-submit">
 											<option value="0">Region 0</option>
 											<option value="1">Region 1</option>
 										</select>
@@ -140,7 +140,7 @@
 								<div class="row">
 									<h6>Rx Chain</h6>
 									<div class="input-field col s5">
-										<input alt="gws" name="rxagc" id="qz-set-gws-rxagc" type="checkbox" class="filled-in" checked="checked" />
+										<input alt="gws" name="rxagc" id="qz-set-gws-rxagc" type="checkbox" class="filled-in qz-checkbox-submit" checked="checked" />
 	      								<label for="qz-set-gws-rxagc">Rx AGC</label>
 									</div>
 									<div class="input-field col s7">
@@ -159,21 +159,21 @@
 							<div class="col s5">
 								<div class="row">
 				    				<div class="input-field col s12">
-				    					<select alt="nw" name="br" id="qz-set-nw-type" class="browser-default">
+				    					<select alt="nw" name="br" id="qz-set-nw-type" class="browser-default qz-select-submit" disabled>
 											<option value="1" selected>Run as Access Point ( Layer 2 )</option>
 											<option value="0">Run as Router ( Layer 3 )</option>
 										</select>
 				    				</div>
 									<div class="input-field col s12">
-										<input alt="serv" name="dhcp" id="qz-set-serv-dhcp" type="checkbox" class="filled-in" disabled />
+										<input alt="serv" name="dhcp" id="qz-set-serv-dhcp" type="checkbox" class="filled-in qz-checkbox-submit" disabled />
 	      								<label for="qz-set-serv-dhcp">Enable DHCP Service on LAN</label>
 									</div>
 									<div class="input-field col s12">
-										<input alt="serv" name="firewall" id="qz-set-serv-firewall" type="checkbox" class="filled-in" disabled />
+										<input alt="serv" name="firewall" id="qz-set-serv-firewall" type="checkbox" class="filled-in qz-checkbox-submit" disabled />
 	      								<label for="qz-set-serv-firewall">Firewall</label>
 									</div>
 									<div class="input-field col s12">
-										<input alt="serv" name="qos" id="qz-set-serv-qos" type="checkbox" class="filled-in" disabled />
+										<input alt="serv" name="qos" id="qz-set-serv-qos" type="checkbox" class="filled-in qz-checkbox-submit" disabled />
 	      								<label for="qz-set-serv-qos">QoS</label>
 									</div>
 				    			</div>
@@ -206,7 +206,7 @@
 								<div class="row">
 									<h6>Date time</h6>
 									<div class="input-field col s12">
-										<input alt="serv" name="ntpd" id="qz-set-serv-ntpd" type="checkbox" class="filled-in" disabled />
+										<input alt="serv" name="ntpd" id="qz-set-serv-ntpd" type="checkbox" class="filled-in qz-checkbox-submit" disabled />
 	      								<label for="qz-set-serv-ntpd">NTP daemon</label>
 									</div>
 								</div>
@@ -215,11 +215,11 @@
 								<div class="row">
 									<h6>FCC Regulation</h6>
 									<div class="input-field col s12">
-										<input alt="serv" name="paws" id="qz-set-serv-paws" type="checkbox" class="filled-in" disabled />
+										<input alt="serv" name="paws" id="qz-set-serv-paws" type="checkbox" class="filled-in qz-checkbox-submit" disabled />
 	      								<label for="qz-set-serv-paws">PAWS Database</label>
 									</div>
 									<div class="input-field col s12">
-										<select alt="serv" name="paws" id="qz-set-serv-paws-vendor" class="browser-default">
+										<select alt="serv" name="paws" id="qz-set-serv-paws-vendor" class="browser-default qz-select-submit" disabled>
 											<option value="uk_google">Google in UK</option>
 											<option value="us_microsoft" selected>Microsoft in US</option>
 										</select>
@@ -242,7 +242,7 @@
 								<div class="row">
 									<h6>HTTPS</h6>
 									<div class="input-field col s12">
-										<input id="qz-set-serv-https" type="checkbox" class="filled-in" disabled />
+										<input id="qz-set-serv-https" type="checkbox" class="filled-in qz-checkbox-submit" disabled />
 	      								<label for="qz-set-serv-https">Enable HTTPs</label>
 									</div>
 								</div>
@@ -256,7 +256,7 @@
 								<div class="row">
 									<h6>Tx / Downlink</h6>
 									<div class="input-field col s12">
-										<input id="qz-set-serv-atf" type="checkbox" class="filled-in" disabled />
+										<input id="qz-set-serv-atf" type="checkbox" class="filled-in qz-checkbox-submit" disabled />
 	      								<label for="qz-set-serv-atf">ATF</label>
 									</div>
 								</div>
@@ -265,7 +265,7 @@
 								<div class="row">
 									<h6>Rx / Uplink</h6>
 									<div class="input-field col s12">
-										<input id="qz-set-serv-tdma" type="checkbox" class="filled-in" disabled />
+										<input id="qz-set-serv-tdma" type="checkbox" class="filled-in qz-checkbox-submit" disabled />
 	      								<label for="qz-set-serv-tdma">TDMA</label>
 									</div>
 								</div>
@@ -287,9 +287,23 @@
 		<div class="section">
 			<h5>Spectrum Scan</h5>
 			<div class="row">
+				<div class="input-field col s2">
+					<select alt="gws" name="rgn" id="qz-tool-chscan-rgn" class="browser-default" disabled>
+						<option value="0">Region 0</option>
+						<option value="1" selected>Region 1</option>
+					</select>
+				</div>
+				<div class="input-field col s2">
+					<input id="qz-tool-chscan-start" placeholder="Channel Number to Begin" class="validate" type="text" value="21" readonly />
+					<label for="qz-tool-ping-target">Begin Channel</label>
+				</div>
+				<div class="input-field col s2">
+					<input id="qz-tool-chscan-stop" placeholder="Channel Number to Stop" class="validate" type="text" value="51" readonly />
+					<label for="qz-tool-ping-target">End Channel</label>
+				</div>
 				<div class="input-field col s6">
 					<a href="#modal_change_confirm" id="qz-btn-chscan-start" class="btn blue-grey">Start !</a>
-					<button id="qz-btn-chscan-stop" class="btn blue-grey">Stop !</button>
+					<a href="#modal_change_confirm"  id="qz-btn-chscan-stop" class="btn blue-grey">Stop !</a>
 				</div>
 			</div>
 			<div class="row">
