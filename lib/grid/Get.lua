@@ -1,25 +1,33 @@
--- 6Harmonics Qige @ K2E 7S4
--- 2017.03.01
+-- Get instant(abb/nw)/delayed(gws/sys)
+-- by Qige
+-- 2016.04.05/2017.01.03/2017.03.24
 
-require 'grid.base.cgi'
-require 'grid.base.user'
-require 'grid.base.fmt'
-require 'grid.Http'
+local fmt = require 'six.fmt'
 
-require 'grid.ABB'
-require 'grid.GWS'
-require 'grid.NW'
-require 'grid.SYS'
+local ABB = require 'kpi.ABB'
+local GWS = require 'kpi.GWS'
+local NW = require 'kpi.NW'
+local SYS = require 'kpi.SYS'
+
+local cgi = require 'grid.base.cgi'
+local user = require 'grid.base.user'
 
 
-Get = {}
+local Get = {}
+Get._remote = ''
+function Get.init()
+	cgi.Save()
+	Get._remote = cgi.raw._remote
+end
 
 function Get.Run()
-	cgi.save.init()
-
 	local _result = ''
-	if (user.verify.remote()) then
-		local _get = cgi.data._get
+
+	Get.init()
+	
+	local _remote = Get._remote
+	if (user.verify.Remote(_remote)) then
+		local _get = cgi.raw._get
 		local _k = fmt.http.find('k', _get)
 		--_k = 'delayed'
 		--_k = 'instant'
@@ -31,9 +39,9 @@ function Get.Run()
 		else
 			_result = string.format('unknown (%s)', _k or '[nil]')
 		end
-		Http.job.Reply(_result)
+		cgi.job.Reply(_result)
 	else
-		Http.data.Error('nobody');
+		cgi.json.Error('nobody');
 	end
 end
 
@@ -74,23 +82,23 @@ end
 
 
 function Get.ops.abb()
-	local _result = ABB.ops.Update()
+	local _result = ABB.JSON()
 	return _result
 end
 
 function Get.ops.gws()
-	local _result = GWS.ops.Update()
+	local _result = GWS.JSON()
 	return _result
 end
 
 function Get.ops.nw()
-	local _result = NW.ops.Update()
+	local _result = NW.JSON()
 	--io.write('Get.ops.nw() ' .. _result .. '\n')
 	return _result
 end
 
 function Get.ops.sys()
-	local _result = SYS.ops.Update()
+	local _result = SYS.JSON()
 	return _result
 end
 
