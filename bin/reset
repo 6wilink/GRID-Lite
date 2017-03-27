@@ -1,4 +1,4 @@
 #!/usr/bin/lua
 
-require "grid.Reset"
-Reset.Run()
+local reset = require "grid.Reset"
+reset.Run()
